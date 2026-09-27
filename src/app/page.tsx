@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Button from "@/components/Button";
@@ -22,40 +21,22 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export default function Home() {
   return (
     <>
-      {/* HERO — asymmetric editorial composition, not text-left/image-right */}
-      <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-black pb-20 pt-40 md:pb-28">
-        <div className="absolute inset-0">
-          <ImageReveal
-            src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
-            alt="Hair by Cill"
-            className="h-full w-full"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/40" />
-        </div>
+      {/* HERO — full-screen centered, dominant photography */}
+      <section className="relative flex h-[100svh] min-h-[640px] items-center justify-center overflow-hidden bg-black">
+        <ImageReveal
+          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
+          alt="Hair by Cill"
+          className="absolute inset-0 h-full w-full"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80" />
 
-        {/* Overlapping portrait image, offset right — breaks symmetry */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.5, ease }}
-          className="absolute right-6 top-28 hidden aspect-[3/4] w-44 overflow-hidden rounded-[6px] shadow-2xl md:block lg:right-16 lg:w-56"
-        >
-          <Image
-            src="https://images.unsplash.com/photo-1522336572468-97b06e8ef143?q=80&w=800&auto=format&fit=crop"
-            alt="Hair by Cill detail"
-            fill
-            sizes="220px"
-            className="object-cover"
-          />
-        </motion.div>
-
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6">
+        <div className="relative z-10 px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease }}
-            className="mb-6 text-xs tracking-[0.35em] text-gold"
+            className="mb-6 text-xs tracking-[0.4em] text-gold"
           >
             HAIR • BEAUTY • CONFIDENCE
           </motion.p>
@@ -64,14 +45,14 @@ export default function Home() {
             as="h1"
             delay={0.25}
             lines={["BEAUTIFUL HAIR", "STARTS WITH YOU."]}
-            className="font-display text-[clamp(2.75rem,8vw,7rem)] leading-[0.98] text-offwhite max-w-4xl"
+            className="mx-auto font-display text-[clamp(3rem,9vw,8rem)] leading-[0.98] text-offwhite"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.65, ease }}
-            className="mt-8 max-w-md text-base text-offwhite/70 md:text-lg"
+            className="mx-auto mt-8 max-w-md text-base text-offwhite/70 md:text-lg"
           >
             Hair by Cill creëert kapsels die passen bij jouw haar, uitstraling en persoonlijke
             stijl.
@@ -81,7 +62,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.8, ease }}
-            className="mt-10 flex flex-wrap items-center gap-8"
+            className="mt-10 flex flex-wrap items-center justify-center gap-8"
           >
             <Button href="/contact" variant="primary" className="!bg-gold !text-black hover:!bg-gold-muted">
               AFSPRAAK MAKEN
@@ -93,6 +74,20 @@ export default function Home() {
             </Link>
           </motion.div>
         </div>
+
+        {/* Scroll cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 1.2 }}
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="h-9 w-px bg-offwhite/40"
+          />
+        </motion.div>
       </section>
 
       {/* THE SALON — asymmetric intro, large portrait + smaller offset image */}
