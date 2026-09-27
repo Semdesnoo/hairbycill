@@ -26,7 +26,7 @@ export default function ReviewSlider() {
             “{review.text}”
           </p>
           <p className="mt-8 text-sm uppercase tracking-widest text-offwhite/50">
-            {review.name} — {review.treatment}
+            {review.name}, {review.treatment}
           </p>
         </motion.div>
       </AnimatePresence>

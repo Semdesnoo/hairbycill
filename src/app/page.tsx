@@ -38,7 +38,7 @@ export default function Home() {
             transition={{ duration: 0.7, delay: 0.15, ease }}
             className="mb-6 text-xs tracking-[0.4em] text-gold"
           >
-            HAIR • BEAUTY • CONFIDENCE
+            HAAR • BEAUTY • ZELFVERTROUWEN
           </motion.p>
 
           <AnimatedHeading
@@ -74,20 +74,6 @@ export default function Home() {
             </Link>
           </motion.div>
         </div>
-
-        {/* Scroll cue */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="h-9 w-px bg-offwhite/40"
-          />
-        </motion.div>
       </section>
 
       {/* THE SALON — asymmetric intro, large portrait + smaller offset image */}
@@ -154,7 +140,11 @@ export default function Home() {
             sizes="(min-width: 768px) 45vw, 100vw"
           />
           <div className="order-1 md:order-2">
-            <SectionLabel>Why Hair by Cill</SectionLabel>
+            <AnimatedHeading
+              as="h2"
+              lines={["WAAROM HAIR", "BY CILL?"]}
+              className="font-display text-4xl leading-[1.02] md:text-5xl"
+            />
             <NumberedList
               items={[
                 "Persoonlijke aandacht",
@@ -191,7 +181,6 @@ export default function Home() {
       <section className="bg-soft-black px-6 py-28 text-offwhite md:py-48">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16 max-w-xl">
-            <SectionLabel dark>Our Work</SectionLabel>
             <AnimatedHeading
               lines={["HAIR WE'RE", "PROUD OF."]}
               className="font-display text-5xl leading-[1.02] text-offwhite md:text-6xl"
@@ -206,7 +195,6 @@ export default function Home() {
       {/* REVIEWS */}
       <section className="bg-black py-28 md:py-40">
         <div className="mb-16 text-center">
-          <SectionLabel dark>Client Love</SectionLabel>
           <h2 className="font-display text-4xl text-offwhite md:text-5xl">
             What our clients say.
           </h2>

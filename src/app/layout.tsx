@@ -22,8 +22,8 @@ const sans = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://hairbycill.nl"),
   title: {
-    default: `${business.name} — Luxury Hair Salon`,
-    template: `%s — ${business.name}`,
+    default: `${business.name} - Luxury Hair Salon`,
+    template: `%s - ${business.name}`,
   },
   description:
     "Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak.",
@@ -48,8 +48,8 @@ const structuredData = {
     .map((o) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: o.day,
-      opens: o.hours.split(" – ")[0],
-      closes: o.hours.split(" – ")[1],
+      opens: o.hours.split("-")[0],
+      closes: o.hours.split("-")[1],
     })),
   sameAs: [business.instagram, business.facebook],
 };

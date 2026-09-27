@@ -77,7 +77,7 @@ export default function OverOnsPage() {
                 “Het mooiste resultaat is haar waarin iemand zichzelf herkent.”
               </p>
               <p className="mt-8 max-w-md text-black/60">
-                Al jaren draait mijn werk om meer dan alleen haar knippen of kleuren — het gaat om
+                Al jaren draait mijn werk om meer dan alleen haar knippen of kleuren. Het gaat om
                 vertrouwen, luisteren en het beste resultaat neerzetten voor iedere klant die bij
                 mij in de stoel zit. Elke dag opnieuw zet ik mijn vakmanschap en passie in om jou
                 met een goed gevoel de salon uit te laten lopen.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
@@ -11,12 +11,16 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting), {
+      rootMargin: "-50px 0px 0px 0px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => setOpen(false), [pathname]);
@@ -25,6 +29,7 @@ export default function Header() {
 
   return (
     <>
+      <div ref={sentinel} className="pointer-events-none absolute top-0 h-px w-full" />
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled

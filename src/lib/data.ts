@@ -17,11 +17,11 @@ export const business = {
 
 export const openingHours = [
   { day: "Maandag", hours: "Gesloten" },
-  { day: "Dinsdag", hours: "09:00 – 18:00" },
-  { day: "Woensdag", hours: "09:00 – 18:00" },
-  { day: "Donderdag", hours: "09:00 – 20:00" },
-  { day: "Vrijdag", hours: "09:00 – 18:00" },
-  { day: "Zaterdag", hours: "09:00 – 16:00" },
+  { day: "Dinsdag", hours: "09:00-18:00" },
+  { day: "Woensdag", hours: "09:00-18:00" },
+  { day: "Donderdag", hours: "09:00-20:00" },
+  { day: "Vrijdag", hours: "09:00-18:00" },
+  { day: "Zaterdag", hours: "09:00-16:00" },
   { day: "Zondag", hours: "Gesloten" },
 ];
 
@@ -147,7 +147,7 @@ export const products: Product[] = [
     benefit: "Voor zacht, glanzend en verzorgd haar.",
     usage: "Aanbrengen op nat haar, masseren, uitspoelen en herhalen indien nodig.",
     hairType: "Droog en beschadigd haar",
-    ingredients: "Keratine, arganolie, vitamine E — vrij van sulfaten.",
+    ingredients: "Keratine, arganolie, vitamine E. Vrij van sulfaten.",
     faqs: [
       { q: "Geschikt voor gekleurd haar?", a: "Ja, sulfaatvrij en kleurbeschermend." },
       { q: "Dagelijks te gebruiken?", a: "Ja, mild genoeg voor dagelijks gebruik." },
