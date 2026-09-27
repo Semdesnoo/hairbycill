@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-black/5 bg-offwhite/95 backdrop-blur-sm">
+      <header className="fixed top-0 inset-x-0 z-50 border-b border-black/10 bg-white">
         <div className="mx-auto grid max-w-[1400px] grid-cols-2 items-center px-6 py-4 md:grid-cols-3">
           <nav className="hidden md:flex items-center gap-8">
             {leftLinks.map((link) => (
@@ -26,7 +26,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm tracking-wide ${
-                  pathname === link.href ? "text-gold" : "text-black/70 hover:text-black"
+                  pathname === link.href ? "text-black/40" : "text-black/70 hover:text-black"
                 }`}
               >
                 {link.label}
@@ -49,7 +49,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm tracking-wide ${
-                  pathname === link.href ? "text-gold" : "text-black/70 hover:text-black"
+                  pathname === link.href ? "text-black/40" : "text-black/70 hover:text-black"
                 }`}
               >
                 {link.label}
@@ -57,7 +57,7 @@ export default function Header() {
             ))}
             <Link
               href="/contact"
-              className="rounded-[6px] bg-gold-muted px-5 py-2.5 text-sm tracking-wide text-black hover:bg-gold"
+              className="rounded-[6px] bg-warm-grey px-5 py-2.5 text-sm tracking-wide text-white hover:bg-black"
             >
               Afspraak maken
             </Link>
@@ -74,7 +74,6 @@ export default function Header() {
             <span className={`block h-px w-6 bg-black transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
           </button>
         </div>
-        <div className="h-px bg-gradient-to-r from-transparent via-gold-muted/60 to-transparent" />
       </header>
 
       <MobileMenu open={open} onClose={() => setOpen(false)} />

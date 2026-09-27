@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       {/* HERO — split, beige tone, text left / portrait right */}
-      <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#cbb59c] md:min-h-[640px]">
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-gradient-to-r from-[#c3ac91] via-[#d9c6ab] to-[#f0e4d3] md:min-h-[640px]">
         <div className="relative z-10 grid w-full max-w-[1600px] mx-auto gap-10 px-6 py-20 md:grid-cols-2 md:items-center md:gap-0 md:py-0">
           <div className="max-w-lg">
             <AnimatedHeading
@@ -56,13 +56,16 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="md:absolute md:inset-y-0 md:right-0 md:w-[55%]">
+          <div className="relative md:absolute md:inset-y-0 md:right-0 md:w-[55%]">
             <ImageReveal
               src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop"
               alt="Hair by Cill kapsel"
               className="aspect-[4/5] w-full md:h-full md:aspect-auto"
               sizes="(min-width: 768px) 55vw, 100vw"
             />
+            <span className="pointer-events-none absolute bottom-6 right-6 font-display text-2xl tracking-[0.2em] text-offwhite/80">
+              HBC
+            </span>
           </div>
         </div>
       </section>
