@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import { business, openingHours } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 
 const serif = Cormorant_Garamond({
   variable: "--font-serif",
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     siteName: business.name,
   },
+  icons: { icon: `${BASE_PATH}/logo.jpg` },
 };
 
 const structuredData = {
