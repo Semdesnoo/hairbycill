@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import { business, openingHours } from "@/lib/data";
@@ -11,6 +11,7 @@ const serif = Cormorant_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const sans = Inter({
@@ -56,13 +57,13 @@ const structuredData = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="nl" className={`${serif.variable} ${sans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-bone text-ink">
+      <body className="min-h-full flex flex-col bg-offwhite text-black">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <Navbar />
-        <main className="flex-1 pt-20">{children}</main>
+        <Header />
+        <main className="flex-1">{children}</main>
         <Footer />
         <MobileStickyCta />
       </body>

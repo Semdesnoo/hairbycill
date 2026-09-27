@@ -15,78 +15,55 @@ export default function ContactForm() {
     if (ok) form.reset();
   }
 
+  const fieldClass =
+    "w-full border-b border-black/20 bg-transparent py-3 text-sm outline-none focus:border-gold";
+  const labelClass = "mb-1.5 block text-xs uppercase tracking-widest text-black/50";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="grid gap-8 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-xs uppercase tracking-widest text-ink/50">
+          <label htmlFor="name" className={labelClass}>
             Naam
           </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            className="w-full rounded-[8px] border border-ink/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-champagne"
-          />
+          <input id="name" name="name" type="text" required className={fieldClass} />
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-xs uppercase tracking-widest text-ink/50">
-            E-mailadres
+          <label htmlFor="email" className={labelClass}>
+            E-mail
           </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="w-full rounded-[8px] border border-ink/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-champagne"
-          />
+          <input id="email" name="email" type="email" required className={fieldClass} />
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-8 sm:grid-cols-2">
         <div>
-          <label htmlFor="phone" className="mb-1.5 block text-xs uppercase tracking-widest text-ink/50">
-            Telefoonnummer
+          <label htmlFor="phone" className={labelClass}>
+            Telefoon
           </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            className="w-full rounded-[8px] border border-ink/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-champagne"
-          />
+          <input id="phone" name="phone" type="tel" className={fieldClass} />
         </div>
         <div>
-          <label htmlFor="subject" className="mb-1.5 block text-xs uppercase tracking-widest text-ink/50">
+          <label htmlFor="subject" className={labelClass}>
             Onderwerp
           </label>
-          <input
-            id="subject"
-            name="subject"
-            type="text"
-            className="w-full rounded-[8px] border border-ink/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-champagne"
-          />
+          <input id="subject" name="subject" type="text" className={fieldClass} />
         </div>
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-xs uppercase tracking-widest text-ink/50">
+        <label htmlFor="message" className={labelClass}>
           Bericht
         </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={5}
-          required
-          className="w-full rounded-[8px] border border-ink/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-champagne"
-        />
+        <textarea id="message" name="message" rows={4} required className={fieldClass} />
       </div>
 
       <button
         type="submit"
-        className="w-full rounded-[8px] bg-champagne px-6 py-3.5 text-sm font-medium tracking-wide text-ink transition-colors hover:bg-gold-light sm:w-auto"
+        className="group inline-flex items-center gap-2.5 rounded-[6px] bg-black px-7 py-3.5 text-sm tracking-wide text-offwhite transition-colors hover:bg-soft-black"
       >
-        Verstuur bericht
+        SEND MESSAGE
+        <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
       </button>
 
       {status === "success" && (

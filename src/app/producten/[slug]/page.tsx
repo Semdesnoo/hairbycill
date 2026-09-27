@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import ImageReveal from "@/components/ImageReveal";
 import Reveal from "@/components/Reveal";
-import ProductCard from "@/components/ProductCard";
+import Accordion from "@/components/Accordion";
+import ProductGrid from "@/components/ProductGrid";
 import AddToCart from "./AddToCart";
 import { products } from "@/lib/data";
 
@@ -18,94 +19,65 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
   if (!product) return {};
-  return {
-    title: `${product.name} — ${product.brand}`,
-    description: product.description,
-  };
+  return { title: `${product.name} — ${product.brand}`, description: product.description };
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
 
-  const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
+  const related = products.filter((p) => p.slug !== product.slug).slice(0, 3);
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="grid gap-16 md:grid-cols-2">
-        <Reveal className="relative aspect-square overflow-hidden rounded-[10px] bg-charcoal/5">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(min-width: 768px) 40vw, 90vw"
-            className="object-cover"
-          />
-        </Reveal>
+    <section className="mx-auto max-w-[1400px] px-6 pb-28 pt-32 md:pb-48 md:pt-40">
+      <div className="grid gap-12 lg:grid-cols-[60%_40%] lg:gap-16">
+        <ImageReveal
+          src={product.image}
+          alt={product.name}
+          className="aspect-square w-full bg-ivory"
+          sizes="(min-width: 1024px) 55vw, 100vw"
+          priority
+        />
 
-        <Reveal delay={100}>
-          <p className="text-xs uppercase tracking-[0.25em] text-champagne">{product.brand}</p>
-          <h1 className="mt-2 font-display text-4xl">{product.name}</h1>
-          <p className="mt-2 text-champagne tracking-widest">★★★★★ reviews</p>
+        <Reveal delay={0.15}>
+          <p className="text-xs uppercase tracking-[0.25em] text-gold-muted">{product.brand}</p>
+          <h1 className="mt-2 font-display text-4xl md:text-5xl">{product.name}</h1>
           <p className="mt-4 text-2xl">{product.price}</p>
-          <p className="mt-2 text-sm text-ink/50">{product.volume}</p>
-          <p className="mt-6 font-display text-xl text-ink/80">“{product.benefit}”</p>
-          <p className="mt-4 text-ink/70">{product.description}</p>
+          <p className="mt-1 text-sm text-black/50">{product.volume}</p>
+          <p className="mt-6 text-black/70">{product.description}</p>
 
-          <div className="mt-8">
+          <dl className="mt-8 space-y-3 text-sm">
+            <div>
+              <dt className="text-black/50">Geschikt voor</dt>
+              <dd>{product.hairType}</dd>
+            </div>
+            <div>
+              <dt className="text-black/50">Resultaat</dt>
+              <dd>{product.benefit}</dd>
+            </div>
+          </dl>
+
+          <div className="mt-10">
             <AddToCart />
           </div>
 
-          <ul className="mt-8 space-y-2 text-sm text-ink/70">
-            <li>✓ Professionele salonkwaliteit</li>
-            <li>✓ Geselecteerd door Hair by Cill</li>
-            <li>✓ Geschikt voor thuisgebruik</li>
-          </ul>
+          <div className="mt-14">
+            <Accordion
+              items={[
+                { title: "Product details", content: product.description },
+                { title: "How to use", content: product.usage },
+                { title: "Ingredients", content: product.ingredients },
+                { title: "Hair type", content: product.hairType },
+              ]}
+            />
+          </div>
         </Reveal>
       </div>
 
-      <div className="mx-auto mt-24 max-w-3xl divide-y divide-ink/10">
-        <div className="py-8">
-          <h2 className="font-display text-2xl">Over dit product</h2>
-          <p className="mt-3 text-ink/70">{product.description}</p>
-        </div>
-        <div className="py-8">
-          <h2 className="font-display text-2xl">Gebruik</h2>
-          <p className="mt-3 text-ink/70">{product.usage}</p>
-        </div>
-        <div className="py-8">
-          <h2 className="font-display text-2xl">Voor welk haartype?</h2>
-          <p className="mt-3 text-ink/70">{product.hairType}</p>
-        </div>
-        <div className="py-8">
-          <h2 className="font-display text-2xl">Ingrediënten</h2>
-          <p className="mt-3 text-ink/70">{product.ingredients}</p>
-        </div>
-        <div className="py-8">
-          <h2 className="font-display text-2xl">Veelgestelde vragen</h2>
-          <div className="mt-3 space-y-4">
-            {product.faqs.map((f) => (
-              <div key={f.q}>
-                <p className="font-medium text-ink">{f.q}</p>
-                <p className="mt-1 text-ink/70">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-24">
-        <h2 className="mb-10 text-center font-display text-3xl">Gerelateerde producten</h2>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-          {related.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
-        </div>
+      <div className="mt-28 md:mt-40">
+        <h2 className="mb-12 font-display text-3xl md:text-4xl">You may also like</h2>
+        <ProductGrid products={related} />
       </div>
     </section>
   );

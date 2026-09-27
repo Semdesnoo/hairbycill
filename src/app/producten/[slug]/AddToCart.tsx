@@ -7,11 +7,11 @@ export default function AddToCart() {
 
   return (
     <div className="flex items-center gap-4">
-      <div className="flex items-center rounded-[8px] border border-ink/15">
+      <div className="flex items-center border border-black/15">
         <button
           aria-label="Aantal verlagen"
           onClick={() => setQty((q) => Math.max(1, q - 1))}
-          className="px-4 py-3 text-ink/60 hover:text-champagne"
+          className="px-4 py-3.5 text-black/50 hover:text-gold-muted"
         >
           −
         </button>
@@ -19,12 +19,12 @@ export default function AddToCart() {
         <button
           aria-label="Aantal verhogen"
           onClick={() => setQty((q) => q + 1)}
-          className="px-4 py-3 text-ink/60 hover:text-champagne"
+          className="px-4 py-3.5 text-black/50 hover:text-gold-muted"
         >
           +
         </button>
       </div>
-      <button className="flex-1 rounded-[8px] bg-champagne px-6 py-3 text-sm font-medium tracking-wide text-ink transition-colors hover:bg-gold-light">
+      <button className="flex-1 rounded-[6px] bg-black px-6 py-3.5 text-sm tracking-widest text-offwhite transition-colors hover:bg-soft-black">
         IN WINKELMAND
       </button>
     </div>

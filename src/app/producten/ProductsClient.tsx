@@ -1,48 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import ProductCard from "@/components/ProductCard";
-import Reveal from "@/components/Reveal";
+import ProductGrid from "@/components/ProductGrid";
 import { products, Product } from "@/lib/data";
 
-const categories: (Product["category"] | "Alles")[] = [
-  "Alles",
-  "Shampoo",
-  "Conditioner",
-  "Maskers",
-  "Styling",
-  "Treatments",
-];
+const categories: (Product["category"] | "ALL")[] = ["ALL", "Shampoo", "Conditioner", "Treatment", "Styling"];
 
 export default function ProductsClient() {
-  const [active, setActive] = useState<(typeof categories)[number]>("Alles");
-  const filtered = active === "Alles" ? products : products.filter((p) => p.category === active);
+  const [active, setActive] = useState<(typeof categories)[number]>("ALL");
+  const filtered = active === "ALL" ? products : products.filter((p) => p.category === active);
 
   return (
     <>
-      <div className="mb-12 flex flex-wrap justify-center gap-3">
+      <div className="mb-16 flex flex-wrap gap-x-8 gap-y-3 border-b border-black/10 pb-8">
         {categories.map((c) => (
           <button
             key={c}
             onClick={() => setActive(c)}
-            className={`rounded-[8px] border px-4 py-2 text-sm transition-colors ${
-              active === c
-                ? "border-champagne bg-champagne text-ink"
-                : "border-ink/15 text-ink/70 hover:border-champagne hover:text-champagne"
+            className={`text-sm tracking-widest transition-colors ${
+              active === c ? "text-gold-muted" : "text-black/50 hover:text-black"
             }`}
           >
-            {c}
+            {c.toUpperCase()}
           </button>
         ))}
       </div>
-
-      <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-        {filtered.map((p, i) => (
-          <Reveal key={p.slug} delay={(i % 4) * 80}>
-            <ProductCard product={p} />
-          </Reveal>
-        ))}
-      </div>
+      <ProductGrid products={filtered} />
     </>
   );
 }

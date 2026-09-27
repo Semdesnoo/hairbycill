@@ -3,9 +3,9 @@
 
 export const business = {
   name: "Hair by Cill",
-  tagline: "Luxury hair, made personal.",
+  tagline: "Hair that feels like you.",
   phone: "+31 6 12 34 56 78",
-  phoneHref: "tel:+31612345678",
+  phoneHref: "tel:+316****5678",
   whatsappHref: "https://wa.me/31612345678",
   email: "info@hairbycill.nl",
   address: "Kerkstraat 12, 1234 AB Voorbeeldstad",
@@ -54,11 +54,11 @@ export const priceList: PriceCategory[] = [
     ],
   },
   {
-    title: "Highlights",
+    title: "Balayage & Highlights",
     items: [
+      { name: "Balayage", price: "vanaf € 120,00" },
       { name: "Highlights gedeeltelijk", price: "vanaf € 65,00" },
       { name: "Highlights volledig", price: "vanaf € 95,00" },
-      { name: "Balayage", price: "vanaf € 120,00" },
     ],
   },
   {
@@ -87,28 +87,35 @@ export const treatments: Treatment[] = [
     name: "Knippen",
     description: "Een precisiecoupe afgestemd op jouw gezicht en haarstructuur.",
     image:
-      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1400&auto=format&fit=crop",
   },
   {
     slug: "kleuren",
     name: "Kleuren",
     description: "Diepe, egale kleur of een subtiele verfrissing van je uitgroei.",
     image:
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1400&auto=format&fit=crop",
   },
   {
     slug: "balayage",
-    name: "Highlights / Balayage",
+    name: "Balayage",
     description: "Handgeschilderde highlights voor een natuurlijk, zonnig effect.",
     image:
-      "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1400&auto=format&fit=crop",
+  },
+  {
+    slug: "highlights",
+    name: "Highlights",
+    description: "Dimensie en glans met precisie geplaatste highlights.",
+    image:
+      "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop",
   },
   {
     slug: "styling",
     name: "Styling",
     description: "Föhnen, krullen of een look voor die speciale gelegenheid.",
     image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1400&auto=format&fit=crop",
   },
 ];
 
@@ -118,7 +125,7 @@ export type Product = {
   name: string;
   price: string;
   volume: string;
-  category: "Shampoo" | "Conditioner" | "Maskers" | "Styling" | "Treatments";
+  category: "Shampoo" | "Conditioner" | "Treatment" | "Styling";
   description: string;
   benefit: string;
   usage: string;
@@ -146,7 +153,7 @@ export const products: Product[] = [
       { q: "Dagelijks te gebruiken?", a: "Ja, mild genoeg voor dagelijks gebruik." },
     ],
     image:
-      "https://images.unsplash.com/photo-1585232351009-aa87416fca90?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1585232351009-aa87416fca90?q=80&w=1200&auto=format&fit=crop",
   },
   {
     slug: "hydrate-conditioner",
@@ -162,7 +169,7 @@ export const products: Product[] = [
     ingredients: "Kokosolie, aloë vera, panthenol.",
     faqs: [{ q: "Maakt het plat haar?", a: "Nee, lichte formule zonder verzwaring." }],
     image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200&auto=format&fit=crop",
   },
   {
     slug: "repair-mask",
@@ -170,7 +177,7 @@ export const products: Product[] = [
     name: "No.8 Bond Intense Mask",
     price: "€34,95",
     volume: "100 ml",
-    category: "Maskers",
+    category: "Treatment",
     description: "Intensief herstellend masker dat glans en veerkracht teruggeeft.",
     benefit: "Voor direct zichtbaar herstel en glans.",
     usage: "1x per week aanbrengen op handdoekdroog haar, 10 minuten laten intrekken.",
@@ -178,7 +185,7 @@ export const products: Product[] = [
     ingredients: "Bond-building complex, zonnebloemzaadolie.",
     faqs: [{ q: "Kan het samen met kleurbehandeling?", a: "Ja, juist aanbevolen na kleuren." }],
     image:
-      "https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=1200&auto=format&fit=crop",
   },
   {
     slug: "heat-protect-spray",
@@ -194,29 +201,36 @@ export const products: Product[] = [
     ingredients: "Siliconen-complex, UV-filters.",
     faqs: [{ q: "Laat het haar vet aanvoelen?", a: "Nee, lichte spray-formule." }],
     image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
-export const reviews = [
+export type Review = { name: string; treatment: string; text: string };
+
+export const reviews: Review[] = [
   {
     name: "Sanne V.",
-    text: "Super blij met mijn haar. Er wordt echt naar je geluisterd en er wordt uitgebreid de tijd genomen.",
+    treatment: "Balayage",
+    text: "Ik ben iedere keer weer ontzettend blij met mijn haar. Er wordt echt naar je geluisterd en er wordt uitgebreid de tijd genomen.",
   },
   {
     name: "Fleur D.",
+    treatment: "Knippen & kleuren",
     text: "Eindelijk een salon die precies begrijpt wat ik bedoel. Het resultaat overtreft elke keer mijn verwachting.",
   },
   {
     name: "Mila K.",
+    treatment: "Highlights",
     text: "Professioneel, warm en oprecht persoonlijk advies. Ik kom voor geen enkele andere kapper meer.",
   },
 ];
 
-export const galleryImages = [
-  "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1554519515-242161756769?q=80&w=900&auto=format&fit=crop",
+// aspect: gebruikt door de editorial portfolio-grid voor variatie in beeldverhouding.
+export const galleryImages: { src: string; aspect: "portrait" | "square" | "landscape" }[] = [
+  { src: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
+  { src: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
+  { src: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
+  { src: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
+  { src: "https://images.unsplash.com/photo-1554519515-242161756769?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
+  { src: "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
 ];
