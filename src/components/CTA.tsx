@@ -6,7 +6,7 @@ export default function CTA({
   lines,
   image,
   ctaLabel = "AFSPRAAK MAKEN",
-  ctaHref = "/contact",
+  ctaHref = "/afspraak",
 }: {
   lines: string[];
   image: string;

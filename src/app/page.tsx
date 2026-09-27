@@ -45,7 +45,7 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.7, ease }}
               className="mt-10 flex flex-wrap items-center gap-8"
             >
-              <Button href="/contact" variant="primary" className="!bg-black !text-offwhite hover:!bg-soft-black">
+              <Button href="/afspraak" variant="primary" className="!bg-black !text-offwhite hover:!bg-soft-black">
                 AFSPRAAK MAKEN
               </Button>
               <Link href="/over-ons" className="group inline-flex items-center gap-2 text-sm tracking-widest text-offwhite/90">

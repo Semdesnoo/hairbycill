@@ -42,7 +42,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             className="flex flex-col gap-4"
           >
             <Link
-              href="/contact"
+              href="/afspraak"
               onClick={onClose}
               className="rounded-[6px] bg-gold px-6 py-3.5 text-center text-sm tracking-wide text-black"
             >

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
+import CancelBooking from "./CancelBooking";
 import { business, openingHours } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -63,6 +64,13 @@ export default function ContactPage() {
             <ContactForm />
           </Reveal>
         </div>
+
+        <Reveal delay={0.2} className="mt-24 max-w-xl border-t border-black/10 pt-12">
+          <h2 className="mb-6 text-xs uppercase tracking-[0.25em] text-gold-muted">
+            Afspraak annuleren
+          </h2>
+          <CancelBooking />
+        </Reveal>
       </section>
 
       <section className="px-6 pb-28 md:pb-40">

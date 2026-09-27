@@ -56,7 +56,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/afspraak"
               className="rounded-[6px] bg-warm-grey px-5 py-2.5 text-sm tracking-wide text-white hover:bg-black"
             >
               Afspraak maken

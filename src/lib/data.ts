@@ -27,6 +27,7 @@ export const openingHours = [
 
 export const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/afspraak", label: "Afspraak" },
   { href: "/prijslijst", label: "Prijslijst" },
   { href: "/producten", label: "Producten" },
   { href: "/over-ons", label: "Over ons" },
@@ -35,6 +36,32 @@ export const navLinks = [
 
 export type PriceItem = { name: string; price: string };
 export type PriceCategory = { title: string; items: PriceItem[] };
+
+export type Stylist = { slug: string; name: string; role: string; image: string };
+
+export const stylists: Stylist[] = [
+  {
+    slug: "cill",
+    name: "Cill",
+    role: "Eigenaar & senior stylist",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    slug: "noor",
+    name: "Noor",
+    role: "Colorist",
+    image:
+      "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    slug: "any",
+    name: "Geen voorkeur",
+    role: "Eerste beschikbare stylist",
+    image:
+      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop",
+  },
+];
 
 export const priceList: PriceCategory[] = [
   {
