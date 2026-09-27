@@ -21,58 +21,49 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export default function Home() {
   return (
     <>
-      {/* HERO — full-screen centered, dominant photography */}
-      <section className="relative flex h-[100svh] min-h-[640px] items-center justify-center overflow-hidden bg-black">
-        <ImageReveal
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
-          alt="Hair by Cill"
-          className="absolute inset-0 h-full w-full"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80" />
+      {/* HERO — split, beige tone, text left / portrait right */}
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#cbb59c] md:min-h-[640px]">
+        <div className="relative z-10 grid w-full max-w-[1600px] mx-auto gap-10 px-6 py-20 md:grid-cols-2 md:items-center md:gap-0 md:py-0">
+          <div className="max-w-lg">
+            <AnimatedHeading
+              as="h1"
+              lines={["AANDACHT MAAKT", "HET VERSCHIL."]}
+              className="font-display text-[clamp(2.75rem,6vw,5rem)] leading-[1.05] text-offwhite"
+            />
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease }}
+              className="mt-8 max-w-md text-base text-offwhite/80 md:text-lg"
+            >
+              Jij staat centraal bij {business.name}. Met persoonlijke aandacht, professioneel
+              vakmanschap en passie creëren we haar dat perfect aansluit bij wie jij bent.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.7, ease }}
+              className="mt-10 flex flex-wrap items-center gap-8"
+            >
+              <Button href="/contact" variant="primary" className="!bg-black !text-offwhite hover:!bg-soft-black">
+                AFSPRAAK MAKEN
+              </Button>
+              <Link href="/over-ons" className="group inline-flex items-center gap-2 text-sm tracking-widest text-offwhite/90">
+                <span className="border-b border-offwhite/40 pb-0.5 group-hover:border-offwhite">
+                  ONTDEK HAIR BY CILL
+                </span>
+              </Link>
+            </motion.div>
+          </div>
 
-        <div className="relative z-10 px-6 text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease }}
-            className="mb-6 text-xs tracking-[0.4em] text-gold"
-          >
-            HAAR • BEAUTY • ZELFVERTROUWEN
-          </motion.p>
-
-          <AnimatedHeading
-            as="h1"
-            delay={0.25}
-            lines={["BEAUTIFUL HAIR", "STARTS WITH YOU."]}
-            className="mx-auto font-display text-[clamp(3rem,9vw,8rem)] leading-[0.98] text-offwhite"
-          />
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.65, ease }}
-            className="mx-auto mt-8 max-w-md text-base text-offwhite/70 md:text-lg"
-          >
-            Hair by Cill creëert kapsels die passen bij jouw haar, uitstraling en persoonlijke
-            stijl.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8, ease }}
-            className="mt-10 flex flex-wrap items-center justify-center gap-8"
-          >
-            <Button href="/contact" variant="primary" className="!bg-gold !text-black hover:!bg-gold-muted">
-              AFSPRAAK MAKEN
-            </Button>
-            <Link href="/over-ons" className="group inline-flex items-center gap-2 text-sm tracking-widest text-offwhite/80">
-              <span className="border-b border-offwhite/30 pb-0.5 group-hover:border-gold group-hover:text-gold">
-                ONTDEK HAIR BY CILL
-              </span>
-            </Link>
-          </motion.div>
+          <div className="md:absolute md:inset-y-0 md:right-0 md:w-[55%]">
+            <ImageReveal
+              src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop"
+              alt="Hair by Cill kapsel"
+              className="aspect-[4/5] w-full md:h-full md:aspect-auto"
+              sizes="(min-width: 768px) 55vw, 100vw"
+            />
+          </div>
         </div>
       </section>
 
