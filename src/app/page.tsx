@@ -1,69 +1,193 @@
 import Image from "next/image";
+import Button from "@/components/Button";
+import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
+import TreatmentCard from "@/components/TreatmentCard";
+import ProductCard from "@/components/ProductCard";
+import ReviewSlider from "@/components/ReviewSlider";
+import Gallery from "@/components/Gallery";
+import CtaSection from "@/components/CtaSection";
+import { treatments, products, galleryImages } from "@/lib/data";
 
 export default function Home() {
+  const featuredProducts = products.slice(0, 4);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <>
+      {/* HERO */}
+      <section className="relative -mt-20 flex h-[100svh] min-h-[640px] items-center justify-center overflow-hidden">
         <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
+          alt="Hair by Cill salon"
+          fill
           priority
+          sizes="100vw"
+          className="object-cover"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/50 to-ink/80" />
+        <div className="relative z-10 px-6 text-center">
+          <Reveal>
+            <p className="mb-4 text-xs tracking-[0.35em] text-champagne">
+              HAIR • BEAUTY • CONFIDENCE
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h1 className="font-display text-5xl leading-tight text-bone sm:text-6xl md:text-7xl">
+              HAIR BY CILL
+            </h1>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="mt-4 font-display text-2xl text-champagne md:text-3xl">
+              Luxury hair, made personal.
+            </p>
+          </Reveal>
+          <Reveal delay={300}>
+            <p className="mx-auto mt-6 max-w-md text-sm text-bone/70">
+              Professionele haarbehandelingen met persoonlijke aandacht voor jouw haar, stijl en
+              uitstraling.
+            </p>
+          </Reveal>
+          <Reveal delay={400} className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button href="/contact">Afspraak maken</Button>
+            <Button href="/prijslijst" variant="secondary">
+              Bekijk prijslijst
+            </Button>
+          </Reveal>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+      </section>
+
+      {/* INTRODUCTIE */}
+      <section className="mx-auto max-w-7xl px-6 py-28">
+        <div className="grid gap-12 md:grid-cols-2 md:items-center">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Welkom bij Hair by Cill"
+              title="Jouw haar verdient persoonlijke aandacht."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <p className="mt-6 text-ink/70">
+              Bij Hair by Cill draait het niet alleen om een nieuwe coupe. Samen kijken we naar
+              wat past bij jouw haar, gezicht en persoonlijke stijl.
+            </p>
+            <p className="mt-4 text-ink/70">
+              Met professionele producten, aandacht en passie creëren we een resultaat waar jij je
+              goed bij voelt.
+            </p>
+            <Button href="/over-ons" variant="secondary" className="mt-8 !text-ink !border-ink/20 hover:!border-champagne hover:!text-champagne">
+              Ontdek Hair by Cill
+            </Button>
+          </Reveal>
+          <Reveal delay={150} className="relative aspect-[4/5] overflow-hidden rounded-[10px]">
+            <Image
+              src="https://images.unsplash.com/photo-1522336572468-97b06e8ef143?q=80&w=1200&auto=format&fit=crop"
+              alt="Hair by Cill styling"
+              fill
+              sizes="(min-width: 768px) 40vw, 90vw"
+              className="object-cover"
+            />
+          </Reveal>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* POPULAIRE BEHANDELINGEN */}
+      <section className="bg-bone px-6 py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Behandelingen"
+              title="Populaire behandelingen"
+              align="center"
+            />
+          </Reveal>
+          <div className="mt-16 grid grid-cols-2 gap-8 md:grid-cols-4">
+            {treatments.map((t, i) => (
+              <Reveal key={t.slug} delay={i * 100}>
+                <TreatmentCard treatment={t} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LUXURY EXPERIENCE */}
+      <section className="bg-ink px-6 py-28 text-bone">
+        <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-2 md:items-center">
+          <Reveal className="relative aspect-[4/5] overflow-hidden rounded-[10px]">
+            <Image
+              src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop"
+              alt="Hair by Cill experience"
+              fill
+              sizes="(min-width: 768px) 40vw, 90vw"
+              className="object-cover"
+            />
+          </Reveal>
+          <Reveal delay={150}>
+            <SectionHeading eyebrow="De ervaring" title="Meer dan alleen een kapsalon." dark />
+            <div className="mt-10 grid grid-cols-2 gap-8">
+              {[
+                ["01", "Persoonlijk advies"],
+                ["02", "Professionele producten"],
+                ["03", "Aandacht voor detail"],
+                ["04", "Een resultaat dat bij jou past"],
+              ].map(([num, label]) => (
+                <div key={num}>
+                  <p className="font-display text-3xl text-champagne">{num}</p>
+                  <p className="mt-2 text-sm text-bone/70">{label}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* PRODUCTEN PREVIEW */}
+      <section className="mx-auto max-w-7xl px-6 py-28">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Haircare"
+            title="Professional haircare at home"
+            subtitle="Verleng het salonresultaat met onze zorgvuldig geselecteerde haarproducten."
+            align="center"
+          />
+        </Reveal>
+        <div className="mt-16 grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
+          {featuredProducts.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 100}>
+              <ProductCard product={p} />
+            </Reveal>
+          ))}
+        </div>
+        <div className="mt-16 text-center">
+          <Button href="/producten" variant="secondary" className="!text-ink !border-ink/20 hover:!border-champagne hover:!text-champagne">
+            Bekijk alle producten
+          </Button>
+        </div>
+      </section>
+
+      {/* LOOKBOOK */}
+      <section className="bg-bone px-6 py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeading eyebrow="Lookbook" title="Hair by Cill Results" align="center" />
+          </Reveal>
+          <Reveal delay={150} className="mt-16">
+            <Gallery images={galleryImages} />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+      <section className="bg-ink px-6 py-28">
+        <Reveal>
+          <ReviewSlider />
+        </Reveal>
+      </section>
+
+      {/* AFSPRAAK CTA */}
+      <CtaSection
+        title="Ready for your next hair moment?"
+        subtitle="Plan jouw afspraak bij Hair by Cill."
+        image="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1920&auto=format&fit=crop"
+      />
+    </>
   );
 }
