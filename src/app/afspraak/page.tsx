@@ -1,24 +1,21 @@
 import type { Metadata } from "next";
-import AnimatedHeading from "@/components/AnimatedHeading";
+import PageHero from "@/components/PageHero";
 import BookingWizard from "./BookingWizard";
 
 export const metadata: Metadata = { title: "Afspraak maken" };
 
 export default function AfspraakPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 pb-20 pt-28 md:pb-32 md:pt-36">
-      <AnimatedHeading
-        as="h1"
-        lines={["Maak een", "afspraak"]}
-        className="font-display text-5xl leading-[1.02] md:text-6xl"
+    <>
+      <PageHero
+        title="Maak een"
+        accent="afspraak"
+        intro="Kies je behandeling, stylist en een moment dat jou uitkomt. Annuleren kan tot 12 uur van tevoren via de contactpagina."
+        image="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1920&auto=format&fit=crop"
       />
-      <p className="mt-6 max-w-lg text-black/60">
-        Kies je behandeling, stylist en een moment dat jou uitkomt. Annuleren kan tot 12 uur van
-        tevoren via de contactpagina.
-      </p>
-      <div className="mt-12">
+      <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
         <BookingWizard />
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

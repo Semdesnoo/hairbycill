@@ -29,8 +29,10 @@ export default function AnimatedHeading({
           key={line}
           className="block overflow-hidden"
           initial="hidden"
-          whileInView="shown"
-          viewport={{ once: true, margin: "-10%" }}
+          // h1 sits above the fold: play on mount instead of waiting for an in-view event.
+          {...(Tag === "h1"
+            ? { animate: "shown" }
+            : { whileInView: "shown", viewport: { once: true, margin: "-10%" } })}
         >
           <motion.span
             className="block"

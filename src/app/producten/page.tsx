@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import AnimatedHeading from "@/components/AnimatedHeading";
+import PageHero from "@/components/PageHero";
 import ProductsClient from "./ProductsClient";
 
 export const metadata: Metadata = {
   title: "Producten",
-  description: "Professional haircare. Shop de haarproducten van Hair by Cill.",
+  description: "Professionele haarverzorging. Shop de haarproducten van Hair by Cill.",
 };
 
 export default function ProductenPage() {
   return (
-    <section className="mx-auto max-w-[1400px] px-6 pb-28 pt-40 md:pb-48 md:pt-52">
-      <AnimatedHeading
-        as="h1"
-        lines={["PROFESSIONAL", "HAIRCARE."]}
-        className="mb-16 font-display text-5xl leading-[1.02] md:text-7xl"
+    <>
+      <PageHero
+        title="Verzorging voor"
+        accent="thuis"
+        intro="Dezelfde professionele producten die we in de salon gebruiken, zodat je resultaat langer mooi blijft."
+        image="https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=1920&auto=format&fit=crop"
       />
-      <ProductsClient />
-    </section>
+      <section className="mx-auto max-w-[1300px] px-6 py-20 md:py-28">
+        <ProductsClient />
+      </section>
+    </>
   );
 }

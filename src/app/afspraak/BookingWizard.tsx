@@ -37,7 +37,7 @@ export default function BookingWizard() {
 
   if (confirmed) {
     return (
-      <div className="rounded-lg border border-black/10 bg-white p-8 text-center">
+      <div className="rounded-2xl bg-ivory/60 p-8 text-center">
         <h2 className="font-display text-3xl">Afspraak bevestigd</h2>
         <p className="mt-3 text-black/60">
           {dateLabel(confirmed.date)} om {confirmed.time}. Bewaar dit boekingsnummer om te annuleren:
@@ -49,17 +49,17 @@ export default function BookingWizard() {
   }
 
   return (
-    <div className="rounded-lg border border-black/10 bg-white p-6 md:p-10">
+    <div className="rounded-2xl bg-ivory/60 p-6 md:p-10">
       {/* Step 1: treatment */}
       <fieldset className="mb-8">
-        <legend className="mb-3 text-sm uppercase tracking-widest text-black/50">1. Behandeling</legend>
+        <legend className="mb-3 text-lg text-black">1. Behandeling</legend>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
           {treatments.map((t) => (
             <button
               key={t.slug}
               type="button"
               onClick={() => setTreatment(t.slug)}
-              className={`rounded-md border px-4 py-3 text-left text-sm ${
+              className={`rounded-xl border px-4 py-3 text-left text-sm ${
                 treatment === t.slug ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
               }`}
             >
@@ -71,14 +71,14 @@ export default function BookingWizard() {
 
       {/* Step 2: stylist */}
       <fieldset className="mb-8">
-        <legend className="mb-3 text-sm uppercase tracking-widest text-black/50">2. Stylist</legend>
+        <legend className="mb-3 text-lg text-black">2. Stylist</legend>
         <div className="grid grid-cols-3 gap-3">
           {stylists.map((s) => (
             <button
               key={s.slug}
               type="button"
               onClick={() => setStylistSlug(s.slug)}
-              className={`rounded-md border px-4 py-3 text-left text-sm ${
+              className={`rounded-xl border px-4 py-3 text-left text-sm ${
                 stylistSlug === s.slug ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
               }`}
             >
@@ -91,7 +91,7 @@ export default function BookingWizard() {
 
       {/* Step 3: date + time */}
       <fieldset className="mb-8">
-        <legend className="mb-3 text-sm uppercase tracking-widest text-black/50">3. Datum & tijd</legend>
+        <legend className="mb-3 text-lg text-black">3. Datum & tijd</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="date" className="mb-1 block text-sm text-black/60">Datum</label>
@@ -102,7 +102,7 @@ export default function BookingWizard() {
                 setDate(e.target.value);
                 setTime("");
               }}
-              className="w-full rounded-md border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+              className="w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             >
               <option value="" disabled>Kies een datum</option>
               {dates.map((d) => (
@@ -117,7 +117,7 @@ export default function BookingWizard() {
               value={time}
               disabled={!date}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full rounded-md border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none disabled:opacity-40"
+              className="w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none disabled:opacity-40"
             >
               <option value="" disabled>
                 {date ? (slots.length ? "Kies een tijd" : "Geen vrije tijden") : "Kies eerst een datum"}
@@ -132,7 +132,7 @@ export default function BookingWizard() {
 
       {/* Step 4: contact info */}
       <fieldset>
-        <legend className="mb-3 text-sm uppercase tracking-widest text-black/50">4. Jouw gegevens</legend>
+        <legend className="mb-3 text-lg text-black">4. Jouw gegevens</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label htmlFor="name" className="mb-1 block text-sm text-black/60">Naam</label>
@@ -141,7 +141,7 @@ export default function BookingWizard() {
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             />
           </div>
           <div>
@@ -152,7 +152,7 @@ export default function BookingWizard() {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             />
           </div>
           <div>
@@ -162,7 +162,7 @@ export default function BookingWizard() {
               required
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="w-full rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             />
           </div>
           <div>
@@ -171,7 +171,7 @@ export default function BookingWizard() {
               id="notes"
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             />
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function BookingWizard() {
         type="button"
         disabled={!date || !time || !form.name || !form.email || !form.phone}
         onClick={submit}
-        className="mt-8 w-full rounded-md bg-black py-3.5 text-sm tracking-wide text-offwhite disabled:cursor-not-allowed disabled:opacity-30"
+        className="mt-8 w-full rounded-full bg-gold-muted py-3.5 text-sm text-offwhite hover:bg-black disabled:cursor-not-allowed disabled:opacity-30"
       >
         Afspraak bevestigen
       </button>

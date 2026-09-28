@@ -33,7 +33,7 @@ export default function CancelBooking() {
           value={id}
           onChange={(e) => setId(e.target.value)}
           required
-          className="flex-1 rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+          className="flex-1 rounded-full border border-black/15 bg-transparent px-4 py-2.5 text-sm focus:border-black focus:outline-none"
         />
         <input
           placeholder="E-mail"
@@ -41,9 +41,9 @@ export default function CancelBooking() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="flex-1 rounded-md border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
+          className="flex-1 rounded-full border border-black/15 bg-transparent px-4 py-2.5 text-sm focus:border-black focus:outline-none"
         />
-        <button type="submit" className="rounded-md bg-black px-6 py-2.5 text-sm text-offwhite">
+        <button type="submit" className="rounded-full bg-gold-muted px-6 py-2.5 text-sm text-offwhite hover:bg-black">
           Zoeken
         </button>
       </form>
@@ -53,7 +53,7 @@ export default function CancelBooking() {
       )}
 
       {booking && (
-        <div className="mt-4 rounded-md border border-black/10 p-4 text-sm">
+        <div className="mt-4 rounded-2xl bg-ivory/70 p-4 text-sm">
           <p>
             {booking.date} om {booking.time} bij {stylistName(booking.stylistSlug)}
           </p>
@@ -61,7 +61,7 @@ export default function CancelBooking() {
             <button
               type="button"
               onClick={doCancel}
-              className="mt-3 rounded-md bg-black px-5 py-2 text-xs text-offwhite"
+              className="mt-3 rounded-full bg-gold-muted px-5 py-2 text-xs text-offwhite"
             >
               Annuleer deze afspraak
             </button>

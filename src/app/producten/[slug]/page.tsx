@@ -30,19 +30,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 3);
 
   return (
-    <section className="mx-auto max-w-[1400px] px-6 pb-28 pt-32 md:pb-48 md:pt-40">
+    <section className="mx-auto max-w-[1400px] px-6 pb-28 pt-32 md:pb-32 md:pt-40">
       <div className="grid gap-12 lg:grid-cols-[60%_40%] lg:gap-16">
         <ImageReveal
           src={product.image}
           alt={product.name}
-          className="aspect-square w-full bg-ivory"
+          className="aspect-square w-full rounded-2xl bg-ivory"
           sizes="(min-width: 1024px) 55vw, 100vw"
           priority
         />
 
         <Reveal delay={0.15}>
-          <p className="text-xs uppercase tracking-[0.25em] text-gold-muted">{product.brand}</p>
-          <h1 className="mt-2 font-display text-4xl md:text-5xl">{product.name}</h1>
+          <p className="text-xs text-gold-muted">{product.brand}</p>
+          <h1 className="mt-2 text-4xl md:text-5xl">{product.name}</h1>
           <p className="mt-4 text-2xl">{product.price}</p>
           <p className="mt-1 text-sm text-black/50">{product.volume}</p>
           <p className="mt-6 text-black/70">{product.description}</p>
@@ -65,10 +65,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mt-14">
             <Accordion
               items={[
-                { title: "Product details", content: product.description },
-                { title: "How to use", content: product.usage },
-                { title: "Ingredients", content: product.ingredients },
-                { title: "Hair type", content: product.hairType },
+                { title: "Productdetails", content: product.description },
+                { title: "Gebruik", content: product.usage },
+                { title: "Ingrediënten", content: product.ingredients },
+                { title: "Haartype", content: product.hairType },
               ]}
             />
           </div>
@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div className="mt-28 md:mt-40">
-        <h2 className="mb-12 font-display text-3xl md:text-4xl">You may also like</h2>
+        <h2 className="mb-12 text-3xl md:text-4xl">Misschien ook <span className="accent text-gold-muted">iets voor jou</span></h2>
         <ProductGrid products={related} />
       </div>
     </section>

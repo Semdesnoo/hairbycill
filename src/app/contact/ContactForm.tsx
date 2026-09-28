@@ -17,7 +17,7 @@ export default function ContactForm() {
 
   const fieldClass =
     "w-full border-b border-black/20 bg-transparent py-3 text-sm outline-none focus:border-gold";
-  const labelClass = "mb-1.5 block text-xs uppercase tracking-widest text-black/50";
+  const labelClass = "mb-1.5 block text-xs text-black/50";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
@@ -60,9 +60,9 @@ export default function ContactForm() {
 
       <button
         type="submit"
-        className="group inline-flex items-center gap-2.5 rounded-[6px] bg-black px-7 py-3.5 text-sm tracking-wide text-offwhite transition-colors hover:bg-soft-black"
+        className="group inline-flex items-center gap-2.5 rounded-full bg-gold-muted px-7 py-3 text-sm text-offwhite transition-colors hover:bg-black"
       >
-        SEND MESSAGE
+        Verstuur bericht
         <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
       </button>
 
@@ -72,7 +72,7 @@ export default function ContactForm() {
         </p>
       )}
       {status === "error" && (
-        <p className="text-sm text-red-700">Vul alstublieft alle verplichte velden in.</p>
+        <p className="text-sm text-red-700">Vul alle verplichte velden in.</p>
       )}
     </form>
   );

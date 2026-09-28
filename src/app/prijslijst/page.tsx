@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import AnimatedHeading from "@/components/AnimatedHeading";
+import Button from "@/components/Button";
+import CTA from "@/components/CTA";
+import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
-import Reveal from "@/components/Reveal";
 import { priceList } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -14,38 +14,36 @@ export const metadata: Metadata = {
 export default function PrijslijstPage() {
   return (
     <>
-      <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-40 md:pt-52">
-        <AnimatedHeading
-          as="h1"
-          lines={["BEAUTIFUL HAIR", "STARTS HERE."]}
-          className="font-display text-5xl leading-[1.02] md:text-7xl"
-        />
-      </section>
+      <PageHero
+        title="Onze"
+        accent="prijslijst"
+        intro="Eerlijke prijzen, geen verrassingen. Twijfel je welke behandeling bij je past? We denken graag met je mee."
+        image="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
+      />
 
-      <section className="mx-auto max-w-2xl px-6 pb-28 md:pb-48">
+      <section className="mx-auto grid max-w-6xl gap-5 px-6 py-20 md:grid-cols-2 md:py-28">
         {priceList.map((category, i) => (
           <PriceList key={category.title} category={category} index={i} />
         ))}
-
-        <Reveal className="border-t border-black/15 pt-16 text-center">
-          <h2 className="font-display text-3xl">Not sure what you need?</h2>
-          <p className="mt-3 text-black/60">Wij denken graag met je mee.</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-8">
-            <Link href="/contact" className="group inline-flex items-center gap-2 text-sm">
-              <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
-                CONTACT OPNEMEN
-              </span>
-              <span className="transition-transform group-hover:translate-x-1.5">→</span>
-            </Link>
-            <Link href="/afspraak" className="group inline-flex items-center gap-2 text-sm">
-              <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
-                Afspraak maken
-              </span>
-              <span className="transition-transform group-hover:translate-x-1.5">→</span>
-            </Link>
+        <div className="flex flex-col justify-center rounded-2xl border border-black/10 p-6 md:p-8">
+          <h2 className="text-2xl md:text-3xl">
+            Niet zeker wat <span className="accent text-gold-muted">je nodig hebt?</span>
+          </h2>
+          <p className="mt-3 text-sm text-black/60">
+            Plan een gratis adviesmoment of stel je vraag. We kijken samen naar je haar en wensen.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button href="/afspraak">Afspraak maken</Button>
+            <Button href="/contact" variant="ghost">Contact</Button>
           </div>
-        </Reveal>
+        </div>
       </section>
+
+      <CTA
+        title="Klaar voor"
+        accent="jouw moment?"
+        image="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1600&auto=format&fit=crop"
+      />
     </>
   );
 }

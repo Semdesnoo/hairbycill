@@ -14,7 +14,7 @@ export default function Logo({ dark = false, className = "" }: { dark?: boolean;
         priority
       />
       <span
-        className={`font-display leading-none text-base text-lg hidden sm:block ${
+        className={`font-display leading-none text-lg hidden sm:block ${
           dark ? "text-offwhite" : "text-black"
         }`}
       >

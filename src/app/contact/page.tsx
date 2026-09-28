@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AnimatedHeading from "@/components/AnimatedHeading";
+import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
 import CancelBooking from "./CancelBooking";
@@ -13,74 +13,72 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-40 md:pt-52">
-        <AnimatedHeading
-          as="h1"
-          lines={["LET'S TALK", "ABOUT YOUR HAIR."]}
-          className="font-display text-5xl leading-[1.02] md:text-7xl"
-        />
-      </section>
+      <PageHero
+        title="Laten we"
+        accent="kennismaken"
+        intro="Een vraag, een idee of gewoon even overleggen? Bel, mail of laat een bericht achter."
+        image="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1920&auto=format&fit=crop"
+      />
 
-      <section className="mx-auto max-w-[1400px] px-6 pb-28 md:pb-48">
-        <div className="grid gap-16 lg:grid-cols-2">
-          <Reveal>
-            <div className="mb-16">
-              <h2 className="mb-6 text-xs uppercase tracking-[0.25em] text-gold-muted">Contact</h2>
-              <dl className="space-y-4 text-lg">
-                <div>
-                  <dd>{business.address}</dd>
-                </div>
-                <div>
-                  <dd>{business.phone}</dd>
-                </div>
-                <div>
-                  <dd>{business.email}</dd>
-                </div>
-                <div>
-                  <dd>@hairbycill</dd>
-                </div>
-              </dl>
-            </div>
-
-            <div>
-              <h2 className="mb-6 text-xs uppercase tracking-[0.25em] text-gold-muted">
-                Opening Hours
-              </h2>
-              <ul className="space-y-2 text-lg">
-                {openingHours.map((o) => (
-                  <li key={o.day} className="flex justify-between border-b border-black/10 py-2">
-                    <span>{o.day}</span>
-                    <span className="text-black/50">{o.hours}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <h2 className="mb-8 text-xs uppercase tracking-[0.25em] text-gold-muted">
-              Contactformulier
+      <section className="mx-auto grid max-w-6xl gap-5 px-6 py-20 md:py-28 lg:grid-cols-[2fr_3fr]">
+        <Reveal className="space-y-5">
+          <div className="rounded-2xl bg-black p-7 text-offwhite">
+            <h2 className="text-2xl">
+              Kom <span className="accent text-gold">langs</span>
             </h2>
-            <ContactForm />
-          </Reveal>
-        </div>
+            <ul className="mt-6 space-y-3 text-sm text-offwhite/75">
+              <li className="border-b border-offwhite/15 pb-3">{business.address}</li>
+              <li className="border-b border-offwhite/15 pb-3">
+                <a href={business.phoneHref} className="hover:text-gold">{business.phone}</a>
+              </li>
+              <li className="border-b border-offwhite/15 pb-3">
+                <a href={`mailto:${business.email}`} className="hover:text-gold">{business.email}</a>
+              </li>
+              <li>
+                <a href={business.instagram} className="hover:text-gold">@hairbycill</a>
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-2xl bg-ivory/70 p-7">
+            <h2 className="text-2xl">
+              Opening<span className="accent text-gold-muted">stijden</span>
+            </h2>
+            <ul className="mt-5 text-sm">
+              {openingHours.map((o) => (
+                <li key={o.day} className="flex justify-between border-t border-black/10 py-2.5">
+                  <span>{o.day}</span>
+                  <span className={o.hours === "Gesloten" ? "text-black/40" : "text-gold-muted"}>{o.hours}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
 
-        <Reveal delay={0.2} className="mt-24 max-w-xl border-t border-black/10 pt-12">
-          <h2 className="mb-6 text-xs uppercase tracking-[0.25em] text-gold-muted">
-            Afspraak annuleren
+        <Reveal delay={0.1} className="rounded-2xl border border-black/10 p-7 md:p-10">
+          <h2 className="text-3xl">
+            Stuur ons een <span className="accent text-gold-muted">bericht</span>
           </h2>
-          <CancelBooking />
+          <div className="mt-8">
+            <ContactForm />
+          </div>
+          <div className="mt-14 border-t border-black/10 pt-10">
+            <h2 className="text-2xl">
+              Afspraak <span className="accent text-gold-muted">annuleren</span>
+            </h2>
+            <p className="mb-5 mt-2 text-xs text-black/55">Vul je boekingsnummer en e-mailadres in.</p>
+            <CancelBooking />
+          </div>
         </Reveal>
       </section>
 
-      <section className="px-6 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1400px] overflow-hidden">
+      <section className="px-4 pb-20 md:px-14">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-3xl">
           <iframe
             src={business.mapsEmbedSrc}
             width="100%"
-            height="480"
+            height="420"
             loading="lazy"
-            className="border-0 grayscale"
+            className="border-0 sepia-[.35]"
             title="Hair by Cill op de kaart"
           />
         </div>

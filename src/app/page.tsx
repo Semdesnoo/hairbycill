@@ -96,9 +96,7 @@ export default function Home() {
     teamRef.current?.scrollBy({ left: dir * teamRef.current.clientWidth * 0.8, behavior: "smooth" });
 
   return (
-    <div className="bg-black px-0 md:px-6 md:pt-6">
-      {/* Framed page: rounded cream sheet on espresso, like the reference */}
-      <div className="mx-auto max-w-[1440px] overflow-hidden bg-offwhite md:rounded-t-[2rem]">
+    <>
         {/* HERO */}
         <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black md:min-h-[760px]">
           <video
@@ -461,7 +459,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </div>
-    </div>
+    </>
   );
 }

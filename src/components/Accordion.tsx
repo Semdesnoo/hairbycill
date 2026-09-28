@@ -15,7 +15,7 @@ export default function Accordion({ items }: { items: { title: string; content: 
               onClick={() => setOpen(isOpen ? null : i)}
               className="flex w-full items-center justify-between py-5 text-left"
             >
-              <span className="text-sm tracking-widest">{item.title.toUpperCase()}</span>
+              <span className="text-sm">{item.title}</span>
               <span className={`text-lg transition-transform ${isOpen ? "rotate-45" : ""}`}>+</span>
             </button>
             {isOpen && <p className="pb-5 text-sm text-black/60">{item.content}</p>}

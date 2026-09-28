@@ -7,7 +7,7 @@ export default function AddToCart() {
 
   return (
     <div className="flex items-center gap-4">
-      <div className="flex items-center border border-black/15">
+      <div className="flex items-center rounded-full border border-black/15">
         <button
           aria-label="Aantal verlagen"
           onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -24,8 +24,8 @@ export default function AddToCart() {
           +
         </button>
       </div>
-      <button className="flex-1 rounded-[6px] bg-black px-6 py-3.5 text-sm tracking-widest text-offwhite transition-colors hover:bg-soft-black">
-        IN WINKELMAND
+      <button className="flex-1 rounded-full bg-gold-muted px-7 py-3 text-sm text-offwhite transition-colors hover:bg-black">
+        In winkelmand
       </button>
     </div>
   );

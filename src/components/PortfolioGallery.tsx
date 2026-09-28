@@ -22,7 +22,7 @@ export default function PortfolioGallery() {
           <ImageReveal
             src={img.src}
             alt="Hair by Cill resultaat"
-            className="h-full w-full"
+            className="h-full w-full rounded-2xl"
             sizes="(min-width: 768px) 33vw, 50vw"
             delay={(i % 4) * 0.08}
           />
