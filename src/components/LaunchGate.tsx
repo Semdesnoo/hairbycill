@@ -14,7 +14,7 @@ const PREVIEW_KEY = "hbc_preview";
 
 // Web3Forms access key (public by design, it only lets you SEND to the owner's inbox).
 // Get it at https://web3forms.com with the owner's email address; paste it here.
-const WEB3FORMS_KEY = "";
+const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const noop = () => () => {};
