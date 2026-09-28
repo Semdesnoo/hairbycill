@@ -35,7 +35,7 @@ export default function Header() {
       >
         <div
           className={`relative flex items-center justify-between px-5 py-4 transition-colors duration-500 md:px-10 md:py-5 ${
-            scrolled || !hasDarkHero ? "bg-black/55 backdrop-blur-md" : ""
+            !hasDarkHero ? "bg-black" : scrolled ? "bg-black/55 backdrop-blur-md" : ""
           }`}
         >
           <Link href="/" className="flex items-center gap-3">

@@ -35,9 +35,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <div className="grid gap-10 lg:grid-cols-[1fr_minmax(420px,0.95fr)] lg:gap-14">
         {/* Photo: sticky while the details scroll by */}
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <Reveal className="relative aspect-square w-full overflow-hidden rounded-2xl bg-ivory lg:aspect-[4/3.4]">
+          {/* Above the fold: CSS fade on load, NOT whileInView (the observer never fired here and left it at opacity 0) */}
+          <div className="relative aspect-square w-full animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] overflow-hidden rounded-2xl bg-ivory lg:aspect-[4/3.4]">
             <Image src={product.image} alt={product.name} fill priority sizes="(min-width: 1024px) 52vw, 100vw" className="object-cover" />
-          </Reveal>
+          </div>
         </div>
 
         <Reveal delay={0.1}>
