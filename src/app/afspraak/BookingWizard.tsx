@@ -80,40 +80,42 @@ export default function BookingWizard() {
       {/* Step 3: date + time */}
       <fieldset className="mb-8">
         <legend className="mb-3 text-sm uppercase tracking-widest text-black/50">3. Datum & tijd</legend>
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {dates.map((d) => (
-            <button
-              key={d}
-              type="button"
-              onClick={() => {
-                setDate(d);
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="date" className="mb-1 block text-sm text-black/60">Datum</label>
+            <select
+              id="date"
+              value={date}
+              onChange={(e) => {
+                setDate(e.target.value);
                 setTime("");
               }}
-              className={`shrink-0 rounded-md border px-3 py-2 text-xs whitespace-nowrap ${
-                date === d ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
-              }`}
+              className="w-full rounded-md border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none"
             >
-              {dateLabel(d)}
-            </button>
-          ))}
-        </div>
-        {date && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {slots.length === 0 && <p className="text-sm text-black/50">Geen vrije tijden op deze dag.</p>}
-            {slots.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setTime(s)}
-                className={`rounded-md border px-4 py-2 text-sm ${
-                  time === s ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+              <option value="" disabled>Kies een datum</option>
+              {dates.map((d) => (
+                <option key={d} value={d}>{dateLabel(d)}</option>
+              ))}
+            </select>
           </div>
-        )}
+          <div>
+            <label htmlFor="time" className="mb-1 block text-sm text-black/60">Tijd</label>
+            <select
+              id="time"
+              value={time}
+              disabled={!date}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full rounded-md border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none disabled:opacity-40"
+            >
+              <option value="" disabled>
+                {date ? (slots.length ? "Kies een tijd" : "Geen vrije tijden") : "Kies eerst een datum"}
+              </option>
+              {slots.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+        </div>
       </fieldset>
 
       {/* Step 4: contact info */}
