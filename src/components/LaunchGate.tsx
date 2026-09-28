@@ -1,5 +1,6 @@
 "use client";
 
+import HeroVideo from "@/components/HeroVideo";
 import { ReactNode, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { BASE_PATH } from "@/lib/basePath";
@@ -90,15 +91,7 @@ function Waitlist() {
 
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6 py-24 text-offwhite">
-      <video
-        src={`${BASE_PATH}/hero-2.mp4`}
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden
-        className="absolute inset-0 h-full w-full object-cover opacity-45"
-      />
+      <HeroVideo className="absolute inset-0 h-full w-full object-cover opacity-45" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
 
 

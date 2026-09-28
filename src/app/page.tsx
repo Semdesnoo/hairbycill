@@ -1,5 +1,6 @@
 "use client";
 
+import HeroVideo from "@/components/HeroVideo";
 import { useRef, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -73,14 +74,7 @@ export default function Home() {
     <>
         {/* HERO */}
         <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black">
-          <video
-            src={`${BASE_PATH}/hero-2.mp4`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
-          />
+          <HeroVideo className="absolute inset-0 h-full w-full object-cover opacity-70" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/70" />
 
           <div className="relative z-10 px-6 py-32 md:px-14">
