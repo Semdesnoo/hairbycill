@@ -299,11 +299,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+          <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
             {team.map((m, i) => (
               <Reveal key={m.name} delay={i * 0.1}>
                 <div className="relative aspect-[4/3.4] overflow-hidden rounded-2xl bg-ivory">
-                  <Image src={m.image} alt={m.name} fill sizes="(min-width:640px) 50vw, 100vw" className="object-cover" />
+                  <Image src={m.image} alt={m.name} fill sizes="(min-width:640px) 384px, 100vw" className="object-cover" />
                   <span className="absolute bottom-3 left-3 rounded-full bg-offwhite/90 px-3 py-1 text-[10px]">
                     {m.role}
                   </span>
