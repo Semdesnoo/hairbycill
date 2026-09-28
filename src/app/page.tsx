@@ -8,7 +8,7 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { galleryImages, openingHours, reviews, team, tips, treatments } from "@/lib/data";
+import { openingHours, reviews, team, tips, treatments } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
@@ -285,28 +285,6 @@ export default function Home() {
               <Arrow dir="prev" onClick={() => scrollTeam(-1)} />
               <Arrow dir="next" dark onClick={() => scrollTeam(1)} />
             </div>
-          </div>
-        </section>
-
-        {/* GALLERY */}
-        <section className="py-24 md:py-28">
-          <AnimatedHeading
-            lines={["Een kijkje in"]}
-            accent="onze salon"
-            className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
-          />
-          <div className="mt-14 grid grid-flow-dense auto-rows-[160px] grid-cols-2 gap-3 px-3 md:auto-rows-[190px] md:grid-cols-4">
-            {galleryImages.map((g, i) => (
-              <Reveal
-                key={g.src}
-                delay={(i % 4) * 0.06}
-                className={`relative overflow-hidden rounded-xl ${
-                  g.aspect === "portrait" ? "row-span-2" : g.aspect === "landscape" ? "md:col-span-2" : ""
-                }`}
-              >
-                <Image src={g.src} alt="Hair by Cill salon" fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover transition-transform duration-700 hover:scale-105" />
-              </Reveal>
-            ))}
           </div>
         </section>
 
