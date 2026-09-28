@@ -16,6 +16,19 @@ const PREVIEW_KEY = "hbc_preview";
 // Get it at https://web3forms.com with the owner's email address; paste it here.
 const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
 
+// Discount mail to the subscriber via EmailJS (free: 200/month), sent from info@hairbycill.nl
+// over Mijndomein SMTP. Template = docs/emailjs-kortingsmail.html. Empty ids = step skipped,
+// the signup itself (Web3Forms) still works.
+const EMAILJS = { service: "", template: "", publicKey: "" };
+export const DISCOUNT_CODE = "HAIRBYCILL2026";
+
+/** "28 november 2026": discount deadline, 2 months after signup. */
+export function validUntil(from = new Date()): string {
+  const d = new Date(from);
+  d.setMonth(d.getMonth() + 2);
+  return d.toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" });
+}
+
 const ease = [0.16, 1, 0.3, 1] as const;
 const noop = () => () => {};
 
@@ -55,7 +68,21 @@ function Waitlist() {
         }),
       });
       const data = await res.json();
-      setState(data.success ? "done" : "error");
+      if (!data.success) return setState("error");
+      // The signup is in; a failed discount mail must not show an error to the visitor.
+      if (EMAILJS.service) {
+        await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: EMAILJS.service,
+            template_id: EMAILJS.template,
+            user_id: EMAILJS.publicKey,
+            template_params: { to_email: email, code: DISCOUNT_CODE, valid_until: validUntil() },
+          }),
+        }).catch(() => {});
+      }
+      setState("done");
     } catch {
       setState("error");
     }
@@ -106,8 +133,11 @@ function Waitlist() {
             <p className="text-2xl font-light">
               Je staat <span className="accent text-gold">op de lijst</span>
             </p>
-            <p className="mt-2 text-sm text-offwhite/70">
-              Zodra we opengaan, sturen we je 10% korting naar {email}.
+            <p className="mt-4 text-xs text-offwhite/60">Jouw kortingscode voor 10% korting</p>
+            <p className="mt-2 select-all font-mono text-2xl tracking-[0.2em] text-gold">{DISCOUNT_CODE}</p>
+            <p className="mt-3 text-sm text-offwhite/70">
+              Geldig tot en met {validUntil()}.
+              {EMAILJS.service ? ` We hebben de code ook gemaild naar ${email}.` : " Maak een screenshot of noteer de code."}
             </p>
           </motion.div>
         ) : (
