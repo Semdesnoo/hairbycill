@@ -129,12 +129,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55, ease }}
-              className="mt-7 flex flex-wrap items-center gap-5"
+              className="mt-7"
             >
               <Button href="/afspraak" variant="light">Plan je afspraak</Button>
-              <Link href="/contact" className="text-sm text-offwhite/80 underline-offset-4 hover:underline">
-                Liever eerst overleggen?
-              </Link>
             </motion.div>
           </div>
         </section>
