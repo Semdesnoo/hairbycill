@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { navLinks } from "@/lib/data";
-import { BASE_PATH } from "@/lib/basePath";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -39,15 +37,7 @@ export default function Header() {
           }`}
         >
           <Link href="/" className="flex items-center gap-3">
-            <Image
-              src={`${BASE_PATH}/logo.jpg`}
-              alt="Hair by Cill logo"
-              width={52}
-              height={52}
-              className="rounded-full"
-              priority
-            />
-            <span className="hidden text-lg text-offwhite sm:block">
+            <span className="text-xl text-offwhite md:text-2xl">
               Hair <span className="accent text-gold">by</span> Cill
             </span>
           </Link>
