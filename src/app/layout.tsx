@@ -63,12 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <Header />
-        <main className="flex-1 bg-black md:px-6 md:pt-6">
-          {/* Framed page: rounded cream sheet on espresso, on every route */}
-          <div className="mx-auto max-w-[1440px] overflow-hidden bg-offwhite md:rounded-t-[2rem]">
-            {children}
-          </div>
-        </main>
+        <main className="flex-1 overflow-x-hidden bg-offwhite">{children}</main>
         <Footer />
         <MobileStickyCta />
       </body>

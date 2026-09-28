@@ -18,7 +18,7 @@ export default function Header() {
     <>
       {/* Floating glassy pill bar over the hero */}
       <header className="fixed top-3 inset-x-3 z-50 md:top-5 md:inset-x-6">
-        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between rounded-full bg-black/45 px-3 py-2 backdrop-blur-md md:px-4">
+        <div className="relative flex items-center justify-between rounded-full bg-black/45 px-3 py-2 backdrop-blur-md md:px-4">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
               src={`${BASE_PATH}/logo.jpg`}
