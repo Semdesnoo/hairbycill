@@ -1,39 +1,67 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/Button";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import { BASE_PATH } from "@/lib/basePath";
 import Reveal from "@/components/Reveal";
-import Accordion from "@/components/Accordion";
-import CTA from "@/components/CTA";
-import {
-  business,
-  openingHours,
-  reviews,
-  team,
-  treatments,
-} from "@/lib/data";
+import { business, openingHours, products, team, treatments } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const dayAbbr: Record<string, string> = {
-  Maandag: "MA",
-  Dinsdag: "DI",
-  Woensdag: "WO",
-  Donderdag: "DO",
-  Vrijdag: "VR",
-  Zaterdag: "ZA",
-  Zondag: "ZO",
-};
+const MONTHS = [
+  "Januari", "Februari", "Maart", "April", "Mei", "Juni",
+  "Juli", "Augustus", "September", "Oktober", "November", "December",
+];
+
+/** Static month calendar linking through to the booking wizard. Client-only to avoid hydration drift. */
+function MiniCalendar() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => setNow(new Date()), []);
+  if (!now) return <div className="h-64" />;
+
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const first = (new Date(year, month, 1).getDay() + 6) % 7; // Monday-first
+  const days = new Date(year, month + 1, 0).getDate();
+
+  return (
+    <div>
+      <p className="rounded-lg bg-ivory py-2 text-center text-sm font-semibold">
+        {MONTHS[month]} {year}
+      </p>
+      <div className="mt-4 grid grid-cols-7 gap-y-2 text-center text-xs">
+        {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((d) => (
+          <span key={d} className="font-semibold text-black/50">{d}</span>
+        ))}
+        {Array.from({ length: first }).map((_, i) => (
+          <span key={`pad-${i}`} />
+        ))}
+        {Array.from({ length: days }).map((_, i) => {
+          const today = i + 1 === now.getDate();
+          return (
+            <span
+              key={i}
+              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${
+                today ? "bg-gold font-semibold text-black" : "text-black/70"
+              }`}
+            >
+              {i + 1}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
     <>
-      {/* HERO — full-width video, right-aligned copy */}
-      <section className="relative flex min-h-[560px] items-center overflow-hidden bg-black md:min-h-[640px]">
+      {/* HERO — video bg, copy left, promo cards bottom (Minerva layout) */}
+      <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-black md:min-h-[680px]">
         <video
           src={`${BASE_PATH}/hero.mp4`}
           autoPlay
@@ -42,247 +70,236 @@ export default function Home() {
           playsInline
           className="absolute inset-0 h-full w-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/40 to-black/80" />
-        <div className="relative z-10 mx-auto grid w-full max-w-[1400px] px-6 py-24 md:grid-cols-2">
-          <div className="md:col-start-2">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-40 pt-32 md:pb-48">
+          <div className="max-w-xl">
             <AnimatedHeading
               as="h1"
               lines={["JOUW HAAR VERDIENT", "ECHTE AANDACHT."]}
               className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1.08] text-offwhite [&>span:nth-child(2)]:text-gold"
             />
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease }}
-              className="mt-6 max-w-md text-offwhite/80"
-            >
-              Persoonlijke aandacht, professioneel vakmanschap en een resultaat dat bij jou past.
-            </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6, ease }}
-              className="mt-10"
+              transition={{ duration: 0.7, delay: 0.4, ease }}
+              className="mt-8"
             >
-              <Button href="/afspraak" className="!rounded-none !bg-gold !text-black hover:!bg-gold-muted">
-                AFSPRAAK MAKEN
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* NIEUWE LOOK — staggered collage with vertical labels (reference layout) */}
-      <section className="bg-ivory px-6 py-20 md:py-28">
-        <div className="mx-auto grid max-w-[1200px] gap-6 md:grid-cols-2 md:gap-8">
-          {/* Left column: two staggered images */}
-          <div className="flex flex-col gap-6 md:gap-8">
-            <Reveal className="md:mr-12">
-              <Link href="/prijslijst" className="group relative block aspect-[4/3] overflow-hidden rounded-xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1200&auto=format&fit=crop"
-                  alt="Knippen en styling bij Hair by Cill"
-                  fill
-                  sizes="(min-width: 768px) 45vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
-                  Knippen &amp; Styling
-                </span>
-              </Link>
-            </Reveal>
-            <Reveal delay={0.1} className="md:ml-16">
-              <Link href="/prijslijst" className="group relative block aspect-[4/5] overflow-hidden rounded-xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200&auto=format&fit=crop"
-                  alt="Haarkleuren bij Hair by Cill"
-                  fill
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
-                  Kleuren
-                </span>
-              </Link>
-            </Reveal>
-          </div>
-
-          {/* Right column: heading + CTA, then image */}
-          <div className="flex flex-col gap-10 md:gap-12 md:pt-10">
-            <Reveal delay={0.05}>
-              <h2 className="font-serif normal-case tracking-normal text-[clamp(2.25rem,4vw,3.25rem)] leading-[1.15]">
-                <span className="block text-warm-grey">Voor jou een</span>
-                <span className="block">nieuwe look.</span>
-              </h2>
               <Link
                 href="/afspraak"
-                className="mt-8 inline-block rounded-md border border-black/25 px-6 py-2.5 text-sm text-black/70 transition-colors hover:border-gold hover:text-gold-muted"
+                className="inline-block rounded-full bg-gold px-7 py-3 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
               >
                 Afspraak maken
               </Link>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <Link href="/prijslijst" className="group relative block aspect-[4/5] overflow-hidden rounded-xl md:aspect-[5/6]">
-                <Image
-                  src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop"
-                  alt="Alle behandelingen van Hair by Cill"
-                  fill
-                  sizes="(min-width: 768px) 45vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
-                  Alle behandelingen ontdekken
-                </span>
-              </Link>
-            </Reveal>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55, ease }}
+              className="mt-8 max-w-sm text-sm leading-relaxed text-offwhite/75"
+            >
+              Ontdek een wereld van persoonlijke aandacht bij {business.name}. Onze salon is meer
+              dan een plek voor knippen; het is de plek waar jouw eigen stijl centraal staat.
+            </motion.p>
+          </div>
+        </div>
+
+        {/* Promo mini-cards */}
+        <div className="absolute bottom-8 left-6 right-6 z-10 mx-auto flex max-w-[1400px] flex-wrap gap-4">
+          <Link
+            href="/producten"
+            className="group flex items-center gap-4 rounded-xl bg-offwhite px-5 py-4 shadow-lg"
+          >
+            <div>
+              <p className="font-display text-lg leading-tight">Nieuwe producten</p>
+              <p className="text-xs text-black/60">+{products.length} in de shop</p>
+            </div>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-offwhite transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
+          <Link
+            href="/afspraak"
+            className="group flex items-center gap-4 rounded-xl bg-gold px-5 py-4 shadow-lg"
+          >
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-black/60">Nieuwe klant?</p>
+              <p className="font-display text-lg leading-tight">10% korting</p>
+              <p className="text-xs text-black/60">met code CILL10</p>
+            </div>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-offwhite transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      {/* SERVICES — heading left, three offset photo cards right */}
+      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
+        <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
+          <div>
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
+              Onze services
+            </h2>
+            <p className="mt-5 max-w-xs text-sm text-black/60">
+              Meer dan alleen knippen: een compleet aanbod van kleuren tot styling.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {treatments.slice(0, 3).map((t, i) => (
+              <Reveal key={t.slug} delay={i * 0.08} className={i === 1 ? "sm:mt-12" : ""}>
+                <Link href="/prijslijst" className="group relative block aspect-[3/4] overflow-hidden rounded-2xl">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    fill
+                    sizes="(min-width: 640px) 30vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-4 top-4 rounded-full bg-black/70 px-4 py-1.5 text-xs tracking-wide text-offwhite backdrop-blur-sm">
+                    {t.name}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* OPENING HOURS BAND — dark photo strip with day circles */}
-      <section className="relative overflow-hidden bg-black py-16 md:py-20">
-        <Image
-          src="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1920&auto=format&fit=crop"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover opacity-25"
-        />
-        <div className="relative z-10 mx-auto flex max-w-[1400px] flex-wrap items-center justify-center gap-4 px-6 md:gap-6">
-          {openingHours.map((o, i) => {
-            const closed = o.hours === "Gesloten";
-            return (
-              <Reveal key={o.day} delay={i * 0.05}>
-                <div
-                  className={`flex h-24 w-24 flex-col items-center justify-center rounded-full md:h-28 md:w-28 ${
-                    closed ? "bg-soft-black text-offwhite/60" : "bg-gold text-black"
-                  }`}
-                >
-                  <span className="font-display text-xl md:text-2xl">{dayAbbr[o.day]}</span>
-                  <span className="mt-1 text-[10px] tracking-wide md:text-xs">
-                    {closed ? "GESLOTEN" : o.hours}
-                  </span>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* SERVICES ACCORDION + OUR STORY — two columns */}
-      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
-        <div className="grid gap-16 md:grid-cols-2">
+      {/* BOOKING — intro+photo | calendar+hours | dark callback card */}
+      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
+        <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <h2 className="font-display border-b border-black/15 pb-3 text-2xl">
-              Onze services
-            </h2>
-            <div className="mt-6">
-              <Accordion
-                items={treatments.map((t) => ({ title: t.name, content: t.description }))}
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">Boeken</h2>
+            <p className="mt-5 max-w-xs text-sm text-black/60">
+              Klaar voor een nieuwe look? Boek je afspraak en wij zorgen voor een stijl die bij
+              jou past.
+            </p>
+            <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl">
+              <Image
+                src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop"
+                alt="Hair by Cill behandeling"
+                fill
+                sizes="(min-width: 768px) 30vw, 100vw"
+                className="object-cover"
               />
             </div>
           </div>
 
-          <div>
-            <h2 className="font-display border-b border-black/15 pb-3 text-2xl">
-              Ons verhaal
-            </h2>
-            <p className="mt-6 text-sm leading-relaxed text-black/70">
-              Bij {business.name} draait een behandeling niet alleen om knippen of kleuren. We
-              kijken naar jouw haar, gezicht, wensen en persoonlijke stijl om een resultaat te
-              creëren dat echt bij jou past.
-            </p>
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop"
-                  alt="Hair by Cill salon"
-                  fill
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop"
-                  alt="Hair by Cill behandeling"
-                  fill
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="object-cover"
-                />
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-black/10 bg-white p-6">
+              <MiniCalendar />
+              <h3 className="font-display mt-8 text-lg">Openingstijden</h3>
+              <ul className="mt-3 text-sm">
+                {openingHours.map((o) => (
+                  <li
+                    key={o.day}
+                    className="flex justify-between border-b border-dashed border-black/15 py-2 last:border-0"
+                  >
+                    <span className="text-black/70">{o.day}</span>
+                    <span className={o.hours === "Gesloten" ? "text-black/40" : "text-gold-muted"}>
+                      {o.hours}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="flex h-full flex-col rounded-2xl bg-soft-black p-8 text-offwhite">
+              <h3 className="font-serif normal-case tracking-normal text-3xl">Wij bellen jou</h3>
+              <p className="mt-4 text-sm text-offwhite/60">
+                Liever persoonlijk overleggen? Laat je gegevens achter via ons contactformulier en
+                we bellen je terug voor advies of een afspraak.
+              </p>
+              <ul className="mt-8 space-y-4 text-sm text-offwhite/80">
+                <li className="border-b border-offwhite/15 pb-3">{business.phone}</li>
+                <li className="border-b border-offwhite/15 pb-3">{business.email}</li>
+                <li className="border-b border-offwhite/15 pb-3">{business.address}</li>
+              </ul>
+              <div className="mt-auto pt-10">
+                <Link
+                  href="/contact"
+                  className="inline-block rounded-full bg-gold px-7 py-3 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
+                >
+                  Bel mij terug
+                </Link>
               </div>
             </div>
-            <p className="mt-6 text-sm leading-relaxed text-black/70">
-              Vragen over onze behandelingen? Mail naar{" "}
-              <a href={`mailto:${business.email}`} className="bg-gold px-1.5 py-0.5 text-black">
-                {business.email}
-              </a>{" "}
-              of bel <strong>{business.phone}</strong>. We denken graag met je mee.
-            </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* COUPON BAND */}
+      {/* PRODUCTS — heading + open store, four cards */}
       <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
-        <Reveal>
-          <div className="border-2 border-dashed border-gold bg-black px-6 py-10 text-center md:py-14">
-            <p className="font-display text-[clamp(1.5rem,4vw,2.75rem)] text-offwhite">
-              NIEUWE KLANT? <span className="text-gold">10% KORTING</span> OP JE EERSTE AFSPRAAK
-            </p>
-            <p className="mt-3 text-sm text-offwhite/60">
-              Vermeld code <strong className="text-gold">CILL10</strong> bij het boeken.
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
+              Onze producten
+            </h2>
+            <p className="mt-5 max-w-sm text-sm text-black/60">
+              Verleng je salonresultaat thuis met professionele producten die je haar verzorgen
+              en beschermen.
             </p>
           </div>
-        </Reveal>
-      </section>
-
-      {/* TESTIMONIALS — 2x2 grid with avatars */}
-      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
-        <div className="grid gap-6 md:grid-cols-2">
-          {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={i * 0.08}>
-              <div className="flex gap-5 border border-black/10 bg-white p-6">
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                  <Image src={r.image} alt={r.name} fill sizes="64px" className="object-cover" />
+          <Link
+            href="/producten"
+            className="rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
+          >
+            Bekijk de shop
+          </Link>
+        </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 0.06}>
+              <Link href={`/producten/${p.slug}`} className="group block rounded-2xl bg-ivory p-5">
+                <div className="relative aspect-square overflow-hidden rounded-xl">
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    fill
+                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
-                <div>
-                  <p className="text-sm leading-relaxed text-black/70">{r.text}</p>
-                  <p className="font-display mt-3 text-sm text-gold-muted">
-                    {r.name}, {r.treatment}
-                  </p>
-                </div>
-              </div>
+                <p className="mt-4 text-sm font-semibold">{p.name}</p>
+                <p className="mt-1 text-sm text-gold-muted">{p.price}</p>
+              </Link>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* TEAM */}
-      <section className="bg-ivory px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="text-center">
-            <h2 className="font-display text-3xl md:text-4xl">Onze stylisten</h2>
-            <div className="mx-auto mt-4 h-0.5 w-12 bg-gold" />
+      {/* WHY CHOOSE US — dark band, stats left, feature blocks right */}
+      <section className="bg-black px-6 py-20 text-offwhite md:py-28">
+        <div className="mx-auto grid max-w-[1400px] gap-14 md:grid-cols-[1fr_2fr]">
+          <div>
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
+              Waarom Hair by Cill
+            </h2>
+            <div className="mt-12 flex items-center gap-8">
+              <div>
+                <p className="font-display text-4xl text-gold">10+</p>
+                <p className="mt-1 text-sm text-offwhite/60">Jaar ervaring</p>
+              </div>
+              <div className="h-12 w-px bg-offwhite/20" />
+              <div>
+                <p className="font-display text-4xl text-gold">4</p>
+                <p className="mt-1 text-sm text-offwhite/60">Specialisten</p>
+              </div>
+            </div>
           </div>
-          <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((m, i) => (
-              <Reveal key={m.name} delay={i * 0.08}>
-                <div className="border border-black/10 bg-white px-6 py-10 text-center">
-                  <div className="relative mx-auto h-36 w-36 overflow-hidden rounded-full">
-                    <Image src={m.image} alt={m.name} fill sizes="144px" className="object-cover" />
-                  </div>
-                  <h3 className="font-display mt-6 text-lg">{m.name}</h3>
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gold-muted">
-                    {m.role}
-                  </p>
-                  <p className="mt-4 text-sm text-black/60">{m.bio}</p>
-                  <a
-                    href={`mailto:${m.email}`}
-                    className="mt-4 inline-block text-xs text-black/50 hover:text-gold-muted"
-                  >
-                    {m.email}
-                  </a>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {[
+              "Persoonlijke aandacht: we nemen de tijd om te luisteren naar jouw wensen en stijl.",
+              "Professionele producten: we werken uitsluitend met merken die je haar echt verzorgen.",
+              "Passie voor het vak: iedere behandeling is vakmanschap, van wassen tot finishing touch.",
+              "Een resultaat dat bij jou past: je loopt de deur uit met haar waarin je jezelf herkent.",
+            ].map((text, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <div className="h-full rounded-2xl border border-offwhite/10 bg-soft-black p-6">
+                  <span className="font-display text-2xl text-gold">0{i + 1}</span>
+                  <p className="mt-4 text-sm leading-relaxed text-offwhite/75">{text}</p>
                 </div>
               </Reveal>
             ))}
@@ -290,10 +307,44 @@ export default function Home() {
         </div>
       </section>
 
-      <CTA
-        lines={["READY FOR", "YOUR NEXT LOOK?"]}
-        image="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1920&auto=format&fit=crop"
-      />
+      {/* TEAM — heading left, cards right */}
+      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
+        <div className="grid gap-12 md:grid-cols-[1fr_3fr]">
+          <div>
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
+              Ons team
+            </h2>
+            <p className="mt-5 max-w-xs text-sm text-black/60">
+              Vertrouw je haar toe aan ons team van ervaren stylisten.
+            </p>
+            <Link
+              href="/afspraak"
+              className="mt-8 inline-block rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
+            >
+              Afspraak maken
+            </Link>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((m, i) => (
+              <Reveal key={m.name} delay={i * 0.08}>
+                <div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ivory">
+                    <Image
+                      src={m.image}
+                      alt={m.name}
+                      fill
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 40vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <h3 className="font-display mt-4 text-lg">{m.name}</h3>
+                  <p className="mt-0.5 text-sm text-black/50">{m.role}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }
