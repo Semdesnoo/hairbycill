@@ -173,6 +173,81 @@ export default function Home() {
         </div>
       </section>
 
+      {/* BENEFITS — heading left, intro right, three cards with CTA's */}
+      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
+        <div className="grid gap-8 md:grid-cols-2 md:items-start">
+          <h2 className="font-display max-w-md text-3xl leading-tight md:text-4xl">
+            Een salonervaring zoals geen ander
+          </h2>
+          <p className="max-w-md text-sm leading-relaxed text-black/60 md:justify-self-end">
+            Bij {business.name} gaan we verder dan alleen knippen. Onze stylisten werken vanuit
+            jouw inspiratie en hun vakmanschap aan een persoonlijke ervaring die je zelfvertrouwen
+            en stijl versterkt.
+          </p>
+        </div>
+
+        <div className="mt-20 grid gap-16 md:grid-cols-3 md:gap-6">
+          {[
+            {
+              title: "Onze salon",
+              text: "Een warme, persoonlijke plek waar je op je gemak bent en je haar de aandacht krijgt die het verdient.",
+              cta: "Afspraak maken",
+              href: "/afspraak",
+              icon: (
+                <path d="M9.5 14.5 5 19m4.5-4.5L19 5M9.5 9.5 5 5m4.5 4.5L19 19M7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm0 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+              ),
+            },
+            {
+              title: "Met liefde voor het vak",
+              text: "Van wassen tot finishing touch: iedere behandeling voeren we uit met passie en precisie.",
+              cta: "Bekijk behandelingen",
+              href: "/prijslijst",
+              icon: (
+                <path d="M12 21C7 16.5 3 13.2 3 9.5A4.5 4.5 0 0 1 7.5 5c1.8 0 3.4 1 4.5 2.5C13.1 6 14.7 5 16.5 5A4.5 4.5 0 0 1 21 9.5c0 3.7-4 7-9 11.5Z" />
+              ),
+            },
+            {
+              title: "Cadeaubonnen",
+              text: "Verras iemand met een verzorgmoment: een cadeaubon van Hair by Cill is altijd goed.",
+              cta: "Vraag ernaar",
+              href: "/contact",
+              icon: (
+                <path d="M20 12v9H4v-9m16-5H4v5h16V7Zm-8 0v14m0-14H8.5a2.5 2.5 0 1 1 0-5C11 2 12 4.5 12 7Zm0 0h3.5a2.5 2.5 0 1 0 0-5C13 2 12 4.5 12 7Z" />
+              ),
+            },
+          ].map((b, i) => (
+            <Reveal key={b.title} delay={i * 0.08}>
+              <div className="flex h-full flex-col items-center border border-black/10 bg-white px-8 pb-10 pt-14 text-center">
+                <div className="-mt-24 flex h-20 w-20 items-center justify-center rounded-2xl bg-warm-grey/90">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-9 w-9"
+                    aria-hidden
+                  >
+                    {b.icon}
+                  </svg>
+                </div>
+                <h3 className="font-display mt-8 text-lg">{b.title}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-black/60">{b.text}</p>
+                <Link
+                  href={b.href}
+                  className="mt-auto pt-8 text-sm tracking-wide"
+                >
+                  <span className="inline-block rounded-full border border-black/25 px-6 py-2.5 transition-colors hover:border-gold hover:text-gold-muted">
+                    {b.cta}
+                  </span>
+                </Link>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* SERVICES — heading left, three offset photo cards right */}
       <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
         <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
@@ -292,8 +367,8 @@ export default function Home() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p, i) => (
             <Reveal key={p.slug} delay={i * 0.06}>
-              <Link href={`/producten/${p.slug}`} className="group block rounded-2xl bg-ivory p-5">
-                <div className="relative aspect-square overflow-hidden rounded-xl">
+              <Link href={`/producten/${p.slug}`} className="group block">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-ivory">
                   <Image
                     src={p.image}
                     alt={p.name}
@@ -301,9 +376,23 @@ export default function Home() {
                     sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
+                  <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-black/20 bg-white/90 transition-colors group-hover:border-gold">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      aria-hidden
+                    >
+                      <path d="M3 3h2l2.4 12.2a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20 7H6M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
+                    </svg>
+                  </span>
                 </div>
                 <p className="mt-4 text-sm font-semibold">{p.name}</p>
-                <p className="mt-1 text-sm text-gold-muted">{p.price}</p>
+                <p className="mt-1 text-sm text-black/60">{p.price}</p>
               </Link>
             </Reveal>
           ))}
