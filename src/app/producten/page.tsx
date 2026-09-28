@@ -16,7 +16,7 @@ export default function ProductenPage() {
         intro="Dezelfde professionele producten die we in de salon gebruiken, zodat je resultaat langer mooi blijft."
         image="https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?q=80&w=1920&auto=format&fit=crop"
       />
-      <section className="mx-auto max-w-[1300px] px-6 py-20 md:py-28">
+      <section className="px-4 py-16 md:px-8 md:py-24">
         <ProductsClient />
       </section>
     </>

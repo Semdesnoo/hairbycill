@@ -170,7 +170,11 @@ export type Product = {
   brand: string;
   name: string;
   price: string;
+  /** Optional "was" price: shows struck through + a -x% badge. */
+  oldPrice?: string;
   volume: string;
+  /** Three short check-marked selling points on the product page. */
+  highlights: string[];
   category: "Shampoo" | "Conditioner" | "Treatment" | "Styling";
   description: string;
   benefit: string;
@@ -188,6 +192,8 @@ export const products: Product[] = [
     name: "Silk Repair Shampoo",
     price: "€24,95",
     volume: "250 ml",
+    oldPrice: "€29,95",
+    highlights: ["Sulfaatvrij en kleurbeschermend", "Herstelt droog en beschadigd haar", "Zachte glans zonder te verzwaren"],
     category: "Shampoo",
     description: "Reinigt zacht terwijl het de haarvezel herstelt en beschermt.",
     benefit: "Voor zacht, glanzend en verzorgd haar.",
@@ -207,6 +213,7 @@ export const products: Product[] = [
     name: "Hydrate-Me Conditioner",
     price: "€27,95",
     volume: "250 ml",
+    highlights: ["Diepe hydratatie in 2 minuten", "Makkelijker doorkammen, minder klitten", "Voor zacht en soepel haar"],
     category: "Conditioner",
     description: "Intense hydratatie voor droog en dof haar.",
     benefit: "Voor diep gevoed en soepel haar.",
@@ -223,6 +230,8 @@ export const products: Product[] = [
     name: "No.8 Bond Intense Mask",
     price: "€34,95",
     volume: "100 ml",
+    oldPrice: "€42,95",
+    highlights: ["Herstelt verbindingen in de haarvezel", "Ideaal na kleuren of blonderen", "Zichtbaar sterker haar na 1 gebruik"],
     category: "Treatment",
     description: "Intensief herstellend masker dat glans en veerkracht teruggeeft.",
     benefit: "Voor direct zichtbaar herstel en glans.",
@@ -239,6 +248,7 @@ export const products: Product[] = [
     name: "Heat Protect Spray",
     price: "€19,95",
     volume: "120 ml",
+    highlights: ["Beschermt tot 230 graden", "Geen plakkerig gevoel", "Langer houdbare styling"],
     category: "Styling",
     description: "Beschermt tegen hitteschade tot 230°C, zonder verzwaring.",
     benefit: "Voor bescherming en extra glans bij stylen.",
@@ -380,3 +390,10 @@ export const tips: { title: string; accent: string; text: string; read: string; 
     image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=800&auto=format&fit=crop",
   },
 ];
+
+/** "€24,95" -> 24.95 */
+export const euroToNumber = (p: string) => parseFloat(p.replace(/[^\d,]/g, "").replace(",", "."));
+export const formatEuro = (n: number) =>
+  new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
+/** Bundle offer on product pages: discount on the 2nd item. Set to 0 to hide the 2-pack option. */
+export const SECOND_ITEM_DISCOUNT = 0.2;

@@ -266,7 +266,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ABOUT: fanned cards + stats */}
+        {/* ABOUT: text + stats */}
         <section className="px-6 py-24 text-center md:py-32">
           <AnimatedHeading
             lines={["Jouw plek om te ontspannen,"]}
@@ -277,23 +277,6 @@ export default function Home() {
             We maken salonzorg toegankelijk voor iedereen, waar je ook begint en hoe druk je dag ook is
             geweest.
           </p>
-
-          <div className="relative mx-auto mt-16 flex h-[340px] max-w-3xl items-center justify-center md:h-[420px]">
-            {[
-              { img: treatments[0].image, tag: "Knippen", cls: "-rotate-[10deg] -translate-x-[62%] translate-y-6" },
-              { img: u("1560066984-138dadb4c035"), tag: "Onze salon", cls: "z-10 -translate-y-2" },
-              { img: team[0].image, tag: "Advies", cls: "rotate-[10deg] translate-x-[62%] translate-y-6" },
-            ].map((c, i) => (
-              <Reveal key={c.tag} delay={i * 0.1} className={`absolute ${c.cls}`}>
-                <div className="relative h-[260px] w-[190px] overflow-hidden rounded-2xl border-4 border-offwhite shadow-xl md:h-[330px] md:w-[250px]">
-                  <Image src={c.img} alt={c.tag} fill sizes="250px" className="object-cover" />
-                  <span className="absolute left-3 top-3 rounded-full bg-offwhite/90 px-3 py-1 text-[10px] text-black">
-                    {c.tag}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
 
           <div className="mx-auto mt-16 grid max-w-5xl divide-black/10 border-t border-black/10 md:grid-cols-3 md:divide-x">
             {[
