@@ -16,7 +16,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           className="fixed inset-0 z-40 flex flex-col justify-between bg-black px-6 pt-28 pb-12 md:hidden"
         >
           <nav className="flex flex-col gap-2">
-            {navLinks.map((link, i) => (
+            {navLinks.filter((l) => l.href !== "/").map((link, i) => (
               <motion.div
                 key={link.href}
                 initial={{ opacity: 0, y: 20 }}
