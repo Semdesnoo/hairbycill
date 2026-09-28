@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import CookieBanner from "@/components/CookieBanner";
+import LaunchGate from "@/components/LaunchGate";
 import { business, openingHours } from "@/lib/data";
 import { BASE_PATH, SITE_URL } from "@/lib/basePath";
 
@@ -63,11 +64,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <Header />
-        <main className="isolate flex-1 overflow-x-hidden bg-offwhite">{children}</main>
-        <Footer />
-        <MobileStickyCta />
-        <CookieBanner />
+        <LaunchGate>
+          <Header />
+          <main className="isolate flex-1 overflow-x-hidden bg-offwhite">{children}</main>
+          <Footer />
+          <MobileStickyCta />
+          <CookieBanner />
+        </LaunchGate>
       </body>
     </html>
   );
