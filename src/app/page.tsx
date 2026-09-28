@@ -21,9 +21,9 @@ function WorkMarquee() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   // Spring on top of scroll progress = buttery, momentum-like glide instead of 1:1 jitter.
-  const p = useSpring(scrollYProgress, { stiffness: 60, damping: 20, mass: 0.4 });
-  const toRight = useTransform(p, [0, 1], ["-30%", "0%"]);
-  const toLeft = useTransform(p, [0, 1], ["0%", "-30%"]);
+  const p = useSpring(scrollYProgress, { stiffness: 40, damping: 30, mass: 0.8 });
+  const toRight = useTransform(p, [0, 1], ["-12%", "0%"]);
+  const toLeft = useTransform(p, [0, 1], ["0%", "-12%"]);
 
   return (
     <section ref={ref} className="overflow-hidden bg-ivory/60 py-24 md:py-28">
