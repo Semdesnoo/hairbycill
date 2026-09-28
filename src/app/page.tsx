@@ -149,34 +149,51 @@ export default function Home() {
           </motion.a>
         </section>
 
-        {/* TREATMENTS: arched portraits */}
-        <section id="behandelingen" className="scroll-mt-20 px-6 py-20 md:px-14 md:py-24">
+        {/* TREATMENTS: arched portraits that sweep in from the left and right edges */}
+        <section id="behandelingen" className="scroll-mt-20 py-24 md:py-36">
           <AnimatedHeading
             lines={["Onze"]}
             accent="behandelingen"
-            className="text-center text-4xl leading-[1.05] md:text-5xl"
+            className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
           />
-          <div className="mt-12 flex snap-x gap-3 overflow-x-auto [scrollbar-width:none] md:justify-center md:gap-4">
-            {treatments.map((t, i) => (
-              <Reveal key={t.slug} delay={i * 0.06} className="shrink-0 snap-start">
-                <Link
-                  href={`/afspraak?treatment=${t.slug}`}
-                  className="group relative block h-60 w-36 overflow-hidden rounded-full md:h-80 md:w-48"
+          {/* Parent observes the viewport: children start off-screen, so they can't trigger whileInView themselves */}
+          <motion.div
+            initial="out"
+            whileInView="in"
+            viewport={{ once: true, amount: 0.3 }}
+            className="mt-16 flex snap-x justify-center-safe gap-4 overflow-x-auto px-6 [scrollbar-width:none] md:gap-5 md:px-14"
+          >
+            {treatments.map((t, i) => {
+              const side = i - (treatments.length - 1) / 2; // <0 left, 0 middle, >0 right
+              return (
+                <motion.div
+                  key={t.slug}
+                  variants={{
+                    out: { opacity: 0, x: `${side * 45}vw`, y: side === 0 ? 80 : 0, rotate: side * 4 },
+                    in: { opacity: 1, x: 0, y: 0, rotate: 0 },
+                  }}
+                  transition={{ duration: 1.3, ease }}
+                  className="shrink-0 snap-start"
                 >
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    fill
-                    sizes="200px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pb-6 pt-12 text-center text-sm text-offwhite">
-                    {t.name}
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+                  <Link
+                    href={`/afspraak?treatment=${t.slug}`}
+                    className="group relative block aspect-[3/5] w-44 overflow-hidden rounded-full md:w-52 xl:w-60 2xl:w-64 min-[1800px]:w-72"
+                  >
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      fill
+                      sizes="300px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pb-8 pt-16 text-center text-base text-offwhite">
+                      {t.name}
+                    </span>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </section>
 
         {/* SERVICES: dark band with day tabs + treatment table */}
