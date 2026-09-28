@@ -47,6 +47,7 @@ export default function Footer() {
           <div>
             <h3 className="mb-5 text-sm text-offwhite">Overig</h3>
             <ul className="space-y-2.5 text-sm text-offwhite/60">
+              <li><Link href="/blog" className="hover:text-gold">Haartips &amp; blog</Link></li>
               <li><Link href="/privacybeleid" className="hover:text-gold">Privacybeleid</Link></li>
               <li><Link href="/voorwaarden" className="hover:text-gold">Voorwaarden</Link></li>
               <li><a href={business.phoneHref} className="hover:text-gold">{business.phone}</a></li>

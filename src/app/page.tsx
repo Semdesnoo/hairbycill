@@ -8,7 +8,8 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { openingHours, team, tips, treatments } from "@/lib/data";
+import { openingHours, team, treatments } from "@/lib/data";
+import { posts as tips } from "@/lib/blog";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
@@ -348,9 +349,9 @@ export default function Home() {
           <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2">
             {tips.slice(0, 2).map((t, i) => (
               <Reveal key={t.title} delay={i * 0.08}>
-                <article className="grid h-full grid-cols-[42%_1fr] gap-5 rounded-2xl bg-ivory/70 p-3">
+                <Link href={`/blog/${t.slug}`} className="group grid h-full grid-cols-[42%_1fr] gap-5 rounded-2xl bg-ivory/70 p-3">
                   <div className="relative aspect-square overflow-hidden rounded-xl">
-                    <Image src={t.image} alt="" fill sizes="240px" className="object-cover" />
+                    <Image src={t.image} alt={t.h1} fill sizes="240px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                     <span className="absolute left-2 top-2 rounded-full bg-offwhite/90 px-2.5 py-1 text-[10px]">Uitgelicht</span>
                   </div>
                   <div className="py-2 pr-2">
@@ -360,23 +361,23 @@ export default function Home() {
                     <p className="mt-3 text-xs leading-relaxed text-black/55">{t.text}</p>
                     <p className="mt-4 text-[11px] text-black/45">{t.read}</p>
                   </div>
-                </article>
+                </Link>
               </Reveal>
             ))}
           </div>
           <div className="mx-auto mt-5 grid max-w-6xl gap-5 sm:grid-cols-3">
             {tips.slice(2).map((t, i) => (
               <Reveal key={t.title} delay={i * 0.08}>
-                <article className="h-full rounded-2xl bg-ivory/70 p-3">
+                <Link href={`/blog/${t.slug}`} className="group block h-full rounded-2xl bg-ivory/70 p-3">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-                    <Image src={t.image} alt="" fill sizes="(min-width:640px) 30vw, 90vw" className="object-cover" />
+                    <Image src={t.image} alt={t.h1} fill sizes="(min-width:640px) 30vw, 90vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                   <h3 className="mt-4 px-1 text-base leading-tight">
                     {t.title} <span className="accent text-gold-muted">{t.accent}</span>
                   </h3>
                   <p className="mt-2 px-1 text-xs leading-relaxed text-black/55">{t.text}</p>
                   <p className="mt-3 px-1 pb-2 text-[11px] text-black/45">{t.read}</p>
-                </article>
+                </Link>
               </Reveal>
             ))}
           </div>

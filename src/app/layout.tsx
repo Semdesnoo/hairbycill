@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import CookieBanner from "@/components/CookieBanner";
 import { business, openingHours } from "@/lib/data";
-import { BASE_PATH } from "@/lib/basePath";
+import { BASE_PATH, SITE_URL } from "@/lib/basePath";
 
 const serif = Cormorant_Garamond({
   variable: "--font-serif",
@@ -21,7 +21,7 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hairbycill.nl"),
+  metadataBase: new URL(`${SITE_URL}/`),
   title: {
     default: `${business.name} - Luxury Hair Salon`,
     template: `%s - ${business.name}`,

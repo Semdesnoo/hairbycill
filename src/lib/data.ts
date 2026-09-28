@@ -337,44 +337,6 @@ export const galleryImages: { src: string; aspect: "portrait" | "square" | "land
 ];
 
 // Salon-tips op de homepage ("Tips uit de salon").
-export const tips: { title: string; accent: string; text: string; read: string; image: string }[] = [
-  {
-    title: "Zo houd je balayage",
-    accent: "langer mooi",
-    text: "Met een paar kleine aanpassingen in je routine blijft je kleur weken frisser en warmer.",
-    read: "4 min lezen",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    title: "Föhnen zonder",
-    accent: "hitteschade",
-    text: "De juiste volgorde van producten en temperatuur maakt het verschil voor glans.",
-    read: "3 min lezen",
-    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    title: "Welk masker past",
-    accent: "bij jouw haar",
-    text: "Droog, fijn of gekleurd: zo kies je een verzorging die echt iets doet.",
-    read: "5 min lezen",
-    image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    title: "Je eerste afspraak",
-    accent: "bij ons",
-    text: "Wat je kunt verwachten, van het adviesgesprek tot de laatste finishing touch.",
-    read: "2 min lezen",
-    image: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    title: "Krullen verzorgen",
-    accent: "met rust",
-    text: "Minder wassen, meer vocht: de basis voor definitie zonder pluis.",
-    read: "4 min lezen",
-    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=800&auto=format&fit=crop",
-  },
-];
-
 /** "€24,95" -> 24.95 */
 export const euroToNumber = (p: string) => parseFloat(p.replace(/[^\d,]/g, "").replace(",", "."));
 export const formatEuro = (n: number) =>
