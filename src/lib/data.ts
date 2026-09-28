@@ -8,11 +8,11 @@ export const business = {
   phoneHref: "tel:+316****5678",
   whatsappHref: "https://wa.me/31612345678",
   email: "info@hairbycill.nl",
-  address: "Kerkstraat 12, 1234 AB Voorbeeldstad",
+  address: "Dorpsdijk 114, 3161 CD Rhoon",
   instagram: "https://instagram.com/hairbycill",
   facebook: "https://facebook.com/hairbycill",
   mapsEmbedSrc:
-    "https://www.google.com/maps?q=Kerkstraat+12+Voorbeeldstad&output=embed",
+    "https://www.google.com/maps?q=Dorpsdijk+114,+3161+CD+Rhoon&output=embed",
 } as const;
 
 export const openingHours = [

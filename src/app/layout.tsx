@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
+import CookieBanner from "@/components/CookieBanner";
 import { business, openingHours } from "@/lib/data";
 import { BASE_PATH } from "@/lib/basePath";
 
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1 overflow-x-hidden bg-offwhite">{children}</main>
         <Footer />
         <MobileStickyCta />
+        <CookieBanner />
       </body>
     </html>
   );

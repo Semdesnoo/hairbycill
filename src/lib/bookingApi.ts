@@ -11,6 +11,8 @@ import { openingHours, stylists } from "./data";
 
 export type Booking = {
   id: string;
+  /** 6-char code the client uses (with her email) to cancel. */
+  code: string;
   name: string;
   email: string;
   phone: string;
@@ -38,14 +40,24 @@ function writeAll(bookings: Booking[]) {
   localStorage.setItem(KEY, JSON.stringify(bookings));
 }
 
-export function createBooking(input: Omit<Booking, "id" | "createdAt">): Booking {
-  const booking: Booking = { ...input, id: crypto.randomUUID(), createdAt: new Date().toISOString() };
+// No 0/O/1/I/L: codes get read from an email and typed back in.
+const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
+export function makeCode(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(6));
+  return Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
+}
+
+export function createBooking(input: Omit<Booking, "id" | "code" | "createdAt">): Booking {
+  const booking: Booking = { ...input, id: crypto.randomUUID(), code: makeCode(), createdAt: new Date().toISOString() };
   writeAll([...readAll(), booking]);
   return booking;
 }
 
-export function findBooking(id: string, email: string): Booking | undefined {
-  return readAll().find((b) => b.id === id && b.email.toLowerCase() === email.toLowerCase());
+export function findBooking(code: string, email: string): Booking | undefined {
+  const c = code.trim().toUpperCase();
+  const e = email.trim().toLowerCase();
+  return readAll().find((b) => b.code === c && b.email.toLowerCase() === e);
 }
 
 export function hoursUntil(booking: Booking): number {
@@ -64,14 +76,9 @@ export function cancelBooking(id: string) {
 // Slot generation: hourly slots within opening hours, next 21 days, minus
 // whatever is already taken in localStorage for that stylist.
 export function availableSlots(date: string, stylistSlug: string): string[] {
-  const day = new Date(`${date}T00:00:00`).getDay(); // 0=Sunday
-  const dayName = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"][day];
-  const hours = openingHours.find((o) => o.day === dayName);
-  if (!hours || hours.hours === "Gesloten") return [];
-
-  const [openStr, closeStr] = hours.hours.split("-");
-  const open = parseInt(openStr, 10);
-  const close = parseInt(closeStr, 10);
+  const hours = openHours(date);
+  if (!hours) return [];
+  const [open, close] = hours;
 
   const taken = new Set(
     readAll()
@@ -87,16 +94,49 @@ export function availableSlots(date: string, stylistSlug: string): string[] {
   return slots;
 }
 
-export function nextBookableDates(count = 21): string[] {
+/** Local YYYY-MM-DD (toISOString is UTC and shifts the day around midnight in NL). */
+export const isoDate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+export function nextBookableDates(count = 28): string[] {
   const dates: string[] = [];
   const d = new Date();
   while (dates.length < count) {
     d.setDate(d.getDate() + 1);
-    dates.push(d.toISOString().slice(0, 10));
+    dates.push(isoDate(d));
   }
   return dates;
 }
 
+export const isClosed = (date: string) => openHours(date) === null;
+
+function openHours(date: string): [number, number] | null {
+  const day = new Date(`${date}T00:00:00`).getDay();
+  const dayName = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"][day];
+  const hours = openingHours.find((o) => o.day === dayName);
+  if (!hours || hours.hours === "Gesloten") return null;
+  const [o, c] = hours.hours.split("-");
+  return [parseInt(o, 10), parseInt(c, 10)];
+}
+
 export function stylistName(slug: string): string {
   return stylists.find((s) => s.slug === slug)?.name ?? slug;
+}
+
+// Cookie consent + newsletter emails.
+// ponytail: stored in the visitor's localStorage only, so the salon can't read these emails yet.
+// When the backend lands, POST `email` to it (e.g. Resend audience) inside saveConsent.
+export type Consent = { cookies: "all" | "necessary"; email: string | null; at: string };
+const CONSENT_KEY = "hbc_consent";
+
+export function getConsent(): Consent | null {
+  try {
+    return JSON.parse(localStorage.getItem(CONSENT_KEY) ?? "null");
+  } catch {
+    return null;
+  }
+}
+
+export function saveConsent(c: Omit<Consent, "at">) {
+  localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...c, at: new Date().toISOString() }));
 }

@@ -1,11 +1,58 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { treatments, stylists } from "@/lib/data";
-import { availableSlots, nextBookableDates, createBooking, Booking } from "@/lib/bookingApi";
+import { availableSlots, nextBookableDates, createBooking, isClosed, isoDate, Booking } from "@/lib/bookingApi";
 
-const dateLabel = (iso: string) =>
-  new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
+const noop = () => () => {};
+const ease = [0.16, 1, 0.3, 1] as const;
+const WEEKDAYS = ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"];
+const longDate = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+
+/** Monday-first week grid covering every bookable date; cells outside the range are null. */
+function calendarWeeks(dates: string[]): (string | null)[][] {
+  const bookable = new Set(dates);
+  const d = new Date(`${dates[0]}T00:00:00`);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  const weeks: (string | null)[][] = [];
+  while (isoDate(d) <= dates[dates.length - 1]) {
+    const week: (string | null)[] = [];
+    for (let i = 0; i < 7; i++) {
+      const iso = isoDate(d);
+      week.push(bookable.has(iso) ? iso : null);
+      d.setDate(d.getDate() + 1);
+    }
+    weeks.push(week);
+  }
+  return weeks;
+}
+
+function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+  return (
+    <motion.fieldset
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-8%" }}
+      transition={{ duration: 0.7, ease }}
+      className="border-t border-black/10 pt-8 first:border-t-0 first:pt-0"
+    >
+      <legend className="mb-5 flex items-baseline gap-3 text-2xl font-light">
+        <span className="accent text-gold-muted">{String(n).padStart(2, "0")}</span>
+        {title}
+      </legend>
+      {children}
+    </motion.fieldset>
+  );
+}
+
+const choice = (active: boolean) =>
+  `rounded-2xl border px-5 py-4 text-left transition-all duration-300 ${
+    active
+      ? "border-black bg-black text-offwhite shadow-lg shadow-black/15"
+      : "border-black/10 bg-offwhite hover:-translate-y-0.5 hover:border-black/40"
+  }`;
 
 export default function BookingWizard() {
   const [treatment, setTreatment] = useState(treatments[0].slug);
@@ -15,176 +62,282 @@ export default function BookingWizard() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
   const [confirmed, setConfirmed] = useState<Booking | null>(null);
 
+  // Dates depend on "today": false during static prerender, true in the browser.
+  const mounted = useSyncExternalStore(noop, () => true, () => false);
   const dates = useMemo(() => nextBookableDates(), []);
+  const weeks = useMemo(() => calendarWeeks(dates), [dates]);
   const slots = useMemo(() => (date ? availableSlots(date, stylistSlug) : []), [date, stylistSlug]);
+  const t = treatments.find((x) => x.slug === treatment)!;
+  const s = stylists.find((x) => x.slug === stylistSlug)!;
+  const ready = date && time && form.name && /\S+@\S+\.\S+/.test(form.email) && form.phone;
 
-  // Prefill from hero booking card (?treatment=&date=&time=). window.location
-  // instead of useSearchParams: no Suspense boundary needed in a static export.
+  const monthLabel = useMemo(() => {
+    const fmt = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { month: "long" });
+    const a = fmt(dates[0]);
+    const b = fmt(dates[dates.length - 1]);
+    return a === b ? a : `${a} / ${b}`;
+  }, [dates]);
+
+  // Prefill from ?treatment=&date=&time= (window.location: no Suspense needed in a static export).
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- one-time read of external URL state after mount */
     const q = new URLSearchParams(window.location.search);
-    const t = q.get("treatment");
+    const tq = q.get("treatment");
     const d = q.get("date");
     const tm = q.get("time");
-    if (t && treatments.some((x) => x.slug === t)) setTreatment(t);
+    if (tq && treatments.some((x) => x.slug === tq)) setTreatment(tq);
     if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) setDate(d);
     if (tm && /^\d{2}:\d{2}$/.test(tm)) setTime(tm);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
-
-  function submit() {
-    const booking = createBooking({ ...form, treatment, stylistSlug, date, time });
-    setConfirmed(booking);
-  }
 
   if (confirmed) {
     return (
-      <div className="rounded-2xl bg-ivory/60 p-8 text-center">
-        <h2 className="font-display text-3xl">Afspraak bevestigd</h2>
-        <p className="mt-3 text-black/60">
-          {dateLabel(confirmed.date)} om {confirmed.time}. Bewaar dit boekingsnummer om te annuleren:
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease }}
+        className="mx-auto max-w-xl rounded-3xl bg-black p-10 text-center text-offwhite md:p-14"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 14 }}
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gold text-2xl text-black"
+        >
+          ✓
+        </motion.div>
+        <h2 className="mt-6 text-4xl font-light">
+          Tot <span className="accent text-gold">snel</span>, {confirmed.name.split(" ")[0]}
+        </h2>
+        <p className="mt-4 text-offwhite/70">
+          {t.name} op {longDate(confirmed.date)} om {confirmed.time}.
         </p>
-        <p className="mt-4 select-all rounded bg-ivory px-4 py-2 font-mono text-sm">{confirmed.id}</p>
-        <p className="mt-4 text-sm text-black/50">Je kunt tot 12 uur van tevoren kosteloos annuleren via de contactpagina.</p>
-      </div>
+        <p className="mt-8 text-xs text-offwhite/50">Jouw annuleringscode</p>
+        <p className="mt-2 select-all font-mono text-3xl tracking-[0.4em] text-gold">{confirmed.code}</p>
+        <p className="mx-auto mt-6 max-w-sm text-sm leading-relaxed text-offwhite/60">
+          Bewaar deze code. Met je e-mailadres en deze code kun je tot 12 uur van tevoren kosteloos annuleren,
+          onderaan deze pagina.
+        </p>
+      </motion.div>
     );
   }
 
   return (
-    <div className="rounded-2xl bg-ivory/60 p-6 md:p-10">
-      {/* Step 1: treatment */}
-      <fieldset className="mb-8">
-        <legend className="mb-3 text-lg text-black">1. Behandeling</legend>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-          {treatments.map((t) => (
-            <button
-              key={t.slug}
-              type="button"
-              onClick={() => setTreatment(t.slug)}
-              className={`rounded-xl border px-4 py-3 text-left text-sm ${
-                treatment === t.slug ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
-              }`}
-            >
-              {t.name}
-            </button>
-          ))}
-        </div>
-      </fieldset>
+    <div>
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-full bg-ivory/70 py-2 pl-6 pr-2 text-sm">
+        <span className="text-black/60">Al een afspraak en kom je toch niet?</span>
+        <a href="#annuleren" className="rounded-full border border-black/20 px-5 py-2 transition-colors hover:border-black hover:bg-black hover:text-offwhite">
+          Boeking annuleren
+        </a>
+      </div>
+    <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
+      <div className="space-y-10">
+        <Step n={1} title="Kies je behandeling">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+            {treatments.map((x) => (
+              <button key={x.slug} type="button" onClick={() => setTreatment(x.slug)} className={choice(treatment === x.slug)}>
+                <span className="block text-base">
+                  {x.name} <span className="accent opacity-60">{x.accent}</span>
+                </span>
+                <span className="mt-1 block text-xs opacity-60">
+                  {x.duration} · {x.price}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Step>
 
-      {/* Step 2: stylist */}
-      <fieldset className="mb-8">
-        <legend className="mb-3 text-lg text-black">2. Stylist</legend>
-        <div className="grid grid-cols-3 gap-3">
-          {stylists.map((s) => (
-            <button
-              key={s.slug}
-              type="button"
-              onClick={() => setStylistSlug(s.slug)}
-              className={`rounded-xl border px-4 py-3 text-left text-sm ${
-                stylistSlug === s.slug ? "border-black bg-black text-offwhite" : "border-black/15 hover:border-black/40"
-              }`}
-            >
-              <div>{s.name}</div>
-              <div className={`text-xs ${stylistSlug === s.slug ? "text-offwhite/60" : "text-black/40"}`}>{s.role}</div>
-            </button>
-          ))}
-        </div>
-      </fieldset>
+        <Step n={2} title="Bij wie?">
+          <div className="grid gap-3 sm:grid-cols-3">
+            {stylists.map((x) => (
+              <button
+                key={x.slug}
+                type="button"
+                onClick={() => {
+                  setStylistSlug(x.slug);
+                  setTime("");
+                }}
+                className={choice(stylistSlug === x.slug)}
+              >
+                <span className="block text-base">{x.name}</span>
+                <span className="mt-1 block text-xs opacity-60">{x.role}</span>
+              </button>
+            ))}
+          </div>
+        </Step>
 
-      {/* Step 3: date + time */}
-      <fieldset className="mb-8">
-        <legend className="mb-3 text-lg text-black">3. Datum & tijd</legend>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="date" className="mb-1 block text-sm text-black/60">Datum</label>
-            <select
-              id="date"
-              value={date}
-              onChange={(e) => {
-                setDate(e.target.value);
-                setTime("");
-              }}
-              className="w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none"
-            >
-              <option value="" disabled>Kies een datum</option>
-              {dates.map((d) => (
-                <option key={d} value={d}>{dateLabel(d)}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="time" className="mb-1 block text-sm text-black/60">Tijd</label>
-            <select
-              id="time"
-              value={time}
-              disabled={!date}
-              onChange={(e) => setTime(e.target.value)}
-              className="w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:border-black focus:outline-none disabled:opacity-40"
-            >
-              <option value="" disabled>
-                {date ? (slots.length ? "Kies een tijd" : "Geen vrije tijden") : "Kies eerst een datum"}
-              </option>
-              {slots.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </fieldset>
+        <Step n={3} title="Datum & tijd">
+          <div className="grid gap-6 md:grid-cols-[1.15fr_1fr]">
+            {/* Calendar */}
+            <div className="rounded-3xl bg-black p-5 text-offwhite md:p-6">
+              <p className="mb-4 text-center text-lg font-light capitalize">
+                <span className="accent text-gold">{mounted ? monthLabel : " "}</span>
+              </p>
+              <div className="grid grid-cols-7 gap-1 text-center text-[11px] uppercase tracking-wider text-offwhite/40">
+                {WEEKDAYS.map((w) => (
+                  <span key={w} className="py-1">{w}</span>
+                ))}
+              </div>
+              <div className="mt-1 grid min-h-64 grid-cols-7 gap-1">
+                {mounted && weeks.flat().map((iso, i) => {
+                  if (!iso) return <span key={i} />;
+                  const closed = isClosed(iso);
+                  const active = iso === date;
+                  return (
+                    <button
+                      key={iso}
+                      type="button"
+                      disabled={closed}
+                      aria-label={longDate(iso)}
+                      aria-pressed={active}
+                      onClick={() => {
+                        setDate(iso);
+                        setTime("");
+                      }}
+                      className="relative flex aspect-square items-center justify-center rounded-full text-sm transition-colors disabled:cursor-not-allowed disabled:text-offwhite/20 enabled:hover:bg-offwhite/10"
+                    >
+                      {active && (
+                        <motion.span
+                          layoutId="day"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          className="absolute inset-0.5 rounded-full bg-gold"
+                        />
+                      )}
+                      <span className={`relative ${active ? "text-black" : ""} ${closed ? "line-through" : ""}`}>
+                        {new Date(`${iso}T00:00:00`).getDate()}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-4 text-center text-[11px] text-offwhite/40">Maandag en zondag gesloten</p>
+            </div>
 
-      {/* Step 4: contact info */}
-      <fieldset>
-        <legend className="mb-3 text-lg text-black">4. Jouw gegevens</legend>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label htmlFor="name" className="mb-1 block text-sm text-black/60">Naam</label>
-            <input
-              id="name"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
-            />
+            {/* Times */}
+            <div>
+              <AnimatePresence mode="wait">
+                {!date ? (
+                  <motion.p
+                    key="pick"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex h-full min-h-40 items-center justify-center rounded-3xl border border-dashed border-black/15 p-6 text-center text-sm text-black/45"
+                  >
+                    Kies eerst een dag in de kalender
+                  </motion.p>
+                ) : (
+                  <motion.div
+                    key={date}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -16 }}
+                    transition={{ duration: 0.4, ease }}
+                  >
+                    <p className="mb-4 text-lg font-light capitalize">{longDate(date)}</p>
+                    {slots.length === 0 ? (
+                      <p className="text-sm text-black/50">Geen vrije tijden meer op deze dag.</p>
+                    ) : (
+                      <div className="grid grid-cols-3 gap-2">
+                        {slots.map((sl, i) => (
+                          <motion.button
+                            key={sl}
+                            type="button"
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.03, duration: 0.4, ease }}
+                            onClick={() => setTime(sl)}
+                            className={`rounded-full border py-2.5 text-sm transition-colors ${
+                              time === sl
+                                ? "border-black bg-black text-offwhite"
+                                : "border-black/15 hover:border-black"
+                            }`}
+                          >
+                            {sl}
+                          </motion.button>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm text-black/60">E-mail</label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="mb-1 block text-sm text-black/60">Telefoon</label>
-            <input
-              id="phone"
-              required
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="notes" className="mb-1 block text-sm text-black/60">Opmerking (optioneel)</label>
-            <input
-              id="notes"
-              value={form.notes}
-              onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full rounded-xl border border-black/15 px-4 py-2.5 text-sm focus:border-black focus:outline-none"
-            />
-          </div>
-        </div>
-      </fieldset>
+        </Step>
 
-      <button
-        type="button"
-        disabled={!date || !time || !form.name || !form.email || !form.phone}
-        onClick={submit}
-        className="mt-8 w-full rounded-full bg-gold-muted py-3.5 text-sm text-offwhite hover:bg-black disabled:cursor-not-allowed disabled:opacity-30"
-      >
-        Afspraak bevestigen
-      </button>
+        <Step n={4} title="Jouw gegevens">
+          <div className="grid gap-4 md:grid-cols-2">
+            {(
+              [
+                ["name", "Naam", "text", "name"],
+                ["email", "E-mailadres", "email", "email"],
+                ["phone", "Telefoon", "tel", "tel"],
+                ["notes", "Opmerking (optioneel)", "text", "off"],
+              ] as const
+            ).map(([key, label, type, ac]) => (
+              <label key={key} className="block">
+                <span className="mb-1.5 block text-xs text-black/55">{label}</span>
+                <input
+                  type={type}
+                  autoComplete={ac}
+                  required={key !== "notes"}
+                  value={form[key]}
+                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  className="w-full rounded-full border border-black/15 bg-offwhite px-5 py-3 text-sm transition-colors focus:border-black focus:outline-none"
+                />
+              </label>
+            ))}
+          </div>
+        </Step>
+      </div>
+
+      {/* Sticky summary */}
+      <aside className="lg:sticky lg:top-28 lg:self-start">
+        <div className="rounded-3xl bg-ivory p-7">
+          <p className="text-xl font-light">
+            Jouw <span className="accent text-gold-muted">afspraak</span>
+          </p>
+          <dl className="mt-6 space-y-4 text-sm">
+            {[
+              ["Behandeling", `${t.name} · ${t.duration}`],
+              ["Stylist", s.name],
+              ["Datum", date ? longDate(date) : "Nog niet gekozen"],
+              ["Tijd", time || "Nog niet gekozen"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-4 border-b border-black/10 pb-3">
+                <dt className="text-black/50">{k}</dt>
+                <AnimatePresence mode="wait">
+                  <motion.dd
+                    key={v}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-right capitalize"
+                  >
+                    {v}
+                  </motion.dd>
+                </AnimatePresence>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-5 flex items-baseline justify-between">
+            <span className="text-sm text-black/50">Totaal</span>
+            <span className="text-2xl font-light">{t.price}</span>
+          </div>
+          <button
+            type="button"
+            disabled={!ready}
+            onClick={() => setConfirmed(createBooking({ ...form, treatment, stylistSlug, date, time }))}
+            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold-muted disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            Afspraak bevestigen
+          </button>
+          <p className="mt-3 text-center text-[11px] text-black/45">Kosteloos annuleren tot 12 uur van tevoren</p>
+        </div>
+      </aside>
+    </div>
     </div>
   );
 }

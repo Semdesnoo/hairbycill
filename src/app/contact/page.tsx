@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
-import CancelBooking from "./CancelBooking";
+import CancelBooking from "@/components/CancelBooking";
 import { business, openingHours } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -65,7 +65,7 @@ export default function ContactPage() {
             <h2 className="text-2xl">
               Afspraak <span className="accent text-gold-muted">annuleren</span>
             </h2>
-            <p className="mb-5 mt-2 text-xs text-black/55">Vul je boekingsnummer en e-mailadres in.</p>
+            <p className="mb-5 mt-2 text-xs text-black/55">Vul je e-mailadres en de annuleringscode uit je bevestiging in.</p>
             <CancelBooking />
           </div>
         </Reveal>
