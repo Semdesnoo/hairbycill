@@ -52,14 +52,14 @@ export const stylists: Stylist[] = [
     name: "Noor",
     role: "Colorist",
     image:
-      "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
   },
   {
     slug: "any",
     name: "Geen voorkeur",
     role: "Eerste beschikbare stylist",
     image:
-      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -309,7 +309,7 @@ export const team: TeamMember[] = [
     bio: "7 jaar ervaring in kleuren en balayage. Bij haar ben je in vertrouwde handen.",
     email: "noor@hairbycill.nl",
     image:
-      "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
   },
   {
     name: "Lisa",
@@ -317,7 +317,7 @@ export const team: TeamMember[] = [
     bio: "5 jaar ervaring in knippen en föhnen. Bij haar ben je in vertrouwde handen.",
     email: "lisa@hairbycill.nl",
     image:
-      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
   },
   {
     name: "Emma",
@@ -325,7 +325,7 @@ export const team: TeamMember[] = [
     bio: "12 jaar ervaring in verzorging en advies. Bij haar ben je in vertrouwde handen.",
     email: "emma@hairbycill.nl",
     image:
-      "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -333,10 +333,10 @@ export const team: TeamMember[] = [
 export const galleryImages: { src: string; aspect: "portrait" | "square" | "landscape" }[] = [
   { src: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
   { src: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
-  { src: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
-  { src: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
+  { src: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
+  { src: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
   { src: "https://images.unsplash.com/photo-1554519515-242161756769?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
-  { src: "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
+  { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
   { src: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
   { src: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
   { src: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },

@@ -42,7 +42,7 @@ export default function PrijslijstPage() {
       <CTA
         title="Klaar voor"
         accent="jouw moment?"
-        image="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1600&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1600&auto=format&fit=crop"
       />
     </>
   );

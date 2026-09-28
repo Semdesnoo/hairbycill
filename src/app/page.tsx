@@ -445,7 +445,7 @@ export default function Home() {
         {/* BOOKING CTA band */}
         <section className="px-4 pb-20 md:px-14">
           <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-black px-6 py-20 text-center text-offwhite">
-            <Image src={u("1522337660859-02fbefca4702", 1600)} alt="" fill sizes="100vw" className="object-cover opacity-45" />
+            <Image src={u("1438761681033-6461ffad8d80", 1600)} alt="" fill sizes="100vw" className="object-cover opacity-45" />
             <div className="relative z-10">
               <AnimatedHeading
                 lines={["Klaar voor"]}

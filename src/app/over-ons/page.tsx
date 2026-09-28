@@ -51,7 +51,7 @@ export default function OverOnsPage() {
           </Reveal>
         </div>
         <ImageReveal
-          src="https://images.unsplash.com/photo-1522336572468-97b06e8ef143?q=80&w=1200&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1200&auto=format&fit=crop"
           alt="Hair by Cill styling"
           className="aspect-[4/4.5] w-full rounded-2xl"
           sizes="(min-width: 768px) 45vw, 100vw"
@@ -128,7 +128,7 @@ export default function OverOnsPage() {
       <CTA
         title="Klaar voor"
         accent="een nieuwe look?"
-        image="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1920&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1920&auto=format&fit=crop"
       />
     </>
   );
