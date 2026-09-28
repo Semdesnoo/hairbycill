@@ -12,8 +12,8 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  // Product detail pages start on cream, not on a dark photo hero.
-  const hasDarkHero = !/^\/producten\/[^/]+/.test(pathname);
+  // Product and blog detail pages start on cream, not on a dark photo hero.
+  const hasDarkHero = !/^\/(producten|blog)\/[^/]+/.test(pathname);
   const { scrollY } = useScroll();
 
   useEffect(() => setOpen(false), [pathname]);
