@@ -11,18 +11,13 @@ import Accordion from "@/components/Accordion";
 import CTA from "@/components/CTA";
 import {
   business,
-  galleryImages,
   openingHours,
-  priceList,
   reviews,
   team,
   treatments,
 } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-
-// Compacte prijslijst voor de homepage: eerste item per categorie + extra's.
-const topPrices = priceList.flatMap((cat) => cat.items.slice(0, 1));
 
 const dayAbbr: Record<string, string> = {
   Maandag: "MA",
@@ -75,51 +70,69 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STYLES GRID + TOP PRICES — two columns like the reference */}
-      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
-        <div className="grid gap-16 md:grid-cols-2">
-          <div>
-            <h2 className="font-display border-b border-black/15 pb-3 text-2xl">
-              Populaire looks
-            </h2>
-            <div className="mt-6 grid grid-cols-4 gap-3">
-              {[...galleryImages, ...galleryImages.slice(0, 2)].map((img, i) => (
-                <Reveal key={`${img.src}-${i}`} delay={i * 0.04}>
-                  <div className="relative aspect-square overflow-hidden">
-                    <Image
-                      src={img.src}
-                      alt="Hair by Cill look"
-                      fill
-                      sizes="(min-width: 768px) 12vw, 25vw"
-                      className="object-cover transition-transform duration-500 hover:scale-105"
-                    />
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+      {/* NIEUWE LOOK — staggered collage with vertical labels (reference layout) */}
+      <section className="bg-ivory px-6 py-20 md:py-28">
+        <div className="mx-auto grid max-w-[1200px] gap-6 md:grid-cols-2 md:gap-8">
+          {/* Left column: two staggered images */}
+          <div className="flex flex-col gap-6 md:gap-8">
+            <Reveal className="md:mr-12">
+              <Link href="/prijslijst" className="group relative block aspect-[4/3] overflow-hidden rounded-xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1200&auto=format&fit=crop"
+                  alt="Knippen en styling bij Hair by Cill"
+                  fill
+                  sizes="(min-width: 768px) 45vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
+                  Knippen &amp; Styling
+                </span>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.1} className="md:ml-16">
+              <Link href="/prijslijst" className="group relative block aspect-[4/5] overflow-hidden rounded-xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200&auto=format&fit=crop"
+                  alt="Haarkleuren bij Hair by Cill"
+                  fill
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
+                  Kleuren
+                </span>
+              </Link>
+            </Reveal>
           </div>
 
-          <div>
-            <h2 className="font-display border-b border-black/15 pb-3 text-2xl">
-              Onze prijzen
-            </h2>
-            <ul className="mt-6">
-              {topPrices.map((item) => (
-                <li
-                  key={item.name}
-                  className="flex items-baseline justify-between gap-4 border-b border-dashed border-black/20 py-3.5"
-                >
-                  <span className="text-sm">{item.name}</span>
-                  <span className="font-display text-sm text-gold-muted">{item.price}</span>
-                </li>
-              ))}
-            </ul>
-            <Link href="/prijslijst" className="group mt-6 inline-flex items-center gap-2 text-sm">
-              <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
-                VOLLEDIGE PRIJSLIJST
-              </span>
-              <span className="transition-transform group-hover:translate-x-1.5">→</span>
-            </Link>
+          {/* Right column: heading + CTA, then image */}
+          <div className="flex flex-col gap-10 md:gap-12 md:pt-10">
+            <Reveal delay={0.05}>
+              <h2 className="font-serif normal-case tracking-normal text-[clamp(2.25rem,4vw,3.25rem)] leading-[1.15]">
+                <span className="block text-warm-grey">Voor jou een</span>
+                <span className="block">nieuwe look.</span>
+              </h2>
+              <Link
+                href="/afspraak"
+                className="mt-8 inline-block rounded-md border border-black/25 px-6 py-2.5 text-sm text-black/70 transition-colors hover:border-gold hover:text-gold-muted"
+              >
+                Afspraak maken
+              </Link>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <Link href="/prijslijst" className="group relative block aspect-[4/5] overflow-hidden rounded-xl md:aspect-[5/6]">
+                <Image
+                  src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop"
+                  alt="Alle behandelingen van Hair by Cill"
+                  fill
+                  sizes="(min-width: 768px) 45vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute bottom-4 left-4 [writing-mode:vertical-rl] rotate-180 text-sm font-semibold tracking-wide text-white drop-shadow-md">
+                  Alle behandelingen ontdekken
+                </span>
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
