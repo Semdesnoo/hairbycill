@@ -279,9 +279,9 @@ export default function Home() {
 
         {/* TEAM: copy left, two portraits right, one aligned block */}
         <section className="relative px-6 py-24 md:px-14 md:py-32">
-          {/* Full-width faded scissors (user's reference photo, cut out) spanning the About/Team seam */}
+          {/* Full-width faded vector scissors (redrawn from the user's photo, stays sharp at any size) spanning the About/Team seam */}
           <motion.img
-            src={`${BASE_PATH}/scissors.png`}
+            src={`${BASE_PATH}/scissors.svg`}
             alt=""
             aria-hidden
             initial={{ opacity: 0, rotate: -14, scale: 0.94 }}
