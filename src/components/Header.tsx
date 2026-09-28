@@ -6,10 +6,6 @@ import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { navLinks, business } from "@/lib/data";
 
-const mid = Math.ceil(navLinks.length / 2);
-const leftLinks = navLinks.slice(0, mid);
-const rightLinks = navLinks.slice(mid);
-
 export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -18,61 +14,73 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-black/10 bg-white">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-2 items-center px-6 py-4 md:grid-cols-3">
-          <nav className="hidden md:flex items-center gap-8">
-            {leftLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm tracking-wide ${
-                  pathname === link.href ? "text-black/40" : "text-black/70 hover:text-black"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <Link href="/" className="justify-self-start text-center md:justify-self-center">
-            <div className="font-display text-xl tracking-[0.35em] text-black md:text-2xl">
-              {business.name.toUpperCase()}
+      <header className="fixed top-0 inset-x-0 z-50">
+        {/* Topbar */}
+        <div className="hidden bg-black text-offwhite/70 md:block">
+          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-2 text-xs tracking-wide">
+            <div className="flex items-center gap-8">
+              <a href={business.phoneHref} className="hover:text-gold">
+                Bel of maak een afspraak: {business.phone}
+              </a>
+              <span className="text-offwhite/50">{business.address}</span>
+              <a href={`mailto:${business.email}`} className="hover:text-gold">
+                {business.email}
+              </a>
             </div>
-            <div className="mt-0.5 text-[10px] tracking-[0.3em] text-black/50">
-              {business.tagline.toUpperCase()}
+            <div className="flex items-center gap-5">
+              <a href={business.instagram} className="hover:text-gold">
+                Instagram
+              </a>
+              <a href={business.facebook} className="hover:text-gold">
+                Facebook
+              </a>
             </div>
-          </Link>
-
-          <div className="hidden items-center justify-end gap-8 md:flex">
-            {rightLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm tracking-wide ${
-                  pathname === link.href ? "text-black/40" : "text-black/70 hover:text-black"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Link
-              href="/afspraak"
-              className="rounded-[6px] bg-black px-5 py-2.5 text-sm tracking-wide text-offwhite transition-colors hover:bg-soft-black"
-            >
-              Afspraak maken
-            </Link>
           </div>
+        </div>
 
-          <button
-            aria-label="Menu"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-            className="justify-self-end flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
-          >
-            <span className={`block h-px w-6 bg-black transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`block h-px w-6 bg-black transition-opacity ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-px w-6 bg-black transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
-          </button>
+        {/* Nav */}
+        <div className="border-b border-offwhite/10 bg-soft-black">
+          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-3">
+            <Link href="/" className="leading-tight">
+              <span className="font-display block text-xl tracking-[0.15em] text-offwhite">
+                {business.name.toUpperCase()}
+              </span>
+              <span className="block text-[10px] tracking-[0.3em] text-gold">
+                {business.tagline.toUpperCase()}
+              </span>
+            </Link>
+
+            <nav className="hidden items-center gap-7 md:flex">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`font-display text-sm tracking-[0.12em] ${
+                    pathname === link.href ? "text-gold" : "text-offwhite/80 hover:text-gold"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/afspraak"
+                className="font-display bg-gold px-5 py-2.5 text-sm tracking-[0.12em] text-black transition-colors hover:bg-gold-muted"
+              >
+                Afspraak maken
+              </Link>
+            </nav>
+
+            <button
+              aria-label="Menu"
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+            >
+              <span className={`block h-px w-6 bg-offwhite transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
+              <span className={`block h-px w-6 bg-offwhite transition-opacity ${open ? "opacity-0" : ""}`} />
+              <span className={`block h-px w-6 bg-offwhite transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+            </button>
+          </div>
         </div>
       </header>
 

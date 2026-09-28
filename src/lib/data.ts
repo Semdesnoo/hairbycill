@@ -232,23 +232,81 @@ export const products: Product[] = [
   },
 ];
 
-export type Review = { name: string; treatment: string; text: string };
+export type Review = { name: string; treatment: string; text: string; image: string };
 
 export const reviews: Review[] = [
   {
     name: "Sanne V.",
     treatment: "Balayage",
     text: "Ik ben iedere keer weer ontzettend blij met mijn haar. Er wordt echt naar je geluisterd en er wordt uitgebreid de tijd genomen.",
+    image:
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=400&auto=format&fit=crop",
   },
   {
     name: "Fleur D.",
     treatment: "Knippen & kleuren",
     text: "Eindelijk een salon die precies begrijpt wat ik bedoel. Het resultaat overtreft elke keer mijn verwachting.",
+    image:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop",
   },
   {
     name: "Mila K.",
     treatment: "Highlights",
     text: "Professioneel, warm en oprecht persoonlijk advies. Ik kom voor geen enkele andere kapper meer.",
+    image:
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    name: "Lotte B.",
+    treatment: "Styling",
+    text: "Een verademing voor de branche. Stijlvol, modern en een omgeving waarin je je meteen thuis voelt.",
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+  },
+];
+
+// Team-weergave op de homepage. Los van `stylists` zodat de boekingswizard
+// alleen echte boekbare stylisten toont.
+export type TeamMember = {
+  name: string;
+  role: string;
+  bio: string;
+  email: string;
+  image: string;
+};
+
+export const team: TeamMember[] = [
+  {
+    name: "Cill",
+    role: "Eigenaar & senior stylist",
+    bio: "10 jaar ervaring in knippen en stylen. Bij haar ben je in vertrouwde handen.",
+    email: "cill@hairbycill.nl",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    name: "Noor",
+    role: "Colorist",
+    bio: "7 jaar ervaring in kleuren en balayage. Bij haar ben je in vertrouwde handen.",
+    email: "noor@hairbycill.nl",
+    image:
+      "https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    name: "Lisa",
+    role: "Stylist",
+    bio: "5 jaar ervaring in knippen en föhnen. Bij haar ben je in vertrouwde handen.",
+    email: "lisa@hairbycill.nl",
+    image:
+      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    name: "Emma",
+    role: "Haarspecialist",
+    bio: "12 jaar ervaring in verzorging en advies. Bij haar ben je in vertrouwde handen.",
+    email: "emma@hairbycill.nl",
+    image:
+      "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=800&auto=format&fit=crop",
   },
 ];
 

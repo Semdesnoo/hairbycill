@@ -3,6 +3,7 @@
 @theme {
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Oswald", "Arial Narrow", sans-serif;
 
   --color-black: #080808;
   --color-soft-black: #141414;
@@ -44,7 +45,9 @@ h1,
 h2,
 h3,
 .font-display {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 @keyframes marquee {
