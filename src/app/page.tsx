@@ -100,7 +100,7 @@ export default function Home() {
       {/* Framed page: rounded cream sheet on espresso, like the reference */}
       <div className="mx-auto max-w-[1440px] overflow-hidden bg-offwhite md:rounded-t-[2rem]">
         {/* HERO */}
-        <section className="relative min-h-[100svh] overflow-hidden bg-black md:min-h-[760px]">
+        <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black md:min-h-[760px]">
           <video
             src={`${BASE_PATH}/hero.mp4`}
             autoPlay
@@ -111,7 +111,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/70" />
 
-          <div className="relative z-10 px-6 pt-32 md:px-14 md:pt-40">
+          <div className="relative z-10 px-6 py-32 md:px-14">
             <AnimatedHeading
               as="h1"
               lines={["Jouw haar,"]}
@@ -139,33 +139,34 @@ export default function Home() {
               </Link>
             </motion.div>
           </div>
+        </section>
 
-          {/* Arched treatment portraits */}
-          <div className="absolute inset-x-0 bottom-8 z-10 flex gap-2 overflow-x-auto px-6 [scrollbar-width:none] md:justify-center md:px-14">
-            {[...treatments, ...treatments].slice(0, 8).map((t, i) => (
-              <motion.div
-                key={`${t.slug}-${i}`}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 + i * 0.06, ease }}
-                className="shrink-0"
-              >
+        {/* TREATMENTS: arched portraits */}
+        <section className="px-6 pt-20 md:px-14 md:pt-24">
+          <AnimatedHeading
+            lines={["Onze"]}
+            accent="behandelingen"
+            className="text-center text-4xl leading-[1.05] md:text-5xl"
+          />
+          <div className="mt-12 flex snap-x gap-3 overflow-x-auto [scrollbar-width:none] md:justify-center md:gap-4">
+            {treatments.map((t, i) => (
+              <Reveal key={t.slug} delay={i * 0.06} className="shrink-0 snap-start">
                 <Link
                   href={`/afspraak?treatment=${t.slug}`}
-                  className="group relative block h-40 w-24 overflow-hidden rounded-full md:h-52 md:w-32"
+                  className="group relative block h-60 w-36 overflow-hidden rounded-full md:h-80 md:w-48"
                 >
                   <Image
-                    src={i < treatments.length ? t.image : galleryImages[i].src}
+                    src={t.image}
                     alt={t.name}
                     fill
-                    sizes="130px"
+                    sizes="200px"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pb-4 pt-8 text-center text-[11px] text-offwhite">
+                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pb-6 pt-12 text-center text-sm text-offwhite">
                     {t.name}
                   </span>
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </section>
