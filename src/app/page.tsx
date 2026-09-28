@@ -11,6 +11,16 @@ import { business, openingHours, products, team, treatments } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+const dayAbbr: Record<string, string> = {
+  Maandag: "MA",
+  Dinsdag: "DI",
+  Woensdag: "WO",
+  Donderdag: "DO",
+  Vrijdag: "VR",
+  Zaterdag: "ZA",
+  Zondag: "ZO",
+};
+
 const MONTHS = [
   "Januari", "Februari", "Maart", "April", "Mei", "Juni",
   "Juli", "Augustus", "September", "Oktober", "November", "December",
@@ -130,6 +140,36 @@ export default function Home() {
               →
             </span>
           </Link>
+        </div>
+      </section>
+
+      {/* OPENING HOURS BAND — dark photo strip with day circles */}
+      <section className="relative overflow-hidden bg-black py-16 md:py-20">
+        <Image
+          src="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1920&auto=format&fit=crop"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-25"
+        />
+        <div className="relative z-10 mx-auto flex max-w-[1400px] flex-wrap items-center justify-center gap-4 px-6 md:gap-6">
+          {openingHours.map((o, i) => {
+            const closed = o.hours === "Gesloten";
+            return (
+              <Reveal key={o.day} delay={i * 0.05}>
+                <div
+                  className={`flex h-24 w-24 flex-col items-center justify-center rounded-full md:h-28 md:w-28 ${
+                    closed ? "bg-soft-black text-offwhite/60" : "bg-gold text-black"
+                  }`}
+                >
+                  <span className="font-display text-xl md:text-2xl">{dayAbbr[o.day]}</span>
+                  <span className="mt-1 text-[10px] tracking-wide md:text-xs">
+                    {closed ? "GESLOTEN" : o.hours}
+                  </span>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
