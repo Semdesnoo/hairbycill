@@ -95,3 +95,13 @@ h3,
   color: transparent;
   padding-right: 0.08em; /* italic overhang would otherwise clip the last letter */
 }
+
+/* iOS Safari zooms the page into any focused field with font-size < 16px. Keep every form field at
+   16px on touch-sized screens so tapping an input never zooms; desktop keeps the designed sizes. */
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
