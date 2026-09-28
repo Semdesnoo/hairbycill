@@ -1,22 +1,17 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { business, galleryImages, openingHours, reviews, team, tips, treatments } from "@/lib/data";
-import { availableSlots, nextBookableDates } from "@/lib/bookingApi";
+import { galleryImages, openingHours, reviews, team, tips, treatments } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
-
-const dateLabel = (iso: string) =>
-  new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
 
 /** Round arrow button used by sliders. */
 function Arrow({ dir, onClick, dark = false }: { dir: "prev" | "next"; onClick: () => void; dark?: boolean }) {
@@ -31,56 +26,6 @@ function Arrow({ dir, onClick, dark = false }: { dir: "prev" | "next"; onClick: 
     >
       {dir === "prev" ? "←" : "→"}
     </button>
-  );
-}
-
-/** Compact booking form: picks treatment/date/time, hands off to /afspraak. */
-function QuickBooking() {
-  const router = useRouter();
-  const [treatment, setTreatment] = useState(treatments[0].slug);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const dates = useMemo(() => nextBookableDates(), []);
-  const slots = useMemo(() => (date ? availableSlots(date, "any") : []), [date]);
-
-  const cls =
-    "rounded-full border border-offwhite/30 bg-offwhite/15 px-4 py-2.5 text-sm text-offwhite backdrop-blur-sm focus:border-offwhite focus:outline-none disabled:opacity-40 [&>option]:text-black";
-
-  return (
-    <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-      <select aria-label="Behandeling" value={treatment} onChange={(e) => setTreatment(e.target.value)} className={cls}>
-        {treatments.map((t) => (
-          <option key={t.slug} value={t.slug}>{t.name}</option>
-        ))}
-      </select>
-      <select
-        aria-label="Datum"
-        value={date}
-        onChange={(e) => { setDate(e.target.value); setTime(""); }}
-        className={cls}
-      >
-        <option value="" disabled>Kies een datum</option>
-        {dates.map((d) => (
-          <option key={d} value={d}>{dateLabel(d)}</option>
-        ))}
-      </select>
-      <select aria-label="Tijd" value={time} disabled={!date} onChange={(e) => setTime(e.target.value)} className={cls}>
-        <option value="" disabled>
-          {date ? (slots.length ? "Kies een tijd" : "Gesloten") : "Tijd"}
-        </option>
-        {slots.map((s) => (
-          <option key={s} value={s}>{s}</option>
-        ))}
-      </select>
-      <button
-        type="button"
-        disabled={!date || !time}
-        onClick={() => router.push(`/afspraak?treatment=${treatment}&date=${date}&time=${time}`)}
-        className="rounded-full bg-offwhite px-6 py-2.5 text-sm text-black transition-colors hover:bg-gold disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        Plan je afspraak
-      </button>
-    </div>
   );
 }
 
@@ -439,23 +384,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* BOOKING CTA band */}
-        <section className="px-4 pb-20 md:px-14">
-          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-black px-6 py-20 text-center text-offwhite">
-            <Image src={u("1438761681033-6461ffad8d80", 1600)} alt="" fill sizes="100vw" className="object-cover opacity-45" />
-            <div className="relative z-10">
-              <AnimatedHeading
-                lines={["Klaar voor"]}
-                accent="jouw moment?"
-                className="text-4xl leading-[1.05] md:text-5xl"
-              />
-              <p className="mx-auto mt-4 max-w-md text-sm text-offwhite/75">
-                Kies je behandeling en een vrij moment. Of bel ons op {business.phone}.
-              </p>
-              <QuickBooking />
-            </div>
-          </div>
-        </section>
     </>
   );
 }
