@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { openingHours, reviews, team, tips, treatments } from "@/lib/data";
+import { openingHours, team, tips, treatments } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
@@ -29,13 +29,62 @@ function Arrow({ dir, onClick, dark = false }: { dir: "prev" | "next"; onClick: 
   );
 }
 
+/** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
+const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
+const ROWS = [WORK.slice(0, 7), WORK.slice(7)];
+
+function WorkMarquee() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  // Spring on top of scroll progress = buttery, momentum-like glide instead of 1:1 jitter.
+  const p = useSpring(scrollYProgress, { stiffness: 60, damping: 20, mass: 0.4 });
+  const toRight = useTransform(p, [0, 1], ["-30%", "0%"]);
+  const toLeft = useTransform(p, [0, 1], ["0%", "-30%"]);
+
+  return (
+    <section ref={ref} className="overflow-hidden bg-ivory/60 py-24 md:py-28">
+      <AnimatedHeading
+        lines={["Resultaten van"]}
+        accent="ons werk"
+        className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
+      />
+      <p className="mx-auto mt-4 max-w-sm px-6 text-center text-sm text-black/60">
+        Echte klanten, echte transformaties uit onze salon.
+      </p>
+      <div className="mt-14 flex flex-col gap-4 md:gap-5">
+        {ROWS.map((row, r) => (
+          <motion.div
+            key={r}
+            style={{ x: r === 0 ? toRight : toLeft }}
+            className="flex w-max gap-4 will-change-transform md:gap-5"
+          >
+            {/* Row repeated 3x so it always overfills the widest screens while moving */}
+            {[...row, ...row, ...row].map((src, i) => (
+              <div
+                key={i}
+                className="relative aspect-[4/3.6] w-[200px] shrink-0 overflow-hidden rounded-2xl md:w-[260px]"
+              >
+                <Image
+                  src={src}
+                  alt={i < row.length ? "Resultaat van Hair by Cill" : ""}
+                  fill
+                  sizes="260px"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            ))}
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const teamRef = useRef<HTMLDivElement>(null);
   const [teamProgress, setTeamProgress] = useState(0);
   const openDays = openingHours.filter((o) => o.hours !== "Gesloten");
   const [day, setDay] = useState(openDays[0].day);
-  const [review, setReview] = useState(0);
-  const r = reviews[review];
 
   const scrollTeam = (dir: 1 | -1) =>
     teamRef.current?.scrollBy({ left: dir * teamRef.current.clientWidth * 0.8, behavior: "smooth" });
@@ -288,35 +337,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TESTIMONIAL */}
-        <section className="bg-ivory/60 px-6 py-24 md:py-28">
-          <AnimatedHeading
-            lines={["Verhalen van"]}
-            accent="transformatie"
-            className="text-center text-4xl leading-[1.05] md:text-5xl"
-          />
-          <p className="mx-auto mt-4 max-w-sm text-center text-sm text-black/60">
-            Wat onze klanten zeggen na hun afspraak.
-          </p>
-          <div className="mx-auto mt-14 grid max-w-4xl items-center gap-10 md:grid-cols-[260px_1fr]">
-            <div className="relative aspect-[4/3.6] overflow-hidden rounded-2xl">
-              <Image src={r.image} alt={r.name} fill sizes="260px" className="object-cover" />
-            </div>
-            <motion.div key={review} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }}>
-              <p className="text-xl leading-snug md:text-2xl">&ldquo;{r.text}&rdquo;</p>
-              <div className="mt-8 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium">{r.name}</p>
-                  <p className="text-xs text-black/50">{r.treatment}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Arrow dir="prev" onClick={() => setReview((review - 1 + reviews.length) % reviews.length)} />
-                  <Arrow dir="next" dark onClick={() => setReview((review + 1) % reviews.length)} />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+        {/* OUR WORK: two scroll-driven rows */}
+        <WorkMarquee />
 
         {/* TIPS */}
         <section className="px-6 py-24 md:px-14 md:py-28">
