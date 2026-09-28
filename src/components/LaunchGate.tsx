@@ -20,7 +20,7 @@ const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
 // Discount mail to the subscriber via EmailJS (free: 200/month), sent from info@hairbycill.nl
 // over Mijndomein SMTP. Template = docs/emailjs-welkomstmail.html (welcome + discount code, one mail). Empty ids = step skipped,
 // the signup itself (Web3Forms) still works.
-const EMAILJS = { service: "", template: "", publicKey: "" };
+const EMAILJS = { service: "service_ana3dki", template: "template_k80f7zl", publicKey: "nPF3Dcdcmjpvhe8SO" };
 export const DISCOUNT_CODE = "HAIRBYCILL2026";
 
 /** "28 november 2026": discount deadline, 2 months after signup. */
