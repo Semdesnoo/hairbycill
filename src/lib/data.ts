@@ -41,16 +41,16 @@ export type Stylist = { slug: string; name: string; role: string; image: string 
 
 export const stylists: Stylist[] = [
   {
-    slug: "cill",
-    name: "Cill",
-    role: "Eigenaar & senior stylist",
+    slug: "priscilla",
+    name: "Priscilla",
+    role: "Eigenaar & stylist",
     image:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
   },
   {
-    slug: "noor",
-    name: "Noor",
-    role: "Colorist",
+    slug: "mellissa",
+    name: "Mellissa",
+    role: "Stylist",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
   },
@@ -306,36 +306,20 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    name: "Cill",
-    role: "Eigenaar & senior stylist",
-    bio: "10 jaar ervaring in knippen en stylen. Bij haar ben je in vertrouwde handen.",
-    email: "cill@hairbycill.nl",
+    name: "Priscilla",
+    role: "Eigenaar & stylist",
+    bio: "Oprichter van Hair by Cill. Bij haar ben je in vertrouwde handen.",
+    email: "priscilla@hairbycill.nl",
     image:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
   },
   {
-    name: "Noor",
-    role: "Colorist",
-    bio: "7 jaar ervaring in kleuren en balayage. Bij haar ben je in vertrouwde handen.",
-    email: "noor@hairbycill.nl",
+    name: "Mellissa",
+    role: "Stylist",
+    bio: "Knippen, kleuren en stylen met oog voor detail. Bij haar ben je in vertrouwde handen.",
+    email: "mellissa@hairbycill.nl",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    name: "Lisa",
-    role: "Stylist",
-    bio: "5 jaar ervaring in knippen en föhnen. Bij haar ben je in vertrouwde handen.",
-    email: "lisa@hairbycill.nl",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    name: "Emma",
-    role: "Haarspecialist",
-    bio: "12 jaar ervaring in verzorging en advies. Bij haar ben je in vertrouwde handen.",
-    email: "emma@hairbycill.nl",
-    image:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop",
   },
 ];
 

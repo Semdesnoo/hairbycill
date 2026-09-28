@@ -77,11 +77,11 @@ export default function OverOnsPage() {
         </div>
       </section>
 
-      {/* MEET CILL */}
+      {/* MEET PRISCILLA */}
       <section className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-[5fr_7fr] md:items-center md:py-32">
         <ImageReveal
           src={team[0].image}
-          alt="Cill, eigenaresse Hair by Cill"
+          alt="Priscilla, eigenaresse Hair by Cill"
           className="aspect-[4/5] w-full rounded-2xl"
           sizes="(min-width: 768px) 40vw, 100vw"
         />
@@ -90,7 +90,7 @@ export default function OverOnsPage() {
             &ldquo;Het mooiste resultaat is haar waarin iemand{" "}
             <span className="accent text-gold-muted">zichzelf herkent.</span>&rdquo;
           </p>
-          <p className="mt-4 text-sm text-black/50">Cill, eigenaresse</p>
+          <p className="mt-4 text-sm text-black/50">Priscilla, eigenaresse</p>
           <p className="mt-8 max-w-md text-sm leading-relaxed text-black/60">
             Al jaren draait mijn werk om meer dan alleen haar knippen of kleuren. Het gaat om
             vertrouwen, luisteren en het beste resultaat neerzetten voor iedere klant die bij mij in
@@ -106,7 +106,7 @@ export default function OverOnsPage() {
           accent="team"
           className="text-center text-4xl leading-[1.05] md:text-5xl"
         />
-        <div className="mx-auto mt-14 grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-2">
           {team.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.06}>
               <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ivory">

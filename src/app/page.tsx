@@ -13,22 +13,6 @@ import { openingHours, team, tips, treatments } from "@/lib/data";
 const ease = [0.16, 1, 0.3, 1] as const;
 const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
 
-/** Round arrow button used by sliders. */
-function Arrow({ dir, onClick, dark = false }: { dir: "prev" | "next"; onClick: () => void; dark?: boolean }) {
-  return (
-    <button
-      type="button"
-      aria-label={dir === "prev" ? "Vorige" : "Volgende"}
-      onClick={onClick}
-      className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-        dark ? "bg-gold-muted text-offwhite hover:bg-black" : "border border-black/20 hover:border-black"
-      }`}
-    >
-      {dir === "prev" ? "←" : "→"}
-    </button>
-  );
-}
-
 /** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
 const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
 const ROWS = [WORK.slice(0, 7), WORK.slice(7)];
@@ -81,13 +65,8 @@ function WorkMarquee() {
 }
 
 export default function Home() {
-  const teamRef = useRef<HTMLDivElement>(null);
-  const [teamProgress, setTeamProgress] = useState(0);
   const openDays = openingHours.filter((o) => o.hours !== "Gesloten");
   const [day, setDay] = useState(openDays[0].day);
-
-  const scrollTeam = (dir: 1 | -1) =>
-    teamRef.current?.scrollBy({ left: dir * teamRef.current.clientWidth * 0.8, behavior: "smooth" });
 
   return (
     <>
@@ -320,18 +299,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div
-            ref={teamRef}
-            onScroll={(e) => {
-              const el = e.currentTarget;
-              setTeamProgress(el.scrollLeft / Math.max(1, el.scrollWidth - el.clientWidth));
-            }}
-            className="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto [scrollbar-width:none]"
-          >
-            {team.map((m) => (
-              <div key={m.name} className="w-[82%] shrink-0 snap-start sm:w-[45%] lg:w-[calc((100%-2.5rem)/3)]">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            {team.map((m, i) => (
+              <Reveal key={m.name} delay={i * 0.1}>
                 <div className="relative aspect-[4/3.4] overflow-hidden rounded-2xl bg-ivory">
-                  <Image src={m.image} alt={m.name} fill sizes="(min-width:1024px) 33vw, 80vw" className="object-cover" />
+                  <Image src={m.image} alt={m.name} fill sizes="(min-width:640px) 50vw, 100vw" className="object-cover" />
                   <span className="absolute bottom-3 left-3 rounded-full bg-offwhite/90 px-3 py-1 text-[10px]">
                     {m.role}
                   </span>
@@ -340,19 +312,12 @@ export default function Home() {
                   {m.name} <span className="accent text-gold-muted">stylist</span>
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-black/55">{m.bio}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
 
-          <div className="mt-10 flex items-center justify-between gap-6 border-t border-black/10 pt-8">
+          <div className="mt-10 border-t border-black/10 pt-8">
             <Button href="/afspraak">Afspraak maken</Button>
-            <div className="hidden h-px w-40 bg-black/10 md:block">
-              <div className="h-px bg-black transition-all" style={{ width: `${25 + teamProgress * 75}%` }} />
-            </div>
-            <div className="flex gap-2">
-              <Arrow dir="prev" onClick={() => scrollTeam(-1)} />
-              <Arrow dir="next" dark onClick={() => scrollTeam(1)} />
-            </div>
           </div>
         </section>
 

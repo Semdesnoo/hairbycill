@@ -24,7 +24,7 @@ const inHours = (h: number) => {
   const d = new Date(Date.now() + h * 3_600_000);
   return { date: api.isoDate(d), time: `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}` };
 };
-const base = { name: "Sanne", email: "Sanne@Mail.nl", phone: "0612345678", treatment: "knippen", stylistSlug: "cill", notes: "", newsletter: true };
+const base = { name: "Sanne", email: "Sanne@Mail.nl", phone: "0612345678", treatment: "knippen", stylistSlug: "priscilla", notes: "", newsletter: true };
 
 const far = api.createBooking({ ...base, ...inHours(48) });
 const near = api.createBooking({ ...base, ...inHours(6) });
