@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { navLinks, business } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -14,62 +16,46 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50">
-        {/* Topbar */}
-        <div className="hidden bg-black text-offwhite/70 md:block">
-          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-2 text-xs tracking-wide">
-            <div className="flex items-center gap-8">
-              <a href={business.phoneHref} className="hover:text-gold">
-                Bel of maak een afspraak: {business.phone}
-              </a>
-              <span className="text-offwhite/50">{business.address}</span>
-              <a href={`mailto:${business.email}`} className="hover:text-gold">
-                {business.email}
-              </a>
-            </div>
-            <div className="flex items-center gap-5">
-              <a href={business.instagram} className="hover:text-gold">
-                Instagram
-              </a>
-              <a href={business.facebook} className="hover:text-gold">
-                Facebook
-              </a>
-            </div>
-          </div>
-        </div>
+      {/* Floating glassy pill bar over the hero */}
+      <header className="fixed top-3 inset-x-3 z-50 md:top-5 md:inset-x-6">
+        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between rounded-2xl border border-offwhite/10 bg-black/60 px-4 py-2.5 backdrop-blur-md md:rounded-3xl md:px-6">
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src={`${BASE_PATH}/logo.jpg`}
+              alt="Hair by Cill logo"
+              width={44}
+              height={44}
+              className="rounded-full"
+              priority
+            />
+            <span className="font-display hidden text-lg tracking-[0.15em] text-offwhite sm:block">
+              {business.name.toUpperCase()}
+            </span>
+          </Link>
 
-        {/* Nav */}
-        <div className="border-b border-offwhite/10 bg-soft-black">
-          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-3">
-            <Link href="/" className="leading-tight">
-              <span className="font-display block text-xl tracking-[0.15em] text-offwhite">
-                {business.name.toUpperCase()}
-              </span>
-              <span className="block text-[10px] tracking-[0.3em] text-gold">
-                {business.tagline.toUpperCase()}
-              </span>
-            </Link>
-
-            <nav className="hidden items-center gap-7 md:flex">
-              {navLinks.map((link) => (
+          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
+            {navLinks
+              .filter((l) => l.href !== "/" && l.href !== "/afspraak")
+              .map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-display text-sm tracking-[0.12em] ${
-                    pathname === link.href ? "text-gold" : "text-offwhite/80 hover:text-gold"
+                  className={`text-sm tracking-wide ${
+                    pathname === link.href ? "text-gold" : "text-offwhite/85 hover:text-gold"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/afspraak"
-                className="font-display bg-gold px-5 py-2.5 text-sm tracking-[0.12em] text-black transition-colors hover:bg-gold-muted"
-              >
-                Afspraak maken
-              </Link>
-            </nav>
+          </nav>
 
+          <div className="flex items-center gap-3">
+            <Link
+              href="/afspraak"
+              className="hidden rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted md:block"
+            >
+              Afspraak maken
+            </Link>
             <button
               aria-label="Menu"
               aria-expanded={open}

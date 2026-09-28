@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Afspraak maken" };
 
 export default function AfspraakPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-20 md:py-32">
+    <section className="mx-auto max-w-3xl px-6 pb-20 pt-28 md:pb-32 md:pt-36">
       <AnimatedHeading
         as="h1"
         lines={["MAAK EEN", "AFSPRAAK."]}

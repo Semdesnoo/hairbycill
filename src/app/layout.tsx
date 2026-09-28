@@ -69,7 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <Header />
-        <main className="flex-1 pt-[62px] md:pt-[95px]">{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer />
         <MobileStickyCta />
       </body>
