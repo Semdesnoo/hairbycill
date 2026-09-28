@@ -24,12 +24,17 @@ export default function AnimatedHeading({
   return (
     <Tag className={className}>
       {lines.map((line, i) => (
-        <span key={line} className="block overflow-hidden">
+        // In-view trigger on the MASK: the moving text starts clipped by overflow-hidden, so observing it never fires.
+        <motion.span
+          key={line}
+          className="block overflow-hidden"
+          initial="hidden"
+          whileInView="shown"
+          viewport={{ once: true, margin: "-10%" }}
+        >
           <motion.span
             className="block"
-            initial={{ y: "110%" }}
-            whileInView={{ y: "0%" }}
-            viewport={{ once: true, margin: "-10%" }}
+            variants={{ hidden: { y: "110%" }, shown: { y: "0%" } }}
             transition={{
               duration: 0.8,
               delay: delay + i * 0.09,
@@ -39,7 +44,7 @@ export default function AnimatedHeading({
             {line}
             {accent && i === lines.length - 1 && <span className="accent"> {accent}</span>}
           </motion.span>
-        </span>
+        </motion.span>
       ))}
     </Tag>
   );
