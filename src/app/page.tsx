@@ -277,47 +277,49 @@ export default function Home() {
           <Button href="/over-ons" className="mt-6">Meer over ons</Button>
         </section>
 
-        {/* TEAM slider */}
-        <section className="border-t border-black/5 px-6 py-24 md:px-14 md:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-8">
+        {/* TEAM: copy left, two portraits right, one aligned block */}
+        <section className="border-t border-black/5 px-6 py-24 md:px-14 md:py-32">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
             <div>
               <AnimatedHeading
                 lines={["Gestyled met aandacht,", "geknipt"]}
                 accent="met liefde"
                 className="text-4xl leading-[1.05] md:text-5xl"
               />
-              <p className="mt-4 max-w-xs text-sm text-black/60">
-                Een team dat luistert, meedenkt en weet wat jouw haar nodig heeft.
+              <p className="mt-5 max-w-sm text-sm leading-relaxed text-black/60">
+                Een klein team dat luistert, meedenkt en weet wat jouw haar nodig heeft. Bij ons zit je
+                altijd bij een vast, vertrouwd gezicht.
               </p>
+              <div className="mt-7 flex max-w-sm flex-wrap gap-2 text-[11px]">
+                {["Persoonlijk", "Gecertificeerd", "Ervaren", "Duurzaam"].map((c) => (
+                  <span key={c} className="rounded-full border border-black/15 px-4 py-1.5">
+                    {c}
+                  </span>
+                ))}
+              </div>
+              <Button href="/afspraak" className="mt-10">Afspraak maken</Button>
             </div>
-            <div className="grid max-w-xs grid-cols-2 gap-2 text-[11px]">
-              {["Persoonlijk", "Gecertificeerd", "Ervaren", "Duurzaam"].map((c) => (
-                <span key={c} className="rounded-full border border-black/15 px-4 py-1.5 text-center">
-                  {c}
-                </span>
+
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+              {team.map((m, i) => (
+                <Reveal key={m.name} delay={i * 0.12} className={i === 1 ? "mt-12 md:mt-16" : ""}>
+                  <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-ivory">
+                    <Image
+                      src={m.image}
+                      alt={m.name}
+                      fill
+                      sizes="(min-width:1024px) 320px, 50vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  <p className="mt-4 text-lg">
+                    {m.name} <span className="accent text-gold-muted">stylist</span>
+                  </p>
+                  <p className="mt-0.5 text-[11px] uppercase tracking-wider text-black/45">{m.role}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-black/55">{m.bio}</p>
+                </Reveal>
               ))}
             </div>
-          </div>
-
-          <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
-            {team.map((m, i) => (
-              <Reveal key={m.name} delay={i * 0.1}>
-                <div className="relative aspect-[4/3.4] overflow-hidden rounded-2xl bg-ivory">
-                  <Image src={m.image} alt={m.name} fill sizes="(min-width:640px) 384px, 100vw" className="object-cover" />
-                  <span className="absolute bottom-3 left-3 rounded-full bg-offwhite/90 px-3 py-1 text-[10px]">
-                    {m.role}
-                  </span>
-                </div>
-                <p className="mt-4 text-lg">
-                  {m.name} <span className="accent text-gold-muted">stylist</span>
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-black/55">{m.bio}</p>
-              </Reveal>
-            ))}
-          </div>
-
-          <div className="mt-10 border-t border-black/10 pt-8">
-            <Button href="/afspraak">Afspraak maken</Button>
           </div>
         </section>
 
