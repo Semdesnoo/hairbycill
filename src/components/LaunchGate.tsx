@@ -91,7 +91,7 @@ function Waitlist() {
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6 py-24 text-offwhite">
       <video
-        src={`${BASE_PATH}/hero.mp4`}
+        src={`${BASE_PATH}/hero-2.mp4`}
         autoPlay
         muted
         loop

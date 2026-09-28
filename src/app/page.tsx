@@ -74,7 +74,7 @@ export default function Home() {
         {/* HERO */}
         <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black">
           <video
-            src={`${BASE_PATH}/hero.mp4`}
+            src={`${BASE_PATH}/hero-2.mp4`}
             autoPlay
             muted
             loop
