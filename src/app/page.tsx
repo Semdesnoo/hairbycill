@@ -137,7 +137,7 @@ export default function Home() {
         </section>
 
         {/* TREATMENTS: arched portraits */}
-        <section className="px-6 pt-20 md:px-14 md:pt-24">
+        <section className="px-6 py-20 md:px-14 md:py-24">
           <AnimatedHeading
             lines={["Onze"]}
             accent="behandelingen"
@@ -163,6 +163,76 @@ export default function Home() {
                 </Link>
               </Reveal>
             ))}
+          </div>
+        </section>
+
+        {/* SERVICES: dark band with day tabs + treatment table */}
+        <section className="relative overflow-hidden bg-black px-4 py-24 text-offwhite md:px-14 md:py-28">
+          <Image src={u("1633681926022-84c23e8cb2d6", 1800)} alt="" fill sizes="100vw" className="object-cover opacity-20" />
+          <div className="relative z-10">
+            <AnimatedHeading
+              lines={["Vind een behandeling"]}
+              accent="die bij je past"
+              className="mx-auto max-w-lg text-center text-4xl leading-[1.05] md:text-5xl"
+            />
+            <p className="mx-auto mt-4 max-w-sm text-center text-sm text-offwhite/60">
+              Kies je dag, kies je behandeling. Wij zorgen voor de rest.
+            </p>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-1.5">
+              {openingHours.map((o) => {
+                const closed = o.hours === "Gesloten";
+                return (
+                  <button
+                    key={o.day}
+                    type="button"
+                    disabled={closed}
+                    onClick={() => setDay(o.day)}
+                    className={`rounded-full px-4 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
+                      day === o.day ? "bg-offwhite text-black" : "bg-offwhite/10 hover:bg-offwhite/20"
+                    }`}
+                  >
+                    {o.day.slice(0, 2)}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-black/70 p-3 backdrop-blur-md md:p-5">
+              <p className="px-3 pb-3 text-xs text-offwhite/50">
+                {day}: {openingHours.find((o) => o.day === day)?.hours}
+              </p>
+              {treatments.map((t, i) => (
+                <div
+                  key={t.slug}
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-offwhite/10 px-3 py-4 md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto]"
+                >
+                  <span className="hidden text-xs text-offwhite/50 md:block">0{i + 1}</span>
+                  <p className="text-sm">
+                    {t.name} <span className="accent text-gold">{t.accent}</span>
+                  </p>
+                  <div className="relative hidden h-10 w-16 overflow-hidden rounded-lg md:block">
+                    <Image src={t.image} alt="" fill sizes="64px" className="object-cover" />
+                  </div>
+                  <p className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{t.description}</p>
+                  <p className="whitespace-nowrap text-xs text-offwhite/80">
+                    {t.duration} • {t.price}
+                  </p>
+                  <Link
+                    href={`/afspraak?treatment=${t.slug}`}
+                    className={`rounded-full px-4 py-1.5 text-xs transition-colors ${
+                      i === 0 ? "bg-offwhite text-black" : "border border-offwhite/25 hover:bg-offwhite hover:text-black"
+                    }`}
+                  >
+                    Boek
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <Button href="/prijslijst" variant="light">Bekijk alle prijzen</Button>
+            </div>
           </div>
         </section>
 
@@ -269,76 +339,6 @@ export default function Home() {
             <div className="flex gap-2">
               <Arrow dir="prev" onClick={() => scrollTeam(-1)} />
               <Arrow dir="next" dark onClick={() => scrollTeam(1)} />
-            </div>
-          </div>
-        </section>
-
-        {/* SERVICES: dark band with day tabs + treatment table */}
-        <section className="relative overflow-hidden bg-black px-4 py-24 text-offwhite md:px-14 md:py-28">
-          <Image src={u("1633681926022-84c23e8cb2d6", 1800)} alt="" fill sizes="100vw" className="object-cover opacity-20" />
-          <div className="relative z-10">
-            <AnimatedHeading
-              lines={["Vind een behandeling"]}
-              accent="die bij je past"
-              className="mx-auto max-w-lg text-center text-4xl leading-[1.05] md:text-5xl"
-            />
-            <p className="mx-auto mt-4 max-w-sm text-center text-sm text-offwhite/60">
-              Kies je dag, kies je behandeling. Wij zorgen voor de rest.
-            </p>
-
-            <div className="mt-8 flex flex-wrap justify-center gap-1.5">
-              {openingHours.map((o) => {
-                const closed = o.hours === "Gesloten";
-                return (
-                  <button
-                    key={o.day}
-                    type="button"
-                    disabled={closed}
-                    onClick={() => setDay(o.day)}
-                    className={`rounded-full px-4 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
-                      day === o.day ? "bg-offwhite text-black" : "bg-offwhite/10 hover:bg-offwhite/20"
-                    }`}
-                  >
-                    {o.day.slice(0, 2)}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-black/70 p-3 backdrop-blur-md md:p-5">
-              <p className="px-3 pb-3 text-xs text-offwhite/50">
-                {day}: {openingHours.find((o) => o.day === day)?.hours}
-              </p>
-              {treatments.map((t, i) => (
-                <div
-                  key={t.slug}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-offwhite/10 px-3 py-4 md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto]"
-                >
-                  <span className="hidden text-xs text-offwhite/50 md:block">0{i + 1}</span>
-                  <p className="text-sm">
-                    {t.name} <span className="accent text-gold">{t.accent}</span>
-                  </p>
-                  <div className="relative hidden h-10 w-16 overflow-hidden rounded-lg md:block">
-                    <Image src={t.image} alt="" fill sizes="64px" className="object-cover" />
-                  </div>
-                  <p className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{t.description}</p>
-                  <p className="whitespace-nowrap text-xs text-offwhite/80">
-                    {t.duration} • {t.price}
-                  </p>
-                  <Link
-                    href={`/afspraak?treatment=${t.slug}`}
-                    className={`rounded-full px-4 py-1.5 text-xs transition-colors ${
-                      i === 0 ? "bg-offwhite text-black" : "border border-offwhite/25 hover:bg-offwhite hover:text-black"
-                    }`}
-                  >
-                    Boek
-                  </Link>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 text-center">
-              <Button href="/prijslijst" variant="light">Bekijk alle prijzen</Button>
             </div>
           </div>
         </section>
