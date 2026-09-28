@@ -354,7 +354,7 @@ export default function Home() {
             accent="onze salon"
             className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
           />
-          <div className="mt-14 grid auto-rows-[160px] grid-cols-2 gap-3 px-3 md:auto-rows-[190px] md:grid-cols-4">
+          <div className="mt-14 grid grid-flow-dense auto-rows-[160px] grid-cols-2 gap-3 px-3 md:auto-rows-[190px] md:grid-cols-4">
             {galleryImages.map((g, i) => (
               <Reveal
                 key={g.src}
