@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import ImageReveal from "@/components/ImageReveal";
+import { BASE_PATH } from "@/lib/basePath";
 import Reveal from "@/components/Reveal";
 import Accordion from "@/components/Accordion";
 import CTA from "@/components/CTA";
@@ -32,13 +32,15 @@ const dayAbbr: Record<string, string> = {
 export default function Home() {
   return (
     <>
-      {/* HERO — full-width dark photo, right-aligned copy */}
+      {/* HERO — full-width video, right-aligned copy */}
       <section className="relative flex min-h-[560px] items-center overflow-hidden bg-black md:min-h-[640px]">
-        <ImageReveal
-          src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1920&auto=format&fit=crop"
-          alt="Hair by Cill kapsel"
-          className="absolute inset-0 h-full w-full opacity-60"
-          priority
+        <video
+          src={`${BASE_PATH}/hero.mp4`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/40 to-black/80" />
         <div className="relative z-10 mx-auto grid w-full max-w-[1400px] px-6 py-24 md:grid-cols-2">
