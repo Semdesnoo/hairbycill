@@ -257,13 +257,14 @@ export default function Home() {
             geweest.
           </p>
 
-          <div className="mx-auto mt-16 grid max-w-5xl divide-black/10 border-t border-black/10 md:grid-cols-3 md:divide-x">
+          {/* Mobile: swipeable snap row (next card peeks in); md+: 3-col grid */}
+          <div className="-mx-6 mt-16 flex snap-x snap-mandatory divide-x divide-black/10 overflow-x-auto border-t border-black/10 [scrollbar-width:none] md:mx-auto md:grid md:max-w-5xl md:grid-cols-3 md:overflow-visible">
             {[
               { n: "93", title: "Voelt zich", accent: "zelfverzekerder", text: "Klanten geven aan zich zekerder te voelen na hun eerste afspraak." },
               { n: "87", title: "Komt", accent: "graag terug", text: "Een warme salon vol vaste gezichten die zich thuis voelen." },
               { n: "95", title: "Tevreden over", accent: "het advies", text: "Persoonlijk advies dat past bij jouw haar en jouw ritme." },
             ].map((s) => (
-              <div key={s.n} className="px-8 py-10">
+              <div key={s.n} className="w-[78%] shrink-0 snap-center px-8 py-10 md:w-auto">
                 <p className="text-4xl font-light">
                   {s.n}<sup className="text-sm">%</sup>
                 </p>
