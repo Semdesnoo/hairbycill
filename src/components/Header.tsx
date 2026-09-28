@@ -12,6 +12,8 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  // Product detail pages start on cream, not on a dark photo hero.
+  const hasDarkHero = !/^\/producten\/[^/]+/.test(pathname);
   const { scrollY } = useScroll();
 
   useEffect(() => setOpen(false), [pathname]);
@@ -33,7 +35,7 @@ export default function Header() {
       >
         <div
           className={`relative flex items-center justify-between px-5 py-4 transition-colors duration-500 md:px-10 md:py-5 ${
-            scrolled ? "bg-black/55 backdrop-blur-md" : ""
+            scrolled || !hasDarkHero ? "bg-black/55 backdrop-blur-md" : ""
           }`}
         >
           <Link href="/" className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Accordion from "@/components/Accordion";
-import ImageReveal from "@/components/ImageReveal";
+import Image from "next/image";
 import ProductGrid from "@/components/ProductGrid";
 import Reveal from "@/components/Reveal";
 import { discountPct } from "@/components/ProductCard";
@@ -35,13 +35,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <div className="grid gap-10 lg:grid-cols-[1fr_minmax(420px,0.95fr)] lg:gap-14">
         {/* Photo: sticky while the details scroll by */}
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <ImageReveal
-            src={product.image}
-            alt={product.name}
-            className="aspect-square w-full rounded-2xl bg-ivory lg:aspect-[4/3.4]"
-            sizes="(min-width: 1024px) 52vw, 100vw"
-            priority
-          />
+          <Reveal className="relative aspect-square w-full overflow-hidden rounded-2xl bg-ivory lg:aspect-[4/3.4]">
+            <Image src={product.image} alt={product.name} fill priority sizes="(min-width: 1024px) 52vw, 100vw" className="object-cover" />
+          </Reveal>
         </div>
 
         <Reveal delay={0.1}>

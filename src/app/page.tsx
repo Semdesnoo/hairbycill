@@ -279,23 +279,17 @@ export default function Home() {
 
         {/* TEAM: copy left, two portraits right, one aligned block */}
         <section className="relative px-6 py-24 md:px-14 md:py-32">
-          {/* Line-art scissors straddling the About/Team seam, fading out at its edges */}
-          <motion.svg
+          {/* Full-width faded scissors (user's reference photo, cut out) spanning the About/Team seam */}
+          <motion.img
+            src={`${BASE_PATH}/scissors.png`}
+            alt=""
             aria-hidden
-            viewBox="0 0 24 24"
-            fill="none"
-            initial={{ opacity: 0, rotate: -40 }}
-            whileInView={{ opacity: 1, rotate: -20 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 1.6, ease }}
-            className="pointer-events-none absolute left-[2%] top-0 -z-0 w-[260px] -translate-y-1/2 stroke-gold-muted/25 [mask-image:radial-gradient(closest-side,black_55%,transparent)] md:left-[6%] md:w-[480px]"
-          >
-            <g strokeWidth={1.25} strokeLinecap="round" vectorEffect="non-scaling-stroke">
-              <circle cx="6" cy="6" r="3" vectorEffect="non-scaling-stroke" />
-              <circle cx="6" cy="18" r="3" vectorEffect="non-scaling-stroke" />
-              <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12" vectorEffect="non-scaling-stroke" />
-            </g>
-          </motion.svg>
+            initial={{ opacity: 0, rotate: -14, scale: 0.94 }}
+            whileInView={{ opacity: 0.09, rotate: -8, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1.8, ease }}
+            className="pointer-events-none absolute left-1/2 top-0 -z-10 w-[120vw] max-w-none -translate-x-1/2 -translate-y-1/2 select-none [mask-image:radial-gradient(closest-side,black_60%,transparent)]"
+          />
           <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
             <div>
               <AnimatedHeading
