@@ -5,7 +5,6 @@ import Link from "next/link";
 import Button from "@/components/Button";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import ImageReveal from "@/components/ImageReveal";
-import SectionLabel from "@/components/SectionLabel";
 import Reveal from "@/components/Reveal";
 import NumberedList from "@/components/NumberedList";
 import TreatmentList from "@/components/TreatmentList";
@@ -28,13 +27,13 @@ export default function Home() {
             <AnimatedHeading
               as="h1"
               lines={["AANDACHT MAAKT", "HET VERSCHIL."]}
-              className="font-display text-[clamp(2.75rem,6vw,5rem)] leading-[1.05] text-offwhite"
+              className="font-display text-[clamp(2.75rem,6vw,5rem)] leading-[1.05] text-soft-black"
             />
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.5, ease }}
-              className="mt-8 max-w-md text-base text-offwhite/80 md:text-lg"
+              className="mt-8 max-w-md text-base text-black/70 md:text-lg"
             >
               Jij staat centraal bij {business.name}. Met persoonlijke aandacht, professioneel
               vakmanschap en passie creëren we haar dat perfect aansluit bij wie jij bent.
@@ -48,8 +47,8 @@ export default function Home() {
               <Button href="/afspraak" variant="primary" className="!bg-black !text-offwhite hover:!bg-soft-black">
                 AFSPRAAK MAKEN
               </Button>
-              <Link href="/over-ons" className="group inline-flex items-center gap-2 text-sm tracking-widest text-offwhite/90">
-                <span className="border-b border-offwhite/40 pb-0.5 group-hover:border-offwhite">
+              <Link href="/over-ons" className="group inline-flex items-center gap-2 text-sm tracking-widest text-black/80">
+                <span className="border-b border-black/30 pb-0.5 group-hover:border-black">
                   ONTDEK HAIR BY CILL
                 </span>
               </Link>
@@ -74,7 +73,6 @@ export default function Home() {
       <section className="mx-auto max-w-[1400px] px-6 py-28 md:py-48">
         <div className="grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
           <div className="md:col-span-5">
-            <SectionLabel>The Salon</SectionLabel>
             <AnimatedHeading
               lines={["HAIR IS", "PERSONAL."]}
               className="font-display text-5xl leading-[1.02] md:text-7xl"
@@ -154,7 +152,6 @@ export default function Home() {
       {/* SERVICES — horizontal rows, not cards */}
       <section className="mx-auto max-w-[1400px] px-6 py-28 md:py-48">
         <div className="mb-16 max-w-xl">
-          <SectionLabel>Services</SectionLabel>
           <AnimatedHeading
             lines={["WHAT CAN WE DO", "FOR YOUR HAIR?"]}
             className="font-display text-5xl leading-[1.02] md:text-6xl"
@@ -199,7 +196,6 @@ export default function Home() {
       {/* PRODUCTS PREVIEW */}
       <section className="mx-auto max-w-[1400px] px-6 py-28 md:py-48">
         <div className="mb-16 max-w-xl">
-          <SectionLabel>Haircare</SectionLabel>
           <AnimatedHeading
             lines={["SALON HAIR", "AT HOME."]}
             className="font-display text-5xl leading-[1.02] md:text-6xl"

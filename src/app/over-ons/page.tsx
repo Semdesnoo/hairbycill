@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import SectionLabel from "@/components/SectionLabel";
 import ImageReveal from "@/components/ImageReveal";
 import Reveal from "@/components/Reveal";
 import CTA from "@/components/CTA";
@@ -36,7 +35,6 @@ export default function OverOnsPage() {
       <section className="mx-auto max-w-[1400px] px-6 py-28 md:py-48">
         <div className="grid gap-16 md:grid-cols-12 md:items-center">
           <div className="md:col-span-6">
-            <SectionLabel>Our Story</SectionLabel>
             <AnimatedHeading
               lines={["PASSION FOR", "BEAUTIFUL HAIR."]}
               className="font-display text-5xl leading-[1.02] md:text-6xl"
@@ -71,10 +69,12 @@ export default function OverOnsPage() {
             sizes="(min-width: 768px) 40vw, 100vw"
           />
           <div className="order-1 md:order-2 md:col-span-7">
-            <SectionLabel>Meet Cill</SectionLabel>
             <Reveal delay={0.15}>
               <p className="font-display text-3xl leading-snug italic md:text-4xl">
                 “Het mooiste resultaat is haar waarin iemand zichzelf herkent.”
+              </p>
+              <p className="mt-4 text-sm uppercase tracking-[0.25em] text-gold-muted">
+                Cill, eigenaresse
               </p>
               <p className="mt-8 max-w-md text-black/60">
                 Al jaren draait mijn werk om meer dan alleen haar knippen of kleuren. Het gaat om

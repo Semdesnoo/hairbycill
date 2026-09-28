@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import SectionLabel from "@/components/SectionLabel";
 import PriceList from "@/components/PriceList";
 import Reveal from "@/components/Reveal";
 import { priceList } from "@/lib/data";
@@ -15,7 +15,6 @@ export default function PrijslijstPage() {
   return (
     <>
       <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-40 md:pt-52">
-        <SectionLabel>Prijslijst</SectionLabel>
         <AnimatedHeading
           as="h1"
           lines={["BEAUTIFUL HAIR", "STARTS HERE."]}
@@ -32,18 +31,18 @@ export default function PrijslijstPage() {
           <h2 className="font-display text-3xl">Not sure what you need?</h2>
           <p className="mt-3 text-black/60">Wij denken graag met je mee.</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-8">
-            <a href="/contact" className="group inline-flex items-center gap-2 text-sm">
+            <Link href="/contact" className="group inline-flex items-center gap-2 text-sm">
               <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
                 CONTACT OPNEMEN
               </span>
               <span className="transition-transform group-hover:translate-x-1.5">→</span>
-            </a>
-            <a href="/afspraak" className="group inline-flex items-center gap-2 text-sm">
+            </Link>
+            <Link href="/afspraak" className="group inline-flex items-center gap-2 text-sm">
               <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
                 AFSPRAAK MAKEN
               </span>
               <span className="transition-transform group-hover:translate-x-1.5">→</span>
-            </a>
+            </Link>
           </div>
         </Reveal>
       </section>

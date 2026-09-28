@@ -57,7 +57,7 @@ export default function Header() {
             ))}
             <Link
               href="/afspraak"
-              className="rounded-[6px] bg-warm-grey px-5 py-2.5 text-sm tracking-wide text-white hover:bg-black"
+              className="rounded-[6px] bg-black px-5 py-2.5 text-sm tracking-wide text-offwhite transition-colors hover:bg-soft-black"
             >
               Afspraak maken
             </Link>
