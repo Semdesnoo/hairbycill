@@ -24,7 +24,7 @@ const inHours = (h: number) => {
   const d = new Date(Date.now() + h * 3_600_000);
   return { date: api.isoDate(d), time: `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}` };
 };
-const base = { name: "Sanne", email: "Sanne@Mail.nl", phone: "0612345678", treatment: "knippen", stylistSlug: "cill", notes: "" };
+const base = { name: "Sanne", email: "Sanne@Mail.nl", phone: "0612345678", treatment: "knippen", stylistSlug: "cill", notes: "", newsletter: true };
 
 const far = api.createBooking({ ...base, ...inHours(48) });
 const near = api.createBooking({ ...base, ...inHours(6) });
@@ -40,5 +40,7 @@ assert.equal(api.findBooking(far.code, base.email), undefined, "cancelled bookin
 assert.equal(api.isoDate(new Date(2026, 0, 1, 0, 30)), "2026-01-01", "isoDate uses local day, not UTC");
 assert.equal(api.isClosed("2026-09-28"), true, "Monday closed");
 assert.equal(api.isClosed("2026-09-29"), false, "Tuesday open");
+
+assert.equal(api.lastContact()?.email, base.email, "next booking prefills from previous one");
 
 console.log("booking checks OK");

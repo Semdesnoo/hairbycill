@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { treatments, stylists } from "@/lib/data";
-import { availableSlots, nextBookableDates, createBooking, isClosed, isoDate, Booking } from "@/lib/bookingApi";
+import { availableSlots, nextBookableDates, createBooking, isClosed, isoDate, lastContact, Booking } from "@/lib/bookingApi";
 
 const noop = () => () => {};
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -60,6 +60,7 @@ export default function BookingWizard() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
+  const [newsletter, setNewsletter] = useState(false);
   const [confirmed, setConfirmed] = useState<Booking | null>(null);
 
   // Dates depend on "today": false during static prerender, true in the browser.
@@ -88,6 +89,8 @@ export default function BookingWizard() {
     if (tq && treatments.some((x) => x.slug === tq)) setTreatment(tq);
     if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) setDate(d);
     if (tm && /^\d{2}:\d{2}$/.test(tm)) setTime(tm);
+    const known = lastContact(); // returning client: prefill from her previous booking
+    if (known) setForm((f) => ({ ...f, ...known }));
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
@@ -289,6 +292,15 @@ export default function BookingWizard() {
               </label>
             ))}
           </div>
+          <label className="mt-5 flex cursor-pointer items-start gap-3 text-sm text-black/65">
+            <input
+              type="checkbox"
+              checked={newsletter}
+              onChange={(e) => setNewsletter(e.target.checked)}
+              className="mt-1 h-4 w-4 accent-[var(--color-gold-muted)]"
+            />
+            Ja, stuur mij acties en haartips van Hair by Cill. Afmelden kan altijd.
+          </label>
         </Step>
       </div>
 
@@ -329,7 +341,7 @@ export default function BookingWizard() {
           <button
             type="button"
             disabled={!ready}
-            onClick={() => setConfirmed(createBooking({ ...form, treatment, stylistSlug, date, time }))}
+            onClick={() => setConfirmed(createBooking({ ...form, newsletter, treatment, stylistSlug, date, time }))}
             className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold-muted disabled:cursor-not-allowed disabled:opacity-30"
           >
             Afspraak bevestigen

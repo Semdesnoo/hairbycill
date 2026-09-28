@@ -7,18 +7,16 @@ import { saveConsent, getConsent } from "@/lib/bookingApi";
 
 const noop = () => () => {};
 
-/** Cookie consent + optional newsletter opt-in (explicit checkbox: AVG requires active consent for marketing mail). */
+/** Cookie consent. Newsletter opt-in lives in the booking form, where the email is entered anyway. */
 export default function CookieBanner() {
   const [dismissed, setDismissed] = useState(false);
   // Server snapshot = "consented" so nothing renders in the static HTML; client reads localStorage.
   const consented = useSyncExternalStore(noop, () => getConsent() !== null, () => true);
   const show = !consented && !dismissed;
-  const [email, setEmail] = useState("");
-  const [optIn, setOptIn] = useState(false);
 
 
   function close(cookies: "all" | "necessary") {
-    saveConsent({ cookies, email: optIn && /\S+@\S+\.\S+/.test(email) ? email.trim() : null });
+    saveConsent({ cookies });
     setDismissed(true);
   }
 
@@ -38,31 +36,9 @@ export default function CookieBanner() {
             Even over <span className="accent text-gold">cookies</span>
           </p>
           <p className="mt-2 text-sm leading-relaxed text-offwhite/65">
-            We gebruiken cookies om de site goed te laten werken en te verbeteren. Wil je ook als eerste onze
-            acties en haartips ontvangen? Laat je e-mail achter.
+            We gebruiken cookies om de site goed te laten werken, je gegevens te onthouden voor je volgende
+            afspraak en de site te verbeteren.
           </p>
-
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="Jouw e-mailadres (optioneel)"
-            aria-label="E-mailadres voor de nieuwsbrief"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (e.target.value) setOptIn(true);
-            }}
-            className="mt-4 w-full rounded-full border border-offwhite/20 bg-transparent px-5 py-3 text-sm placeholder:text-offwhite/40 focus:border-offwhite/70 focus:outline-none"
-          />
-          <label className="mt-3 flex cursor-pointer items-start gap-2.5 text-xs text-offwhite/60">
-            <input
-              type="checkbox"
-              checked={optIn}
-              onChange={(e) => setOptIn(e.target.checked)}
-              className="mt-0.5 accent-[var(--color-gold)]"
-            />
-            Ja, stuur mij acties en tips van Hair by Cill. Afmelden kan altijd.
-          </label>
 
           <div className="mt-5 flex flex-col gap-2 sm:flex-row">
             <button

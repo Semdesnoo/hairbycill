@@ -21,6 +21,8 @@ export type Booking = {
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
   notes: string;
+  /** Explicit opt-in for promo mail (AVG: unticked by default). */
+  newsletter: boolean;
   createdAt: string;
 };
 
@@ -123,10 +125,8 @@ export function stylistName(slug: string): string {
   return stylists.find((s) => s.slug === slug)?.name ?? slug;
 }
 
-// Cookie consent + newsletter emails.
-// ponytail: stored in the visitor's localStorage only, so the salon can't read these emails yet.
-// When the backend lands, POST `email` to it (e.g. Resend audience) inside saveConsent.
-export type Consent = { cookies: "all" | "necessary"; email: string | null; at: string };
+// Cookie consent.
+export type Consent = { cookies: "all" | "necessary"; at: string };
 const CONSENT_KEY = "hbc_consent";
 
 export function getConsent(): Consent | null {
@@ -139,4 +139,10 @@ export function getConsent(): Consent | null {
 
 export function saveConsent(c: Omit<Consent, "at">) {
   localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...c, at: new Date().toISOString() }));
+}
+
+/** Contact details of this browser's most recent booking, to prefill the next one (sites can't read the browser's account email). */
+export function lastContact(): Pick<Booking, "name" | "email" | "phone"> | null {
+  const b = readAll().at(-1);
+  return b ? { name: b.name, email: b.email, phone: b.phone } : null;
 }
