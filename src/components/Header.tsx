@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
-import { navLinks, business } from "@/lib/data";
+import { navLinks } from "@/lib/data";
 import { BASE_PATH } from "@/lib/basePath";
 
 export default function Header() {
@@ -18,30 +18,32 @@ export default function Header() {
     <>
       {/* Floating glassy pill bar over the hero */}
       <header className="fixed top-3 inset-x-3 z-50 md:top-5 md:inset-x-6">
-        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between rounded-2xl border border-offwhite/10 bg-black/60 px-4 py-2.5 backdrop-blur-md md:rounded-3xl md:px-6">
-          <Link href="/" className="flex items-center gap-3">
+        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between rounded-full bg-black/45 px-3 py-2 backdrop-blur-md md:px-4">
+          <Link href="/" className="flex items-center gap-2.5">
             <Image
               src={`${BASE_PATH}/logo.jpg`}
               alt="Hair by Cill logo"
-              width={44}
-              height={44}
+              width={36}
+              height={36}
               className="rounded-full"
               priority
             />
-            <span className="font-display hidden text-lg tracking-[0.15em] text-offwhite sm:block">
-              {business.name.toUpperCase()}
+            <span className="hidden text-base text-offwhite sm:block">
+              Hair <span className="accent text-gold">by</span> Cill
             </span>
           </Link>
 
-          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
+          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1.5 md:flex">
             {navLinks
-              .filter((l) => l.href !== "/" && l.href !== "/afspraak")
+              .filter((l) => l.href !== "/afspraak")
               .map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm tracking-wide ${
-                    pathname === link.href ? "text-gold" : "text-offwhite/85 hover:text-gold"
+                  className={`rounded-full px-4 py-1.5 text-xs transition-colors ${
+                    pathname === link.href
+                      ? "bg-offwhite text-black"
+                      : "bg-offwhite/15 text-offwhite hover:bg-offwhite/30"
                   }`}
                 >
                   {link.label}
@@ -52,7 +54,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/afspraak"
-              className="hidden rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted md:block"
+              className="hidden rounded-full bg-offwhite px-5 py-2 text-xs text-black transition-colors hover:bg-gold md:block"
             >
               Afspraak maken
             </Link>

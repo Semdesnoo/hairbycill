@@ -44,9 +44,9 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             <Link
               href="/afspraak"
               onClick={onClose}
-              className="rounded-[6px] bg-gold px-6 py-3.5 text-center text-sm tracking-wide text-black"
+              className="rounded-full bg-gold px-6 py-3.5 text-center text-sm tracking-wide text-black"
             >
-              AFSPRAAK MAKEN
+              Afspraak maken
             </Link>
             <div className="flex justify-between text-sm text-offwhite/60">
               <a href={business.instagram}>Instagram</a>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Oswald } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,12 +17,6 @@ const serif = Cormorant_Garamond({
 const sans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const heading = Oswald({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -62,7 +56,7 @@ const structuredData = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="nl" className={`${serif.variable} ${sans.variable} ${heading.variable} h-full antialiased`}>
+    <html lang="nl" className={`${serif.variable} ${sans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-offwhite text-black">
         <script
           type="application/ld+json"

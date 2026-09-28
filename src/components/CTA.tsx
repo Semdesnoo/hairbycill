@@ -5,7 +5,7 @@ import Button from "./Button";
 export default function CTA({
   lines,
   image,
-  ctaLabel = "AFSPRAAK MAKEN",
+  ctaLabel = "Afspraak maken",
   ctaHref = "/afspraak",
 }: {
   lines: string[];

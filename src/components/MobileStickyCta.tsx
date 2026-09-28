@@ -12,9 +12,9 @@ export default function MobileStickyCta() {
     <div className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-gold/20 bg-black/95 backdrop-blur-md px-6 py-3">
       <Link
         href="/afspraak"
-        className="block w-full rounded-[6px] bg-gold py-3 text-center text-sm tracking-wide text-black"
+        className="block w-full rounded-full bg-gold py-3 text-center text-sm tracking-wide text-black"
       >
-        AFSPRAAK MAKEN
+        Afspraak maken
       </Link>
     </div>
   );

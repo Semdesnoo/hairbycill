@@ -183,7 +183,7 @@ export default function BookingWizard() {
         onClick={submit}
         className="mt-8 w-full rounded-md bg-black py-3.5 text-sm tracking-wide text-offwhite disabled:cursor-not-allowed disabled:opacity-30"
       >
-        AFSPRAAK BEVESTIGEN
+        Afspraak bevestigen
       </button>
     </div>
   );

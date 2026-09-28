@@ -39,7 +39,7 @@ export default function PrijslijstPage() {
             </Link>
             <Link href="/afspraak" className="group inline-flex items-center gap-2 text-sm">
               <span className="border-b border-black/30 pb-0.5 group-hover:border-gold group-hover:text-gold-muted">
-                AFSPRAAK MAKEN
+                Afspraak maken
               </span>
               <span className="transition-transform group-hover:translate-x-1.5">→</span>
             </Link>

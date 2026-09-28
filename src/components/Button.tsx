@@ -4,32 +4,32 @@ import { ReactNode } from "react";
 type Props = {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "ghost";
+  variant?: "primary" | "light" | "ghost";
   className?: string;
 };
 
+/** Pill button with round arrow badge. */
 export default function Button({ href, children, variant = "primary", className = "" }: Props) {
-  if (variant === "ghost") {
-    return (
-      <Link
-        href={href}
-        className={`group inline-flex items-center gap-2 text-sm tracking-wide text-black ${className}`}
-      >
-        <span className="border-b border-black/30 pb-0.5 transition-colors group-hover:border-gold group-hover:text-gold-muted">
-          {children}
-        </span>
-        <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-      </Link>
-    );
-  }
+  const tone =
+    variant === "light"
+      ? "bg-offwhite text-black"
+      : variant === "ghost"
+        ? "border border-black/20 text-black"
+        : "bg-gold-muted text-offwhite";
+  const dot = variant === "light" ? "bg-black text-offwhite" : "bg-offwhite text-black";
 
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-2.5 rounded-[6px] bg-black px-7 py-3.5 text-sm tracking-wide text-offwhite transition-colors duration-250 hover:bg-soft-black ${className}`}
+      className={`group inline-flex items-center gap-3 rounded-full py-1.5 pl-5 pr-1.5 text-sm transition-opacity hover:opacity-90 ${tone} ${className}`}
     >
       {children}
-      <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+      <span
+        aria-hidden
+        className={`flex h-7 w-7 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5 ${dot}`}
+      >
+        →
+      </span>
     </Link>
   );
 }

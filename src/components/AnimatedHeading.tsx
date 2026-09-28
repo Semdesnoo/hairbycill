@@ -12,8 +12,11 @@ export default function AnimatedHeading({
   as: Tag = "h2",
   className = "",
   delay = 0,
+  accent,
 }: {
   lines: string[];
+  /** Italic serif word(s) appended to the last line. */
+  accent?: string;
   as?: ElementType;
   className?: string;
   delay?: number;
@@ -34,6 +37,7 @@ export default function AnimatedHeading({
             }}
           >
             {line}
+            {accent && i === lines.length - 1 && <span className="accent"> {accent}</span>}
           </motion.span>
         </span>
       ))}

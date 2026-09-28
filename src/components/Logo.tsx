@@ -14,11 +14,11 @@ export default function Logo({ dark = false, className = "" }: { dark?: boolean;
         priority
       />
       <span
-        className={`font-display leading-none text-base tracking-[0.1em] hidden sm:block ${
+        className={`font-display leading-none text-base text-lg hidden sm:block ${
           dark ? "text-offwhite" : "text-black"
         }`}
       >
-        HAIR <span className="text-gold">BY</span> CILL
+        Hair <span className="accent text-gold">by</span> Cill
       </span>
     </Link>
   );
