@@ -8,9 +8,9 @@ export default function Logo({ dark = false, className = "" }: { dark?: boolean;
       <Image
         src={`${BASE_PATH}/logo.jpg`}
         alt="Hair by Cill"
-        width={40}
-        height={40}
-        className="rounded-full"
+        width={56}
+        height={56}
+        className="rounded-full ring-1 ring-gold/40"
         priority
       />
       <span

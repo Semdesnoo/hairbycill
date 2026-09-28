@@ -96,7 +96,7 @@ export default function BuyBox({ product }: { product: Product }) {
         href={`${business.whatsappHref}?text=${encodeURIComponent(message)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold-muted"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6.2" />

@@ -60,7 +60,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
         <button
           type="submit"
           className={`rounded-full px-7 py-3 text-sm transition-colors ${
-            dark ? "bg-offwhite text-black hover:bg-gold" : "bg-gold-muted text-offwhite hover:bg-black"
+            dark ? "bg-offwhite text-black hover:bg-gold" : "bg-black text-offwhite hover:bg-gold hover:text-black"
           }`}
         >
           Zoeken

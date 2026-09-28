@@ -101,9 +101,6 @@ function Waitlist() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
 
-      <p className="absolute left-6 top-6 text-xl md:left-10 md:top-8 md:text-2xl">
-        Hair <span className="accent text-gold">by</span> Cill
-      </p>
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}
@@ -111,7 +108,15 @@ function Waitlist() {
         transition={{ duration: 1, ease }}
         className="relative z-10 w-full max-w-xl text-center"
       >
-        <span className="inline-block rounded-full border border-offwhite/25 bg-offwhite/10 px-4 py-1.5 text-xs backdrop-blur-sm">
+        {/* eslint-disable-next-line @next/next/no-img-element -- static export, tiny logo */}
+        <img
+          src={`${BASE_PATH}/logo.jpg`}
+          alt="Hair by Cill"
+          width={120}
+          height={120}
+          className="mx-auto mb-7 h-24 w-24 rounded-full shadow-[0_0_40px_rgba(210,174,98,0.25)] ring-1 ring-gold/40 md:h-28 md:w-28"
+        />
+        <span className="inline-block rounded-full border border-gold/40 bg-black/30 px-4 py-1.5 text-xs text-gold backdrop-blur-sm">
           Binnenkort open in Rhoon
         </span>
         <h1 className="mt-6 text-[clamp(2.5rem,7vw,4.75rem)] font-light leading-[0.95]">

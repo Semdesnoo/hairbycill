@@ -60,7 +60,7 @@ export default function ContactForm() {
 
       <button
         type="submit"
-        className="group inline-flex items-center gap-2.5 rounded-full bg-gold-muted px-7 py-3 text-sm text-offwhite transition-colors hover:bg-black"
+        className="group inline-flex items-center gap-2.5 rounded-full bg-black px-7 py-3 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black"
       >
         Verstuur bericht
         <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>

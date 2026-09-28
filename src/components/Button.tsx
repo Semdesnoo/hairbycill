@@ -15,8 +15,8 @@ export default function Button({ href, children, variant = "primary", className 
       ? "bg-offwhite text-black"
       : variant === "ghost"
         ? "border border-black/20 text-black"
-        : "bg-gold-muted text-offwhite";
-  const dot = variant === "light" ? "bg-black text-offwhite" : "bg-offwhite text-black";
+        : "bg-black text-offwhite";
+  const dot = variant === "light" ? "bg-black text-gold" : "bg-gold text-black";
 
   return (
     <Link

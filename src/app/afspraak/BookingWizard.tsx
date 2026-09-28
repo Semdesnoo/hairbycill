@@ -342,7 +342,7 @@ export default function BookingWizard() {
             type="button"
             disabled={!ready}
             onClick={() => setConfirmed(createBooking({ ...form, newsletter, treatment, stylistSlug, date, time }))}
-            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold-muted disabled:cursor-not-allowed disabled:opacity-30"
+            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
           >
             Afspraak bevestigen
           </button>
