@@ -92,7 +92,7 @@ export default function Home() {
   return (
     <>
         {/* HERO */}
-        <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black md:min-h-[760px]">
+        <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black">
           <video
             src={`${BASE_PATH}/hero.mp4`}
             autoPlay
@@ -128,10 +128,29 @@ export default function Home() {
               <Button href="/afspraak" variant="light">Plan je afspraak</Button>
             </motion.div>
           </div>
+
+          {/* Scroll cue: mouse outline with a dot gliding down */}
+          <motion.a
+            href="#behandelingen"
+            aria-label="Scroll naar beneden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-offwhite/70 transition-colors hover:text-offwhite"
+          >
+            <span className="flex h-10 w-6 justify-center rounded-full border border-current pt-2">
+              <motion.span
+                animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                className="block h-1.5 w-1 rounded-full bg-current"
+              />
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.25em]">Scroll</span>
+          </motion.a>
         </section>
 
         {/* TREATMENTS: arched portraits */}
-        <section className="px-6 py-20 md:px-14 md:py-24">
+        <section id="behandelingen" className="scroll-mt-20 px-6 py-20 md:px-14 md:py-24">
           <AnimatedHeading
             lines={["Onze"]}
             accent="behandelingen"
