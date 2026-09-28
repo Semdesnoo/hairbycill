@@ -153,6 +153,38 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SERVICES — heading left, three offset photo cards right */}
+      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
+        <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
+          <div>
+            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
+              Onze services
+            </h2>
+            <p className="mt-5 max-w-xs text-sm text-black/60">
+              Meer dan alleen knippen: een compleet aanbod van kleuren tot styling.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {treatments.slice(0, 3).map((t, i) => (
+              <Reveal key={t.slug} delay={i * 0.08} className={i === 1 ? "sm:mt-12" : ""}>
+                <Link href="/prijslijst" className="group relative block aspect-[3/4] overflow-hidden rounded-2xl">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    fill
+                    sizes="(min-width: 640px) 30vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-4 top-4 rounded-full bg-black/70 px-4 py-1.5 text-xs tracking-wide text-offwhite backdrop-blur-sm">
+                    {t.name}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* OPENING HOURS BAND — dark photo strip with day circles */}
       <section className="relative overflow-hidden bg-black py-16 md:py-20">
         <Image
@@ -258,35 +290,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES — heading left, three offset photo cards right */}
-      <section className="mx-auto max-w-[1400px] px-6 py-20 md:py-28">
-        <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
+      {/* PRODUCTS — heading + open store, four cards */}
+      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
+        <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
-              Onze services
+              Onze producten
             </h2>
-            <p className="mt-5 max-w-xs text-sm text-black/60">
-              Meer dan alleen knippen: een compleet aanbod van kleuren tot styling.
+            <p className="mt-5 max-w-sm text-sm text-black/60">
+              Verleng je salonresultaat thuis met professionele producten die je haar verzorgen
+              en beschermen.
             </p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-3">
-            {treatments.slice(0, 3).map((t, i) => (
-              <Reveal key={t.slug} delay={i * 0.08} className={i === 1 ? "sm:mt-12" : ""}>
-                <Link href="/prijslijst" className="group relative block aspect-[3/4] overflow-hidden rounded-2xl">
+          <Link
+            href="/producten"
+            className="rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
+          >
+            Bekijk de shop
+          </Link>
+        </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 0.06}>
+              <Link href={`/producten/${p.slug}`} className="group block">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-ivory">
                   <Image
-                    src={t.image}
-                    alt={t.name}
+                    src={p.image}
+                    alt={p.name}
                     fill
-                    sizes="(min-width: 640px) 30vw, 100vw"
+                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-black/70 px-4 py-1.5 text-xs tracking-wide text-offwhite backdrop-blur-sm">
-                    {t.name}
+                  <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-black/20 bg-white/90 transition-colors group-hover:border-gold">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      aria-hidden
+                    >
+                      <path d="M3 3h2l2.4 12.2a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20 7H6M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
+                    </svg>
                   </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+                </div>
+                <p className="mt-4 text-sm font-semibold">{p.name}</p>
+                <p className="mt-1 text-sm text-black/60">{p.price}</p>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -352,60 +406,6 @@ export default function Home() {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* PRODUCTS — heading + open store, four cards */}
-      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">
-              Onze producten
-            </h2>
-            <p className="mt-5 max-w-sm text-sm text-black/60">
-              Verleng je salonresultaat thuis met professionele producten die je haar verzorgen
-              en beschermen.
-            </p>
-          </div>
-          <Link
-            href="/producten"
-            className="rounded-full bg-gold px-6 py-2.5 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
-          >
-            Bekijk de shop
-          </Link>
-        </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.06}>
-              <Link href={`/producten/${p.slug}`} className="group block">
-                <div className="relative aspect-square overflow-hidden rounded-2xl bg-ivory">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    fill
-                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-black/20 bg-white/90 transition-colors group-hover:border-gold">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                      aria-hidden
-                    >
-                      <path d="M3 3h2l2.4 12.2a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20 7H6M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
-                    </svg>
-                  </span>
-                </div>
-                <p className="mt-4 text-sm font-semibold">{p.name}</p>
-                <p className="mt-1 text-sm text-black/60">{p.price}</p>
-              </Link>
-            </Reveal>
-          ))}
         </div>
       </section>
 
