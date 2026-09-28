@@ -85,31 +85,41 @@ export default function Home() {
           <div className="max-w-xl">
             <AnimatedHeading
               as="h1"
-              lines={["JOUW HAAR VERDIENT", "ECHTE AANDACHT."]}
+              lines={["JOUW HAAR,", "JOUW UITSTRALING."]}
               className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[1.08] text-offwhite [&>span:nth-child(2)]:text-gold"
             />
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease }}
+              className="mt-6 max-w-md text-sm leading-relaxed text-offwhite/80 md:text-base"
+            >
+              Bij {business.name} draait alles om haar dat écht bij jou past. Van een frisse
+              coupe en prachtige kleur tot een complete nieuwe look: met persoonlijke aandacht,
+              professioneel advies en oog voor detail.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55, ease }}
               className="mt-8"
             >
               <Link
                 href="/afspraak"
                 className="inline-block rounded-full bg-gold px-7 py-3 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
               >
-                Afspraak maken
+                Plan je afspraak
               </Link>
+              <p className="mt-6 text-sm text-offwhite/70">
+                Liever eerst overleggen?{" "}
+                <Link
+                  href="/prijslijst"
+                  className="border-b border-offwhite/40 pb-0.5 text-offwhite hover:border-gold hover:text-gold"
+                >
+                  Bekijk onze behandelingen
+                </Link>
+              </p>
             </motion.div>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55, ease }}
-              className="mt-8 max-w-sm text-sm leading-relaxed text-offwhite/75"
-            >
-              Ontdek een wereld van persoonlijke aandacht bij {business.name}. Onze salon is meer
-              dan een plek voor knippen; het is de plek waar jouw eigen stijl centraal staat.
-            </motion.p>
           </div>
         </div>
 
