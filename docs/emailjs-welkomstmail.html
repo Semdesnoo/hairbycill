@@ -1,0 +1,153 @@
+<!--
+  EmailJS template "welkomstmail" — sent to everyone who joins the waitlist on hairbycill.nl.
+
+  Paste in EmailJS > Email Templates > Create New Template:
+    Subject:    Welkom op de lijst! Je 10% korting bij Hair by Cill ✨
+    To Email:   {{to_email}}
+    From Name:  Priscilla & Mellissa | Hair by Cill
+    From Email: (use default = the connected SMTP service, info@hairbycill.nl)
+    Reply To:   info@hairbycill.nl
+  Content: switch the editor to "Code" (HTML) and paste everything below this comment.
+
+  Variables filled by the website: {{to_email}}, {{code}}, {{valid_until}}
+  Images load from hairbycill.nl, so keep those files online.
+-->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Welkom bij Hair by Cill</title>
+</head>
+<body style="margin:0;padding:0;background:#0e0c0a;">
+  <!-- Preheader (shown in the inbox preview line) -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+    Je staat op de lijst! Hier is je 10% openingskorting voor onze nieuwe salon in Rhoon.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0e0c0a;">
+    <tr>
+      <td align="center" style="padding:32px 12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#16130f;border:1px solid #3a3122;border-radius:20px;overflow:hidden;">
+
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding:36px 24px 20px;">
+              <img src="https://hairbycill.nl/logo.jpg" width="84" height="84" alt="Hair by Cill"
+                   style="display:block;border-radius:50%;border:1px solid #8b6e32;">
+            </td>
+          </tr>
+
+          <!-- Header photo from the salon -->
+          <tr>
+            <td style="padding:0 24px;">
+              <img src="https://hairbycill.nl/mail-header.jpg" width="512" alt="Een blije klant in onze salon"
+                   style="display:block;width:100%;max-width:512px;height:auto;border-radius:14px;">
+            </td>
+          </tr>
+
+          <!-- Heading -->
+          <tr>
+            <td align="center" style="padding:34px 32px 0;font-family:Georgia,'Times New Roman',serif;">
+              <p style="margin:0;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#d2ae62;font-family:Arial,Helvetica,sans-serif;">
+                Je staat op de lijst
+              </p>
+              <h1 style="margin:12px 0 0;font-size:34px;line-height:1.15;font-weight:normal;color:#faf7f0;">
+                Wat fijn dat je er <em style="color:#d2ae62;">bij bent</em>
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Personal message -->
+          <tr>
+            <td style="padding:24px 36px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#d9d2c5;">
+              <p style="margin:0 0 16px;">Hoi!</p>
+              <p style="margin:0 0 16px;">
+                Wat ontzettend leuk dat je je hebt ingeschreven. Je bent een van de allereersten die weet
+                dat we iets moois aan het bouwen zijn: onze <strong style="color:#faf7f0;">nieuwe salon aan de
+                Dorpsdijk 114 in Rhoon</strong>.
+              </p>
+              <p style="margin:0 0 16px;">
+                We zijn druk bezig om er een plek van te maken waar je even helemaal tot rust komt. Met een
+                goede kop koffie, de tijd voor een echt gesprek over wat jij wilt, en natuurlijk haar
+                waarmee je de deur uit loopt met een glimlach.
+              </p>
+              <p style="margin:0;">
+                Dat je nu al benieuwd bent, betekent echt veel voor ons. Daarom hebben we alvast een
+                cadeautje voor je.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Discount code -->
+          <tr>
+            <td style="padding:30px 36px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="border:1px dashed #d2ae62;border-radius:14px;background:#0e0c0a;">
+                <tr>
+                  <td align="center" style="padding:24px 16px;font-family:Arial,Helvetica,sans-serif;">
+                    <p style="margin:0;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#b3aa98;">
+                      10% korting op je eerste behandeling
+                    </p>
+                    <p style="margin:12px 0 0;font-family:'Courier New',Courier,monospace;font-size:28px;letter-spacing:5px;color:#d2ae62;">
+                      <strong>{{code}}</strong>
+                    </p>
+                    <p style="margin:12px 0 0;font-size:13px;color:#b3aa98;">
+                      Geldig tot en met <strong style="color:#faf7f0;">{{valid_until}}</strong>.
+                      Noem de code bij het maken van je afspraak.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- What's next -->
+          <tr>
+            <td style="padding:28px 36px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#d9d2c5;">
+              <p style="margin:0;">
+                Zodra de deuren opengaan, hoor je het als eerste van ons. Tot die tijd kun je alvast
+                een kijkje achter de schermen nemen op Instagram.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Button -->
+          <tr>
+            <td align="center" style="padding:26px 36px 0;">
+              <a href="https://instagram.com/hairbycill"
+                 style="display:inline-block;background:#d2ae62;color:#0e0c0a;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 30px;border-radius:999px;">
+                Volg ons op Instagram
+              </a>
+            </td>
+          </tr>
+
+          <!-- Sign-off -->
+          <tr>
+            <td style="padding:32px 36px 36px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#d9d2c5;">
+              <p style="margin:0;">Wie weet zien we je snel in de stoel. We kijken ernaar uit!</p>
+              <p style="margin:18px 0 0;">
+                Liefs,<br>
+                <span style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:22px;color:#d2ae62;">Priscilla &amp; Mellissa</span>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding:22px 24px;border-top:1px solid #3a3122;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#8a8375;">
+              Hair by Cill · Dorpsdijk 114, 3161 CD Rhoon<br>
+              <a href="https://hairbycill.nl" style="color:#d2ae62;text-decoration:none;">hairbycill.nl</a>
+              · <a href="mailto:info@hairbycill.nl" style="color:#d2ae62;text-decoration:none;">info@hairbycill.nl</a><br>
+              Je ontvangt deze mail omdat je je hebt ingeschreven voor onze wachtlijst.
+              Liever geen berichten meer? Beantwoord deze mail met "afmelden".
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
