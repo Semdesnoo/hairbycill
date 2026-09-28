@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { treatments, stylists } from "@/lib/data";
 import { availableSlots, nextBookableDates, createBooking, Booking } from "@/lib/bookingApi";
 
@@ -17,6 +17,18 @@ export default function BookingWizard() {
 
   const dates = useMemo(() => nextBookableDates(), []);
   const slots = useMemo(() => (date ? availableSlots(date, stylistSlug) : []), [date, stylistSlug]);
+
+  // Prefill from hero booking card (?treatment=&date=&time=). window.location
+  // instead of useSearchParams: no Suspense boundary needed in a static export.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const t = q.get("treatment");
+    const d = q.get("date");
+    const tm = q.get("time");
+    if (t && treatments.some((x) => x.slug === t)) setTreatment(t);
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) setDate(d);
+    if (tm && /^\d{2}:\d{2}$/.test(tm)) setTime(tm);
+  }, []);
 
   function submit() {
     const booking = createBooking({ ...form, treatment, stylistSlug, date, time });

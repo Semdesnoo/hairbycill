@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import { BASE_PATH } from "@/lib/basePath";
 import Reveal from "@/components/Reveal";
 import { business, openingHours, products, team, treatments } from "@/lib/data";
+import { availableSlots, nextBookableDates } from "@/lib/bookingApi";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -21,48 +23,78 @@ const dayAbbr: Record<string, string> = {
   Zondag: "ZO",
 };
 
-const MONTHS = [
-  "Januari", "Februari", "Maart", "April", "Mei", "Juni",
-  "Juli", "Augustus", "September", "Oktober", "November", "December",
-];
+const dateLabel = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
 
-/** Static month calendar linking through to the booking wizard. Client-only to avoid hydration drift. */
-function MiniCalendar() {
-  const [now, setNow] = useState<Date | null>(null);
-  useEffect(() => setNow(new Date()), []);
-  if (!now) return <div className="h-64" />;
+/** Compact booking card in the hero: picks treatment/date/time, hands off to /afspraak. */
+function HeroBooking() {
+  const router = useRouter();
+  const [treatment, setTreatment] = useState(treatments[0].slug);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const dates = useMemo(() => nextBookableDates(), []);
+  const slots = useMemo(() => (date ? availableSlots(date, "any") : []), [date]);
 
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const first = (new Date(year, month, 1).getDay() + 6) % 7; // Monday-first
-  const days = new Date(year, month + 1, 0).getDate();
+  const selectCls =
+    "w-full rounded-lg border border-offwhite/20 bg-black/40 px-4 py-2.5 text-sm text-offwhite focus:border-gold focus:outline-none [&>option]:text-black";
 
   return (
-    <div>
-      <p className="rounded-lg bg-ivory py-2 text-center text-sm font-semibold">
-        {MONTHS[month]} {year}
-      </p>
-      <div className="mt-4 grid grid-cols-7 gap-y-2 text-center text-xs">
-        {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((d) => (
-          <span key={d} className="font-semibold text-black/50">{d}</span>
-        ))}
-        {Array.from({ length: first }).map((_, i) => (
-          <span key={`pad-${i}`} />
-        ))}
-        {Array.from({ length: days }).map((_, i) => {
-          const today = i + 1 === now.getDate();
-          return (
-            <span
-              key={i}
-              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${
-                today ? "bg-gold font-semibold text-black" : "text-black/70"
-              }`}
-            >
-              {i + 1}
-            </span>
-          );
-        })}
+    <div className="w-full max-w-sm rounded-2xl border border-offwhite/10 bg-black/50 p-6 backdrop-blur-md">
+      <p className="font-display text-lg text-offwhite">Plan direct je afspraak</p>
+      <div className="mt-4 space-y-3">
+        <div>
+          <label htmlFor="hero-treatment" className="mb-1 block text-xs text-offwhite/60">Behandeling</label>
+          <select id="hero-treatment" value={treatment} onChange={(e) => setTreatment(e.target.value)} className={selectCls}>
+            {treatments.map((t) => (
+              <option key={t.slug} value={t.slug}>{t.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="hero-date" className="mb-1 block text-xs text-offwhite/60">Datum</label>
+          <select
+            id="hero-date"
+            value={date}
+            onChange={(e) => { setDate(e.target.value); setTime(""); }}
+            className={selectCls}
+          >
+            <option value="" disabled>Kies een datum</option>
+            {dates.map((d) => (
+              <option key={d} value={d}>{dateLabel(d)}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="hero-time" className="mb-1 block text-xs text-offwhite/60">Tijd</label>
+          <select
+            id="hero-time"
+            value={time}
+            disabled={!date}
+            onChange={(e) => setTime(e.target.value)}
+            className={`${selectCls} disabled:opacity-40`}
+          >
+            <option value="" disabled>
+              {date ? (slots.length ? "Kies een tijd" : "Geen vrije tijden") : "Kies eerst een datum"}
+            </option>
+            {slots.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
       </div>
+      <button
+        type="button"
+        disabled={!date || !time}
+        onClick={() =>
+          router.push(`/afspraak?treatment=${treatment}&date=${date}&time=${time}`)
+        }
+        className="mt-5 w-full rounded-full bg-gold py-3 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Plan je afspraak
+      </button>
+      <p className="mt-3 text-center text-xs text-offwhite/50">
+        Gegevens vul je in de volgende stap in.
+      </p>
     </div>
   );
 }
@@ -81,7 +113,7 @@ export default function Home() {
           className="absolute inset-0 h-full w-full object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-40 pt-32 md:pb-48">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1400px] items-center gap-12 px-6 pb-40 pt-32 md:grid-cols-[1fr_auto] md:pb-48">
           <div className="max-w-xl">
             <AnimatedHeading
               as="h1"
@@ -121,6 +153,15 @@ export default function Home() {
               </p>
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5, ease }}
+            className="justify-self-start md:justify-self-end"
+          >
+            <HeroBooking />
+          </motion.div>
         </div>
 
         {/* Promo mini-cards */}
@@ -341,71 +382,6 @@ export default function Home() {
               </Link>
             </Reveal>
           ))}
-        </div>
-      </section>
-
-      {/* BOOKING — intro+photo | calendar+hours | dark callback card */}
-      <section className="mx-auto max-w-[1400px] px-6 pb-20 md:pb-28">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
-            <h2 className="font-serif normal-case tracking-normal text-4xl md:text-5xl">Boeken</h2>
-            <p className="mt-5 max-w-xs text-sm text-black/60">
-              Klaar voor een nieuwe look? Boek je afspraak en wij zorgen voor een stijl die bij
-              jou past.
-            </p>
-            <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop"
-                alt="Hair by Cill behandeling"
-                fill
-                sizes="(min-width: 768px) 30vw, 100vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-black/10 bg-white p-6">
-              <MiniCalendar />
-              <h3 className="font-display mt-8 text-lg">Openingstijden</h3>
-              <ul className="mt-3 text-sm">
-                {openingHours.map((o) => (
-                  <li
-                    key={o.day}
-                    className="flex justify-between border-b border-dashed border-black/15 py-2 last:border-0"
-                  >
-                    <span className="text-black/70">{o.day}</span>
-                    <span className={o.hours === "Gesloten" ? "text-black/40" : "text-gold-muted"}>
-                      {o.hours}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className="flex h-full flex-col rounded-2xl bg-soft-black p-8 text-offwhite">
-              <h3 className="font-serif normal-case tracking-normal text-3xl">Wij bellen jou</h3>
-              <p className="mt-4 text-sm text-offwhite/60">
-                Liever persoonlijk overleggen? Laat je gegevens achter via ons contactformulier en
-                we bellen je terug voor advies of een afspraak.
-              </p>
-              <ul className="mt-8 space-y-4 text-sm text-offwhite/80">
-                <li className="border-b border-offwhite/15 pb-3">{business.phone}</li>
-                <li className="border-b border-offwhite/15 pb-3">{business.email}</li>
-                <li className="border-b border-offwhite/15 pb-3">{business.address}</li>
-              </ul>
-              <div className="mt-auto pt-10">
-                <Link
-                  href="/contact"
-                  className="inline-block rounded-full bg-gold px-7 py-3 text-sm tracking-wide text-black transition-colors hover:bg-gold-muted"
-                >
-                  Bel mij terug
-                </Link>
-              </div>
-            </div>
-          </Reveal>
         </div>
       </section>
 
