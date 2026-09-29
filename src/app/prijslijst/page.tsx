@@ -34,7 +34,7 @@ export default function PrijslijstPage() {
             </div>
           </div>
 
-          <div className="mt-14 gap-6 md:columns-2 lg:columns-3">
+          <div className="mt-14 gap-6 md:columns-2">
             {priceList.map((category, i) => (
               <PriceList key={category.title} category={category} index={i} />
             ))}

@@ -34,7 +34,7 @@ const ICONS: Record<PriceIcon, React.ReactNode> = {
 export default function PriceList({ category, index }: { category: PriceCategory; index: number }) {
   return (
     <Reveal
-      delay={(index % 3) * 0.08}
+      delay={(index % 2) * 0.08}
       className="mb-6 break-inside-avoid rounded-2xl border border-gold/35 bg-white p-6 shadow-[0_10px_30px_-18px_rgba(127,99,41,0.35)] transition-shadow duration-300 hover:shadow-[0_14px_40px_-16px_rgba(210,174,98,0.55)] md:p-7"
     >
       <div className="flex items-center gap-4 border-b border-gold/45 pb-3">
