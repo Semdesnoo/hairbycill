@@ -134,14 +134,14 @@ export default function BookingWizard() {
           Boeking annuleren
         </a>
       </div>
-    <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:gap-14">
+    <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:gap-12">
       <div className="space-y-10">
         <Step n={1} title="Kies je behandeling">
           <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
             {treatments.map((x) => (
               <button key={x.slug} type="button" onClick={() => setTreatment(x.slug)} className={choice(treatment === x.slug)}>
                 <span className="block text-base">
-                  {x.name} <span className="accent opacity-60">{x.accent}</span>
+                  {x.name} <span className={`accent ${treatment === x.slug ? "text-gold" : "text-gold-muted"}`}>{x.accent}</span>
                 </span>
                 <span className="mt-1 block text-xs opacity-60">
                   {x.duration} · {x.price}
@@ -171,7 +171,7 @@ export default function BookingWizard() {
         </Step>
 
         <Step n={3} title="Datum & tijd">
-          <div className="grid gap-6 md:grid-cols-[1.15fr_1fr]">
+          <div className="grid gap-6 md:grid-cols-2">
             {/* Calendar */}
             <div className="rounded-3xl bg-black p-5 text-offwhite md:p-6">
               <p className="mb-4 text-center text-lg font-light capitalize">

@@ -17,11 +17,11 @@ export default function AfspraakPage() {
         image="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1920&auto=format&fit=crop"
       />
 
-      <section className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
         <BookingWizard />
       </section>
 
-      <section id="annuleren" className="scroll-mt-24 bg-black px-6 py-20 text-offwhite md:py-28">
+      <section id="annuleren" className="scroll-mt-24 bg-black px-6 pt-20 text-offwhite md:pt-28">
         <div className="mx-auto max-w-3xl text-center">
           <AnimatedHeading
             lines={["Afspraak"]}
@@ -35,6 +35,8 @@ export default function AfspraakPage() {
         <Reveal className="mx-auto mt-10 max-w-3xl">
           <CancelBooking dark />
         </Reveal>
+        {/* Gold divider between the cancel section and the footer */}
+        <div aria-hidden className="mx-auto mt-20 h-px max-w-6xl bg-gradient-to-r from-transparent via-gold to-transparent md:mt-28" />
       </section>
     </>
   );
