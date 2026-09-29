@@ -4,9 +4,9 @@
 export const business = {
   name: "Hair by Cill",
   tagline: "Hair that feels like you.",
-  phone: "+31 6 12 34 56 78",
-  phoneHref: "tel:+316****5678",
-  whatsappHref: "https://wa.me/31612345678",
+  phone: "+31 6 83 02 45 90",
+  phoneHref: "tel:+31683024590",
+  whatsappHref: "https://wa.me/31683024590",
   email: "info@hairbycill.nl",
   address: "Dorpsdijk 114, 3161 CD Rhoon",
   instagram: "https://instagram.com/hairbycill",
