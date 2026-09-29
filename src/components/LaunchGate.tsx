@@ -6,11 +6,13 @@ import { motion } from "framer-motion";
 import { BASE_PATH } from "@/lib/basePath";
 import { business } from "@/lib/data";
 
-// Pre-launch gate: visitors only see the waitlist. Owners open the real site once via
-// https://hairbycill.nl/?preview=cill (remembered in this browser; ?preview=uit hides it again).
-// Launch = set PRELAUNCH to false.
+// Pre-launch gate: visitors only see the waitlist. Owners unlock the real site with the login code
+// (lock button bottom-left of the waitlist); remembered in this browser, ?preview=uit locks it again.
+// ponytail: client-side check on a static site, so it hides the site from normal visitors but is not
+// real security (the pages ship in the JS bundle). Real auth needs the backend. Launch = PRELAUNCH false.
 const PRELAUNCH = true;
-const PREVIEW_CODE = "cill";
+// SHA-256 of the login code (the code itself is not in the bundle). New code: sha256 hex of it.
+const LOGIN_HASH = "56d00a287aaccb6cfbb52c335a41c3ed330f5c909fd6b030275c4ce654f873ae";
 const PREVIEW_KEY = "hbc_preview";
 
 // Web3Forms access key (public by design, it only lets you SEND to the owner's inbox).
@@ -34,10 +36,79 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const noop = () => () => {};
 
 function readPreview(): boolean {
-  const q = new URLSearchParams(window.location.search).get("preview");
-  if (q === PREVIEW_CODE) localStorage.setItem(PREVIEW_KEY, "1");
-  if (q === "uit") localStorage.removeItem(PREVIEW_KEY);
+  if (new URLSearchParams(window.location.search).get("preview") === "uit") localStorage.removeItem(PREVIEW_KEY);
   return localStorage.getItem(PREVIEW_KEY) === "1";
+}
+
+async function sha256(text: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** Small lock button bottom-left of the waitlist; opens a code field for the salon team. */
+function OwnerLogin() {
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState("");
+  const [wrong, setWrong] = useState(false);
+
+  async function unlock(e: React.FormEvent) {
+    e.preventDefault();
+    if ((await sha256(code.trim())) !== LOGIN_HASH) return setWrong(true);
+    localStorage.setItem(PREVIEW_KEY, "1");
+    window.location.reload();
+  }
+
+  return (
+    <div className="absolute bottom-5 left-4 z-20 md:bottom-7 md:left-8">
+      {open && (
+        <motion.form
+          onSubmit={unlock}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease }}
+          className="absolute bottom-12 left-0 w-64 rounded-2xl border border-gold/30 bg-black/80 p-4 backdrop-blur-md"
+        >
+          <label htmlFor="owner-code" className="block text-xs text-offwhite/70">
+            Inlogcode voor de salon
+          </label>
+          <div className="mt-2 flex gap-2">
+            <input
+              id="owner-code"
+              type="password"
+              autoFocus
+              autoComplete="current-password"
+              value={code}
+              onChange={(e) => {
+                setCode(e.target.value);
+                setWrong(false);
+              }}
+              className="min-w-0 flex-1 rounded-full border border-offwhite/20 bg-transparent px-4 py-2 text-sm text-offwhite focus:border-gold focus:outline-none"
+            />
+            <button type="submit" className="rounded-full bg-gold px-4 text-sm text-black transition-colors hover:bg-offwhite">
+              Open
+            </button>
+          </div>
+          {wrong && (
+            <p role="alert" className="mt-2 text-xs text-red-300">
+              Onjuiste code.
+            </p>
+          )}
+        </motion.form>
+      )}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Inloggen voor de salon"
+        aria-expanded={open}
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-offwhite/20 bg-black/30 text-offwhite/60 backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+          <rect x="5" y="11" width="14" height="10" rx="2" />
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+      </button>
+    </div>
+  );
 }
 
 export default function LaunchGate({ children }: { children: ReactNode }) {
@@ -182,6 +253,7 @@ function Waitlist() {
           Volg ons op Instagram
         </a>
       </div>
+      <OwnerLogin />
     </section>
   );
 }
