@@ -107,15 +107,9 @@ h3,
 }
 
 /* Price list: black marble card + gold glow on hover (row hover or the price itself). */
-.price-marble {
-  background:
-    radial-gradient(120% 60% at 0% 0%, rgba(210, 174, 98, 0.1), transparent 55%),
-    radial-gradient(90% 50% at 100% 100%, rgba(210, 174, 98, 0.08), transparent 60%),
-    linear-gradient(160deg, #15120e 0%, #0b0a08 45%, #17130d 100%);
-}
 
 .gold-foil {
-  background: linear-gradient(100deg, #8b6e32 0%, #d2ae62 35%, #f7e5b5 55%, #c9a24b 75%, #8b6e32 100%);
+  background: linear-gradient(100deg, #7f6329 0%, #b8923f 40%, #d2ae62 55%, #a8822f 75%, #7f6329 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -127,8 +121,8 @@ h3,
 }
 .group:hover .price-glow,
 .price-glow:hover {
-  color: #f7e5b5;
-  text-shadow: 0 0 6px rgba(247, 229, 181, 0.9), 0 0 16px rgba(210, 174, 98, 0.75), 0 0 32px rgba(210, 174, 98, 0.45);
+  color: #b8923f;
+  text-shadow: 0 0 8px rgba(210, 174, 98, 0.75), 0 0 18px rgba(210, 174, 98, 0.5), 0 0 34px rgba(247, 229, 181, 0.6);
   transform: scale(1.06);
 }
 @media (prefers-reduced-motion: reduce) {
