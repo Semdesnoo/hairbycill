@@ -53,7 +53,7 @@ const structuredData = {
       opens: o.hours.split("-")[0],
       closes: o.hours.split("-")[1],
     })),
-  sameAs: [business.instagram, business.facebook],
+  sameAs: [business.instagram, business.tiktok, business.facebook],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -11,6 +11,7 @@ export const business = {
   address: "Dorpsdijk 114, 3161 CD Rhoon",
   instagram: "https://instagram.com/hairbycill",
   facebook: "https://facebook.com/hairbycill",
+  tiktok: "https://www.tiktok.com/@hairbycill",
   mapsEmbedSrc:
     "https://www.google.com/maps?q=Dorpsdijk+114,+3161+CD+Rhoon&output=embed",
 } as const;
