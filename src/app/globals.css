@@ -122,6 +122,7 @@ h3,
 }
 
 .price-glow {
+  font-variant-numeric: lining-nums tabular-nums; /* straight, aligned digits like the printed list */
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 .group:hover .price-glow,
