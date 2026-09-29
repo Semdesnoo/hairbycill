@@ -33,37 +33,30 @@ const ICONS: Record<PriceIcon, React.ReactNode> = {
 
 export default function PriceList({ category, index }: { category: PriceCategory; index: number }) {
   return (
-    <Reveal
-      delay={(index % 2) * 0.08}
-      className="mb-6 break-inside-avoid rounded-2xl border border-gold/35 bg-white p-6 shadow-[0_10px_30px_-18px_rgba(127,99,41,0.35)] transition-shadow duration-300 hover:shadow-[0_14px_40px_-16px_rgba(210,174,98,0.55)] md:p-7"
-    >
-      <div className="flex items-center gap-4 border-b border-gold/45 pb-3">
-        <svg
-          viewBox="0 0 24 24"
-          width="30"
-          height="30"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="shrink-0 text-gold-muted"
-          aria-hidden
-        >
-          {ICONS[category.icon]}
-        </svg>
-        <h2 className="text-lg uppercase tracking-[0.18em] text-gold-muted md:text-xl">{category.title}</h2>
-      </div>
-      <ul className="mt-2">
-        {category.items.map((item) => (
-          <li
-            key={item.name}
-            className="group flex items-baseline gap-3 rounded-lg px-2 py-2.5 transition-colors duration-300 hover:bg-gold/10"
+    <Reveal delay={(index % 2) * 0.08} className="mb-6 break-inside-avoid rounded-3xl bg-ivory/70 p-6 md:p-8">
+      <div className="flex items-center gap-4">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-gold">
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
           >
-            <span className="text-[15px] text-black/80 transition-colors duration-300 group-hover:text-black">{item.name}</span>
-            {/* Dotted leader like a printed menu */}
-            <span aria-hidden className="mb-1 flex-1 border-b border-dotted border-gold/40" />
-            <span className="price-glow whitespace-nowrap text-base tracking-wide text-gold-muted">{item.price}</span>
+            {ICONS[category.icon]}
+          </svg>
+        </span>
+        <h2 className="text-2xl md:text-[1.7rem]">{category.title}</h2>
+      </div>
+      <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
+        {category.items.map((item) => (
+          <li key={item.name} className="flex items-baseline justify-between gap-6 py-3.5 text-[15px]">
+            <span className="text-black/75">{item.name}</span>
+            <span className="whitespace-nowrap tabular-nums text-black">{item.price}</span>
           </li>
         ))}
       </ul>

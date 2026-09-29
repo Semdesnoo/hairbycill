@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Button from "@/components/Button";
+import AnimatedHeading from "@/components/AnimatedHeading";
+import CTA from "@/components/CTA";
 import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
 import { priceList } from "@/lib/data";
@@ -20,18 +21,14 @@ export default function PrijslijstPage() {
         image="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
       />
 
-      {/* Light price list: gold accents on white, one card per category */}
-      <section className="bg-white px-4 py-20 md:px-8 md:py-28">
+      {/* Price list on ecru: same heading + card language as the rest of the site */}
+      <section className="px-4 py-20 md:px-14 md:py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            {/* eslint-disable-next-line @next/next/no-img-element -- static export, tiny logo */}
-            <img src="/logo.jpg" alt="Hair by Cill" width={96} height={96} className="mx-auto h-20 w-20 rounded-full ring-1 ring-gold/60 md:h-24 md:w-24" />
-            <h2 className="gold-foil mt-6 text-4xl uppercase tracking-[0.3em] md:text-5xl">Prijslijst</h2>
-            <div aria-hidden className="mx-auto mt-4 flex max-w-sm items-center gap-3">
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent to-gold" />
-              <span className="h-2 w-2 rotate-45 bg-gold" />
-              <span className="h-px flex-1 bg-gradient-to-l from-transparent to-gold" />
-            </div>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <AnimatedHeading lines={["Alle behandelingen"]} accent="op een rij" className="text-4xl leading-[1.05] md:text-5xl" />
+            <p className="max-w-sm text-sm leading-relaxed text-black/60">
+              Alle prijzen zijn inclusief btw. Wij werken met Keune, The art of hair.
+            </p>
           </div>
 
           <div className="mt-14 gap-6 md:columns-2">
@@ -39,16 +36,15 @@ export default function PrijslijstPage() {
               <PriceList key={category.title} category={category} index={i} />
             ))}
           </div>
-
-          <div className="mt-8 flex flex-col items-center gap-6 border-t border-gold/40 pt-10 text-center md:flex-row md:justify-between md:text-left">
-            <p className="accent gold-foil text-3xl md:text-4xl">Jouw haar, onze passie</p>
-            <Button href="/afspraak">Afspraak maken</Button>
-          </div>
-          <p className="mt-8 text-center text-xs uppercase tracking-[0.35em] text-gold-muted">
-            Wij werken met Keune · The art of hair
-          </p>
         </div>
       </section>
+
+      <CTA
+        title="Jouw haar,"
+        accent="onze passie"
+        text="Weet je welke behandeling je wilt? Kies je dag en tijd, dan zien we je in de salon."
+        image="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1920&auto=format&fit=crop"
+      />
     </>
   );
 }
