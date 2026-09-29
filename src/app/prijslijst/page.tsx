@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     "Prijslijst van Hair by Cill in Rhoon: knippen vanaf € 29,50, stylen, kleuren, folies, extra's en haar verdikking/verlenging.",
 };
 
+// Left column; every other category (incl. new ones) lands on the right. Balanced by row count.
+const LEFT = ["Knippen", "Stylen", "Extra's"];
+
 export default function PrijslijstPage() {
   return (
     <>
@@ -31,9 +34,14 @@ export default function PrijslijstPage() {
             </p>
           </div>
 
-          <div className="mt-14 gap-6 md:columns-2">
-            {priceList.map((category, i) => (
-              <PriceList key={category.title} category={category} index={i} />
+          {/* Two fixed columns of near-equal height; the last card in each stretches so both end flush. */}
+          <div className="mt-14 grid gap-6 md:grid-cols-2">
+            {[priceList.filter((c) => LEFT.includes(c.title)), priceList.filter((c) => !LEFT.includes(c.title))].map((col, ci) => (
+              <div key={ci} className="flex flex-col gap-6">
+                {col.map((category, i) => (
+                  <PriceList key={category.title} category={category} index={ci} className={i === col.length - 1 ? "flex-1" : ""} />
+                ))}
+              </div>
             ))}
           </div>
         </div>

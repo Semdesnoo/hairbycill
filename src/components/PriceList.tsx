@@ -31,9 +31,9 @@ const ICONS: Record<PriceIcon, React.ReactNode> = {
   hair: <path d="M9 3c-3 2-4 6-3 10s1 7-1 8M12 3c-2 3-2 7-1 11s1 6 0 7M15 3c2 2 3 6 2 10s0 6 2 8" />,
 };
 
-export default function PriceList({ category, index }: { category: PriceCategory; index: number }) {
+export default function PriceList({ category, index, className = "" }: { category: PriceCategory; index: number; className?: string }) {
   return (
-    <Reveal delay={(index % 2) * 0.08} className="mb-6 break-inside-avoid rounded-3xl bg-ivory/70 p-6 md:p-8">
+    <Reveal delay={(index % 2) * 0.08} className={`rounded-3xl bg-ivory/70 p-6 md:p-8 ${className}`}>
       <div className="flex items-center gap-4">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-gold">
           <svg
