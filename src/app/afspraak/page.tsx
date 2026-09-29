@@ -35,8 +35,6 @@ export default function AfspraakPage() {
         <Reveal className="mx-auto mt-10 max-w-3xl">
           <CancelBooking dark />
         </Reveal>
-        {/* Gold divider between the cancel section and the footer */}
-        <div aria-hidden className="mx-auto mt-20 h-px max-w-6xl bg-gradient-to-r from-transparent via-gold to-transparent md:mt-28" />
       </section>
     </>
   );

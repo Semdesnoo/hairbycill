@@ -18,7 +18,9 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-black px-6 pb-8 pt-20 text-offwhite md:px-14 max-md:[body:has([data-sticky-cta])_&]:pb-28">
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-10">
+        {/* Gold divider between the last page section and the footer (every page) */}
+        <div aria-hidden className="h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
+        <div className="mt-16 grid gap-12 sm:grid-cols-2 md:mt-20 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-10">
           <div>
             <Logo dark />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-offwhite/65">
