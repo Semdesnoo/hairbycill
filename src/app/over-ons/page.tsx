@@ -19,6 +19,13 @@ const values = [
   { title: "Eerlijk", accent: "vakmanschap", text: "We zeggen wat wél en niet kan met jouw haar, en werken alleen met topproducten." },
 ];
 
+const VISIT = [
+  { title: "Persoonlijk", accent: "advies", text: "We beginnen met een gesprek over wat je wilt, je haarstructuur en hoeveel tijd je er thuis aan kwijt wilt zijn." },
+  { title: "Wassen &", accent: "ontspannen", text: "Je haar wordt gewassen met producten die bij jouw haartype passen, met een rustige hoofdhuidmassage." },
+  { title: "De", accent: "behandeling", text: "Knippen, kleuren of stylen. We vertellen onderweg wat we doen en waarom, zodat je weet wat je krijgt." },
+  { title: "Tips voor", accent: "thuis", text: "We stylen je haar af en geven je mee welke producten en gewoontes je look thuis mooi houden." },
+];
+
 export default function OverOnsPage() {
   return (
     <>
@@ -94,6 +101,33 @@ export default function OverOnsPage() {
               <p className="mt-1 text-xs leading-relaxed text-black/55">{m.bio}</p>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* YOUR VISIT: black band, 4 steps (same flow as the "eerste afspraak" blog post) */}
+      <section className="bg-black px-6 py-24 text-offwhite md:px-14 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <AnimatedHeading
+              lines={["Zo verloopt"]}
+              accent="jouw bezoek"
+              className="text-4xl leading-[1.05] text-offwhite md:text-5xl"
+            />
+            <p className="max-w-sm text-sm leading-relaxed text-offwhite/70">
+              Of je nu voor het eerst komt of al jaren klant bent: we nemen altijd de tijd voor jou en je haar.
+            </p>
+          </div>
+          <ol className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-gold/25 bg-gold/25 sm:grid-cols-2 lg:grid-cols-4">
+            {VISIT.map((v, i) => (
+              <Reveal as="li" key={v.title} delay={i * 0.08} className="bg-black p-8">
+                <span className="gold-foil text-4xl font-light">0{i + 1}</span>
+                <p className="mt-6 text-xl">
+                  {v.title} <span className="accent text-gold">{v.accent}</span>
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-offwhite/65">{v.text}</p>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </section>
 
