@@ -18,7 +18,7 @@ export default function BlogIndex() {
       <PageHero
         title="Haartips uit"
         accent="de salon"
-        intro="Praktisch advies van onze stylisten in Rhoon, zodat je haar ook thuis op zijn mooist blijft."
+        intro="De vragen die we in de salon het vaakst krijgen, met direct het antwoord van onze stylisten in Rhoon."
         image="https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1920&auto=format&fit=crop"
       />
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-20 sm:grid-cols-2 md:py-28 lg:grid-cols-3">
