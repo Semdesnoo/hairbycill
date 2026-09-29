@@ -71,6 +71,7 @@ export default function BookingWizard() {
   const t = treatments.find((x) => x.slug === treatment)!;
   const s = stylists.find((x) => x.slug === stylistSlug)!;
   const ready = date && time && form.name && /\S+@\S+\.\S+/.test(form.email) && form.phone;
+  const confirm = () => setConfirmed(createBooking({ ...form, newsletter, treatment, stylistSlug, date, time }));
 
   const monthLabel = useMemo(() => {
     const fmt = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { month: "long" });
@@ -169,7 +170,56 @@ export default function BookingWizard() {
             ))}
           </div>
         </Step>
+      </div>
 
+      {/* Summary: next to steps 1-2 on desktop, last on mobile */}
+      <aside className="order-last lg:order-none">
+        <div className="rounded-3xl bg-ivory p-7">
+          <p className="text-xl font-light">
+            Jouw <span className="accent text-gold-muted">afspraak</span>
+          </p>
+          <dl className="mt-6 space-y-4 text-sm">
+            {[
+              ["Behandeling", `${t.name} · ${t.duration}`],
+              ["Stylist", s.name],
+              ["Datum", date ? longDate(date) : "Nog niet gekozen"],
+              ["Tijd", time || "Nog niet gekozen"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-4 border-b border-black/10 pb-3">
+                <dt className="text-black/50">{k}</dt>
+                <AnimatePresence mode="wait">
+                  <motion.dd
+                    key={v}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-right capitalize"
+                  >
+                    {v}
+                  </motion.dd>
+                </AnimatePresence>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-5 flex items-baseline justify-between">
+            <span className="text-sm text-black/50">Totaal</span>
+            <span className="text-2xl font-light">{t.price}</span>
+          </div>
+          <button
+            type="button"
+            disabled={!ready}
+            onClick={confirm}
+            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            Afspraak bevestigen
+          </button>
+          <p className="mt-3 text-center text-[11px] text-black/45">Kosteloos annuleren tot 12 uur van tevoren</p>
+        </div>
+      </aside>
+
+      {/* Steps 3-4 span the full width (under the steps and the summary) */}
+      <div className="space-y-10 lg:col-span-2">
         <Step n={3} title="Datum & tijd">
           <div className="grid gap-6 md:grid-cols-2">
             {/* Calendar */}
@@ -302,53 +352,28 @@ export default function BookingWizard() {
             Ja, stuur mij acties en haartips van Hair by Cill. Afmelden kan altijd.
           </label>
         </Step>
+
+        {/* Desktop: confirm right where the form ends (mobile uses the summary card below) */}
+        <div className="hidden items-center justify-between gap-6 rounded-3xl bg-ivory p-6 lg:flex">
+          <p className="text-sm text-black/60">
+            {t.name} · {s.name}
+            {date && ` · ${longDate(date)}`}
+            {time && ` · ${time}`}
+          </p>
+          <div className="flex items-center gap-6">
+            <span className="text-2xl font-light">{t.price}</span>
+            <button
+              type="button"
+              disabled={!ready}
+              onClick={confirm}
+              className="rounded-full bg-black px-8 py-4 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              Afspraak bevestigen
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Sticky summary */}
-      <aside className="lg:sticky lg:top-28 lg:self-start">
-        <div className="rounded-3xl bg-ivory p-7">
-          <p className="text-xl font-light">
-            Jouw <span className="accent text-gold-muted">afspraak</span>
-          </p>
-          <dl className="mt-6 space-y-4 text-sm">
-            {[
-              ["Behandeling", `${t.name} · ${t.duration}`],
-              ["Stylist", s.name],
-              ["Datum", date ? longDate(date) : "Nog niet gekozen"],
-              ["Tijd", time || "Nog niet gekozen"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex justify-between gap-4 border-b border-black/10 pb-3">
-                <dt className="text-black/50">{k}</dt>
-                <AnimatePresence mode="wait">
-                  <motion.dd
-                    key={v}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.25 }}
-                    className="text-right capitalize"
-                  >
-                    {v}
-                  </motion.dd>
-                </AnimatePresence>
-              </div>
-            ))}
-          </dl>
-          <div className="mt-5 flex items-baseline justify-between">
-            <span className="text-sm text-black/50">Totaal</span>
-            <span className="text-2xl font-light">{t.price}</span>
-          </div>
-          <button
-            type="button"
-            disabled={!ready}
-            onClick={() => setConfirmed(createBooking({ ...form, newsletter, treatment, stylistSlug, date, time }))}
-            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            Afspraak bevestigen
-          </button>
-          <p className="mt-3 text-center text-[11px] text-black/45">Kosteloos annuleren tot 12 uur van tevoren</p>
-        </div>
-      </aside>
     </div>
     </div>
   );
