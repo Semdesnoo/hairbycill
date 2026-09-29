@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { treatments, stylists } from "@/lib/data";
+import { openingHours, treatments, stylists } from "@/lib/data";
 import { availableSlots, nextBookableDates, createBooking, isClosed, isoDate, lastContact, Booking } from "@/lib/bookingApi";
 
 const noop = () => () => {};
@@ -264,7 +264,9 @@ export default function BookingWizard() {
                   );
                 })}
               </div>
-              <p className="mt-4 text-center text-[11px] text-offwhite/40">Maandag en zondag gesloten</p>
+              <p className="mt-4 text-center text-[11px] text-offwhite/40">
+                {openingHours.filter((o) => o.hours === "Gesloten").map((o) => o.day.toLowerCase()).join(", ").replace(/^./, (c) => c.toUpperCase()).replace(/, ([^,]*)$/, " en $1")} gesloten
+              </p>
             </div>
 
             {/* Times */}

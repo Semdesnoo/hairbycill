@@ -47,7 +47,11 @@ export default function ContactPage() {
               {openingHours.map((o) => (
                 <li key={o.day} className="flex justify-between border-t border-black/10 py-2.5">
                   <span>{o.day}</span>
-                  <span className={o.hours === "Gesloten" ? "text-black/40" : "text-gold-muted"}>{o.hours}</span>
+                  <span className={`text-right ${o.hours === "Gesloten" ? "text-black/40" : "text-gold-muted"}`}>
+                    {o.hours.split(" & ").map((h) => (
+                      <span key={h} className="block">{h}</span>
+                    ))}
+                  </span>
                 </li>
               ))}
             </ul>

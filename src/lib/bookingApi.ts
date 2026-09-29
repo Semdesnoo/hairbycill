@@ -7,7 +7,7 @@
 // DB) exists, replace the three functions below with real fetch() calls to
 // it — the wizard and cancel page only talk to this file, so that's the only
 // place that needs to change.
-import { openingHours, stylists } from "./data";
+import { hourBlocks, openingHours, stylists } from "./data";
 
 export type Booking = {
   id: string;
@@ -78,9 +78,7 @@ export function cancelBooking(id: string) {
 // Slot generation: hourly slots within opening hours, next 21 days, minus
 // whatever is already taken in localStorage for that stylist.
 export function availableSlots(date: string, stylistSlug: string): string[] {
-  const hours = openHours(date);
-  if (!hours) return [];
-  const [open, close] = hours;
+  const blocks = openHours(date);
 
   const taken = new Set(
     readAll()
@@ -89,9 +87,12 @@ export function availableSlots(date: string, stylistSlug: string): string[] {
   );
 
   const slots: string[] = [];
-  for (let h = open; h < close; h++) {
-    const time = `${String(h).padStart(2, "0")}:00`;
-    if (!taken.has(time)) slots.push(time);
+  // Hourly start times inside each open block; the last one still ends by closing time.
+  for (const [open, close] of blocks) {
+    for (let m = open; m + 60 <= close; m += 60) {
+      const time = `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+      if (!taken.has(time)) slots.push(time);
+    }
   }
   return slots;
 }
@@ -110,15 +111,12 @@ export function nextBookableDates(count = 28): string[] {
   return dates;
 }
 
-export const isClosed = (date: string) => openHours(date) === null;
+export const isClosed = (date: string) => openHours(date).length === 0;
 
-function openHours(date: string): [number, number] | null {
+function openHours(date: string): [number, number][] {
   const day = new Date(`${date}T00:00:00`).getDay();
   const dayName = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"][day];
-  const hours = openingHours.find((o) => o.day === dayName);
-  if (!hours || hours.hours === "Gesloten") return null;
-  const [o, c] = hours.hours.split("-");
-  return [parseInt(o, 10), parseInt(c, 10)];
+  return hourBlocks(openingHours.find((o) => o.day === dayName)?.hours ?? "");
 }
 
 export function stylistName(slug: string): string {

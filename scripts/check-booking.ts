@@ -40,6 +40,14 @@ assert.equal(api.findBooking(far.code, base.email), undefined, "cancelled bookin
 assert.equal(api.isoDate(new Date(2026, 0, 1, 0, 30)), "2026-01-01", "isoDate uses local day, not UTC");
 assert.equal(api.isClosed("2026-09-28"), true, "Monday closed");
 assert.equal(api.isClosed("2026-09-29"), false, "Tuesday open");
+assert.equal(api.isClosed("2026-10-01"), true, "Thursday closed");
+const tue = api.availableSlots("2026-10-06", "priscilla");
+assert.equal(tue[0], "09:30", "Tuesday opens 09:30");
+assert.equal(tue.at(-1), "15:30", "last Tuesday slot ends by 17:00");
+const wed = api.availableSlots("2026-10-07", "priscilla");
+assert.ok(wed.includes("16:30") === false && wed.includes("18:30") && wed.includes("19:30"), "Wednesday has an evening block");
+assert.equal(wed.includes("20:30"), false, "no slot running past 21:00");
+assert.equal(api.availableSlots("2026-10-10", "priscilla")[0], "09:00", "Saturday opens 09:00");
 
 assert.equal(api.lastContact()?.email, base.email, "next booking prefills from previous one");
 

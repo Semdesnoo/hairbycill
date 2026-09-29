@@ -46,6 +46,11 @@ export const metadata: Metadata = {
   },
 };
 
+const DAY_EN: Record<string, string> = {
+  Maandag: "Monday", Dinsdag: "Tuesday", Woensdag: "Wednesday", Donderdag: "Thursday",
+  Vrijdag: "Friday", Zaterdag: "Saturday", Zondag: "Sunday",
+};
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "HairSalon",
@@ -54,14 +59,14 @@ const structuredData = {
   telephone: business.phone,
   email: business.email,
   address: { "@type": "PostalAddress", streetAddress: business.address },
-  openingHoursSpecification: openingHours
-    .filter((o) => o.hours !== "Gesloten")
-    .map((o) => ({
+  openingHoursSpecification: openingHours.flatMap((o) =>
+    [...o.hours.matchAll(/(\d{2}:\d{2})-(\d{2}:\d{2})/g)].map((m) => ({
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: o.day,
-      opens: o.hours.split("-")[0],
-      closes: o.hours.split("-")[1],
+      dayOfWeek: `https://schema.org/${DAY_EN[o.day]}`,
+      opens: m[1],
+      closes: m[2],
     })),
+  ),
   sameAs: [business.instagram, business.tiktok, business.facebook],
 };
 

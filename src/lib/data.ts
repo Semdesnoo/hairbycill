@@ -16,15 +16,20 @@ export const business = {
     "https://www.google.com/maps?q=Dorpsdijk+114,+3161+CD+Rhoon&output=embed",
 } as const;
 
+// A day may have several blocks, joined with " & " (bookingApi + JSON-LD parse every HH:MM-HH:MM).
 export const openingHours = [
   { day: "Maandag", hours: "Gesloten" },
-  { day: "Dinsdag", hours: "09:00-18:00" },
-  { day: "Woensdag", hours: "09:00-18:00" },
-  { day: "Donderdag", hours: "09:00-20:00" },
-  { day: "Vrijdag", hours: "09:00-18:00" },
-  { day: "Zaterdag", hours: "09:00-16:00" },
+  { day: "Dinsdag", hours: "09:30-17:00" },
+  { day: "Woensdag", hours: "09:30-17:00 & 18:30-21:00" },
+  { day: "Donderdag", hours: "Gesloten" },
+  { day: "Vrijdag", hours: "09:30-17:00" },
+  { day: "Zaterdag", hours: "09:00-17:00" },
   { day: "Zondag", hours: "Gesloten" },
 ];
+
+/** Every open block of a day as [openMinutes, closeMinutes]; empty when closed. */
+export const hourBlocks = (hours: string): [number, number][] =>
+  [...hours.matchAll(/(\d{2}):(\d{2})-(\d{2}):(\d{2})/g)].map((m) => [+m[1] * 60 + +m[2], +m[3] * 60 + +m[4]]);
 
 export const navLinks = [
   { href: "/", label: "Home" },

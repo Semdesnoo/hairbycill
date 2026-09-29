@@ -85,7 +85,11 @@ export default function Footer() {
               {openingHours.map((o) => (
                 <li key={o.day} className="flex justify-between gap-4 border-b border-offwhite/10 py-2 first:pt-0">
                   <span className="text-offwhite/65">{o.day}</span>
-                  <span className={o.hours === "Gesloten" ? "text-offwhite/40" : "text-offwhite"}>{o.hours}</span>
+                  <span className={`text-right ${o.hours === "Gesloten" ? "text-offwhite/40" : "text-offwhite"}`}>
+                    {o.hours.split(" & ").map((h) => (
+                      <span key={h} className="block">{h}</span>
+                    ))}
+                  </span>
                 </li>
               ))}
             </ul>
