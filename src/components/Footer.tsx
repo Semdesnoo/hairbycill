@@ -9,16 +9,20 @@ const SOCIALS = [
   { label: "Facebook", href: business.facebook, path: "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" },
 ];
 
+const MAPS = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.name}, ${business.address}`)}`;
+
+const heading = "mb-5 text-[11px] uppercase tracking-[0.2em] text-gold";
+const link = "text-offwhite/65 transition-colors hover:text-gold";
+
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black px-6 pt-20 pb-8 text-offwhite">
-      <div className="relative z-10 mx-auto max-w-[1300px]">
-        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1.3fr]">
+    <footer className="relative overflow-hidden bg-black px-6 pb-8 pt-20 text-offwhite md:px-14">
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-10">
           <div>
             <Logo dark />
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-offwhite/60">
-              Wij geloven dat mooi haar geen haast kent. Het is iets wat je samen opbouwt, afspraak
-              na afspraak.
+            <p className="mt-6 max-w-xs text-sm leading-relaxed text-offwhite/65">
+              Wij geloven dat mooi haar geen haast kent. Het is iets wat je samen opbouwt, afspraak na afspraak.
             </p>
             <div className="mt-6 flex gap-2">
               {SOCIALS.map((s) => (
@@ -27,10 +31,10 @@ export default function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-offwhite/10 text-offwhite transition-colors hover:bg-gold hover:text-black"
+                  aria-label={`${business.name} op ${s.label}`}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-offwhite/15 text-offwhite transition-colors hover:border-gold hover:bg-gold hover:text-black"
                 >
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden>
                     <path d={s.path} />
                   </svg>
                 </a>
@@ -38,37 +42,48 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="mb-5 text-sm text-offwhite">Navigatie</h3>
-            <ul className="space-y-2.5 text-sm text-offwhite/60">
-              {navLinks.map((l) => (
+          <nav aria-label="Footer">
+            <h3 className={heading}>Ontdek</h3>
+            <ul className="space-y-3 text-sm">
+              {[...navLinks, { href: "/blog", label: "Haartips" }].map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:text-gold">
+                  <Link href={l.href} className={link}>
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
-            <h3 className="mb-5 text-sm text-offwhite">Overig</h3>
-            <ul className="space-y-2.5 text-sm text-offwhite/60">
-              <li><Link href="/blog" className="hover:text-gold">Haartips &amp; blog</Link></li>
-              <li><Link href="/privacybeleid" className="hover:text-gold">Privacybeleid</Link></li>
-              <li><Link href="/voorwaarden" className="hover:text-gold">Voorwaarden</Link></li>
-              <li><a href={business.phoneHref} className="hover:text-gold">{business.phone}</a></li>
-              <li><a href={`mailto:${business.email}`} className="hover:text-gold">{business.email}</a></li>
+            <h3 className={heading}>Contact</h3>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a href={MAPS} target="_blank" rel="noopener noreferrer" className={link}>
+                  {business.address.split(", ").map((line) => (
+                    <span key={line} className="block">{line}</span>
+                  ))}
+                </a>
+              </li>
+              <li><a href={business.phoneHref} className={link}>{business.phone}</a></li>
+              <li><a href={business.whatsappHref} target="_blank" rel="noopener noreferrer" className={link}>WhatsApp</a></li>
+              <li><a href={`mailto:${business.email}`} className={link}>{business.email}</a></li>
             </ul>
+            <Link
+              href="/afspraak"
+              className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-sm text-black transition-colors hover:bg-offwhite"
+            >
+              Afspraak maken
+            </Link>
           </div>
 
           <div>
-            <h3 className="mb-5 text-sm text-offwhite">Openingstijden</h3>
-            <ul className="space-y-1.5 text-sm text-offwhite/60">
+            <h3 className={heading}>Openingstijden</h3>
+            <ul className="text-sm">
               {openingHours.map((o) => (
-                <li key={o.day} className="flex justify-between gap-4 border-b border-offwhite/10 pb-1.5">
-                  <span>{o.day}</span>
-                  <span>{o.hours}</span>
+                <li key={o.day} className="flex justify-between gap-4 border-b border-offwhite/10 py-2 first:pt-0">
+                  <span className="text-offwhite/65">{o.day}</span>
+                  <span className={o.hours === "Gesloten" ? "text-offwhite/40" : "text-offwhite"}>{o.hours}</span>
                 </li>
               ))}
             </ul>
@@ -82,9 +97,12 @@ export default function Footer() {
           Hair by Cill
         </p>
 
-        <div className="mt-6 flex flex-col gap-3 text-xs text-offwhite/40 sm:flex-row sm:justify-between">
+        <div className="mt-6 flex flex-col gap-3 border-t border-offwhite/10 pt-6 text-xs text-offwhite/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {business.name}. Alle rechten voorbehouden.</p>
-          <p>{business.address}</p>
+          <div className="flex gap-5">
+            <Link href="/privacybeleid" className="transition-colors hover:text-gold">Privacybeleid</Link>
+            <Link href="/voorwaarden" className="transition-colors hover:text-gold">Voorwaarden</Link>
+          </div>
         </div>
       </div>
     </footer>
