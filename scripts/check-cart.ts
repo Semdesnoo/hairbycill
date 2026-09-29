@@ -28,3 +28,14 @@ const { shippingCost, SHIPPING } = await import("../src/lib/data.ts");
 assert.equal(shippingCost(SHIPPING.freeFrom - 0.01), SHIPPING.cost, "below threshold pays shipping");
 assert.equal(shippingCost(SHIPPING.freeFrom), 0, "at threshold ships free");
 console.log("shipping checks OK");
+
+// Treatment cards must show the lowest matching price from the printed price list.
+const { treatments, priceList: pl } = await import("../src/lib/data.ts");
+const lowest = (cat, keep = () => true) =>
+  Math.min(...pl.find((c) => c.title === cat).items.filter((i) => keep(i.name)).map((i) => euroToNumber(i.price)));
+const card = (slug) => euroToNumber(treatments.find((t) => t.slug === slug).price);
+assert.equal(card("knippen"), lowest("Knippen"));
+assert.equal(card("kleuren"), lowest("Kleuren", (n) => n.startsWith("Uitgroei") || n.startsWith("Kleuren")));
+assert.equal(card("folies"), lowest("Kleuren", (n) => n.startsWith("Folies")));
+assert.equal(card("verlenging"), 35);
+console.log("treatment price checks OK", treatments.map((t) => `${t.name} ${t.price}`).join(" | "));

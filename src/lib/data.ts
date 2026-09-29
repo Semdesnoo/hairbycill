@@ -137,56 +137,63 @@ export type Treatment = {
   image: string;
 };
 
+/** "€ 24,95" -> 24.95 */
+export const euroToNumber = (p: string) => parseFloat(p.replace(/[^\d,]/g, "").replace(",", "."));
+
+/** "vanaf € X": lowest price in a price-list category (optionally filtered), so cards never drift from the list. */
+function priceFrom(category: string, keep: (name: string) => boolean = () => true): string {
+  const items = priceList.find((c) => c.title === category)?.items.filter((i) => keep(i.name)) ?? [];
+  if (!items.length) throw new Error(`priceFrom: no prices for ${category}`);
+  const min = items.reduce((m, i) => (euroToNumber(i.price) < euroToNumber(m.price) ? i : m));
+  return `vanaf ${min.price}`;
+}
+
+// The bookable treatments = the categories of the printed price list.
 export const treatments: Treatment[] = [
   {
     slug: "knippen",
     accent: "Precisie",
-    duration: "45 min",
-    price: "vanaf € 29,50",
+    duration: "30-60 min",
+    price: priceFrom("Knippen"),
     name: "Knippen",
-    description: "Een precisiecoupe afgestemd op jouw gezicht en haarstructuur.",
-    image:
-      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1400&auto=format&fit=crop",
+    description: "Dames en heren, met of zonder wassen, drogen of föhnen.",
+    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1400&auto=format&fit=crop",
+  },
+  {
+    slug: "styling",
+    accent: "Moment",
+    duration: "30-45 min",
+    price: priceFrom("Stylen", (n) => n.includes("föhnen")),
+    name: "Stylen",
+    description: "Wassen en föhnen, voor kort en lang haar.",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1400&auto=format&fit=crop",
   },
   {
     slug: "kleuren",
     accent: "Glans",
     duration: "90 min",
-    price: "vanaf € 52,50",
+    price: priceFrom("Kleuren", (n) => n.startsWith("Uitgroei") || n.startsWith("Kleuren")),
     name: "Kleuren",
-    description: "Diepe, egale kleur of een subtiele verfrissing van je uitgroei.",
-    image:
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1400&auto=format&fit=crop",
+    description: "Uitgroei bijwerken of volledig kleuren, voor kort en lang haar.",
+    image: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1400&auto=format&fit=crop",
   },
   {
-    slug: "balayage",
-    accent: "Zon",
-    duration: "150 min",
-    price: "vanaf € 69,50",
-    name: "Balayage",
-    description: "Handgeschilderde highlights voor een natuurlijk, zonnig effect.",
-    image:
-      "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1400&auto=format&fit=crop",
-  },
-  {
-    slug: "highlights",
+    slug: "folies",
     accent: "Licht",
-    duration: "120 min",
-    price: "vanaf € 69,50",
-    name: "Highlights",
-    description: "Dimensie en glans met precisie geplaatste highlights.",
-    image:
-      "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop",
+    duration: "120-150 min",
+    price: priceFrom("Kleuren", (n) => n.startsWith("Folies")),
+    name: "Folies",
+    description: "Highlights met folies: scalp, half of geheel, met toner als finishing touch.",
+    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop",
   },
   {
-    slug: "styling",
-    accent: "Moment",
-    duration: "45 min",
-    price: "vanaf € 32,50",
-    name: "Styling",
-    description: "Föhnen, krullen of een look voor die speciale gelegenheid.",
-    image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1400&auto=format&fit=crop",
+    slug: "verlenging",
+    accent: "Volume",
+    duration: "60-120 min",
+    price: priceFrom("Haar verdikking / verlenging", (n) => n.includes("baan") && !n.startsWith("Verwijderen")),
+    name: "Verlenging",
+    description: "Haar verdikking of verlenging met banen, van 1 tot 4 banen.",
+    image: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1400&auto=format&fit=crop",
   },
 ];
 
@@ -361,9 +368,7 @@ export const galleryImages: { src: string; aspect: "portrait" | "square" | "land
   { src: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
 ];
 
-// Salon-tips op de homepage ("Tips uit de salon").
-/** "€24,95" -> 24.95 */
-export const euroToNumber = (p: string) => parseFloat(p.replace(/[^\d,]/g, "").replace(",", "."));
+
 export const formatEuro = (n: number) =>
   new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
 /** Bundle offer on product pages: discount on the 2nd item. Set to 0 to hide the 2-pack option. */

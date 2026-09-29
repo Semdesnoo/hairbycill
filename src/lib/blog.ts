@@ -98,7 +98,7 @@ export const posts: BlogPost[] = [
         a: "Ja. Bij Hair by Cill aan de Dorpsdijk in Rhoon plannen we balayage altijd met een adviesgesprek, zodat de kleur past bij jouw haar en huidtint.",
       },
     ],
-    treatment: "balayage",
+    treatment: "folies",
   },
   {
     slug: "fohnen-zonder-hitteschade",
