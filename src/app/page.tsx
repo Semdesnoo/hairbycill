@@ -298,13 +298,6 @@ export default function Home() {
                 Een klein team dat luistert, meedenkt en weet wat jouw haar nodig heeft. Bij ons zit je
                 altijd bij een vast, vertrouwd gezicht.
               </p>
-              <div className="mt-7 flex max-w-sm flex-wrap gap-2 text-[11px]">
-                {["Persoonlijk", "Gecertificeerd", "Ervaren", "Duurzaam"].map((c) => (
-                  <span key={c} className="rounded-full border border-black/15 px-4 py-1.5">
-                    {c}
-                  </span>
-                ))}
-              </div>
               <Button href="/afspraak" className="mt-10">Afspraak maken</Button>
             </div>
 
