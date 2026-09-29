@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
+import Button from "@/components/Button";
 import CTA from "@/components/CTA";
 import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
@@ -39,8 +40,26 @@ export default function PrijslijstPage() {
             {[priceList.filter((c) => LEFT.includes(c.title)), priceList.filter((c) => !LEFT.includes(c.title))].map((col, ci) => (
               <div key={ci} className="flex flex-col gap-6">
                 {col.map((category, i) => (
-                  <PriceList key={category.title} category={category} index={ci} className={i === col.length - 1 ? "flex-1" : ""} />
+                  <PriceList
+                    key={category.title}
+                    category={category}
+                    index={ci}
+                    className={i === col.length - 1 && ci === 0 ? "flex-1" : ""}
+                  />
                 ))}
+                {ci === 1 && (
+                  <div className="flex flex-1 flex-col justify-center rounded-3xl bg-black p-8 text-offwhite">
+                    <p className="text-2xl font-light">
+                      Twijfel je <span className="accent text-gold">welke behandeling?</span>
+                    </p>
+                    <p className="mt-3 max-w-sm text-sm leading-relaxed text-offwhite/70">
+                      Stuur ons een berichtje of plan je afspraak, dan kijken we in de salon samen wat bij jouw haar past.
+                    </p>
+                    <div className="mt-6">
+                      <Button href="/afspraak" variant="light">Afspraak maken</Button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
