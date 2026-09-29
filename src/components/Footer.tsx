@@ -16,7 +16,7 @@ const link = "text-offwhite/65 transition-colors hover:text-gold";
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black px-6 pb-8 pt-20 text-offwhite md:px-14">
+    <footer className="relative overflow-hidden bg-black px-6 pb-8 pt-20 text-offwhite md:px-14 max-md:[body:has([data-sticky-cta])_&]:pb-28">
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-10">
           <div>
