@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
-import CTA from "@/components/CTA";
 import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
 import { priceList } from "@/lib/data";
@@ -66,12 +65,6 @@ export default function PrijslijstPage() {
         </div>
       </section>
 
-      <CTA
-        title="Jouw haar,"
-        accent="onze passie"
-        text="Weet je welke behandeling je wilt? Kies je dag en tijd, dan zien we je in de salon."
-        image="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1920&auto=format&fit=crop"
-      />
     </>
   );
 }
