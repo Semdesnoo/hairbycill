@@ -355,20 +355,6 @@ export const team: TeamMember[] = [
   },
 ];
 
-// aspect: gebruikt door de editorial portfolio-grid voor variatie in beeldverhouding.
-export const galleryImages: { src: string; aspect: "portrait" | "square" | "landscape" }[] = [
-  { src: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
-  { src: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
-  { src: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
-  { src: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
-  { src: "https://images.unsplash.com/photo-1554519515-242161756769?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
-  { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
-  { src: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=1200&auto=format&fit=crop", aspect: "landscape" },
-  { src: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1000&auto=format&fit=crop", aspect: "square" },
-  { src: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=1000&auto=format&fit=crop", aspect: "portrait" },
-];
-
-
 export const formatEuro = (n: number) =>
   new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
 /** Bundle offer on product pages: discount on the 2nd item. Set to 0 to hide the 2-pack option. */

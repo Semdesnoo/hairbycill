@@ -4,7 +4,6 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import CTA from "@/components/CTA";
 import ImageReveal from "@/components/ImageReveal";
 import PageHero from "@/components/PageHero";
-import PortfolioGallery from "@/components/PortfolioGallery";
 import Reveal from "@/components/Reveal";
 import { team } from "@/lib/data";
 
@@ -118,11 +117,6 @@ export default function OverOnsPage() {
             </Reveal>
           ))}
         </div>
-      </section>
-
-      {/* GALLERY */}
-      <section className="mx-auto max-w-6xl px-6 pb-28">
-        <PortfolioGallery />
       </section>
 
       <CTA
