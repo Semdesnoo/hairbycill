@@ -134,7 +134,7 @@ export default function OverOnsPage() {
       <CTA
         title="Klaar voor"
         accent="een nieuwe look?"
-        image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1920&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
       />
     </>
   );
