@@ -36,7 +36,14 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     siteName: business.name,
   },
-  icons: { icon: `${BASE_PATH}/logo.jpg` },
+  // Round gold logo, transparent corners (favicon.ico in src/app is picked up automatically too).
+  icons: {
+    icon: [
+      { url: `${BASE_PATH}/favicon-32.png`, sizes: "32x32", type: "image/png" },
+      { url: `${BASE_PATH}/icon-192.png`, sizes: "192x192", type: "image/png" },
+    ],
+    apple: `${BASE_PATH}/apple-touch-icon.png`,
+  },
 };
 
 const structuredData = {

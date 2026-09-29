@@ -174,11 +174,11 @@ function Waitlist() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- static export, tiny logo */}
         <img
-          src={`${BASE_PATH}/logo.jpg`}
+          src={`${BASE_PATH}/icon-192.png`}
           alt="Hair by Cill"
           width={120}
           height={120}
-          className="mx-auto mb-7 h-24 w-24 rounded-full shadow-[0_0_40px_rgba(210,174,98,0.25)] ring-1 ring-gold/40 md:h-28 md:w-28"
+          className="mx-auto mb-7 h-24 w-24 rounded-full shadow-[0_0_40px_rgba(210,174,98,0.3)] md:h-28 md:w-28"
         />
         <span className="inline-block rounded-full border border-gold/40 bg-black/30 px-4 py-1.5 text-xs text-gold backdrop-blur-sm">
           Binnenkort open in Rhoon
