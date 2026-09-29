@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { QtyStepper } from "@/components/CartDrawer";
 import { DISCOUNT_CODE, WEB3FORMS_KEY } from "@/components/LaunchGate";
 import { cart, cartLines, cartTotal, useCart } from "@/lib/cart";
-import { business, formatEuro } from "@/lib/data";
+import { business, formatEuro, SHIPPING, shippingCost } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const DISCOUNT_RATE = 0.1; // waitlist code = 10% off
@@ -15,13 +15,16 @@ const DISCOUNT_RATE = 0.1; // waitlist code = 10% off
 /** Short readable order number, e.g. HBC-MG4K2Q1A (called from the submit handler only). */
 const orderRef = () => `HBC-${Date.now().toString(36).toUpperCase()}`;
 
-type Done = { ref: string; total: number; name: string };
+type Method = "pickup" | "delivery";
+type Done = { ref: string; total: number; name: string; method: Method };
 
 export default function Checkout() {
   const { items } = useCart();
   const lines = cartLines(items);
   const subtotal = cartTotal(items);
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
+  const [method, setMethod] = useState<Method>("pickup");
+  const [addr, setAddr] = useState({ street: "", number: "", postcode: "", city: "" });
   const [code, setCode] = useState("");
   const [codeApplied, setCodeApplied] = useState(false);
   const [codeError, setCodeError] = useState(false);
@@ -29,7 +32,9 @@ export default function Checkout() {
   const [done, setDone] = useState<Done | null>(null);
 
   const discount = codeApplied ? Math.round(subtotal * DISCOUNT_RATE * 100) / 100 : 0;
-  const total = subtotal - discount;
+  const delivery = method === "delivery";
+  const shipping = delivery ? shippingCost(subtotal - discount) : 0;
+  const total = subtotal - discount + shipping;
 
   function applyCode() {
     const ok = code.trim().toUpperCase() === DISCOUNT_CODE;
@@ -59,7 +64,13 @@ export default function Checkout() {
             order,
             `Subtotaal: ${formatEuro(subtotal)}`,
             codeApplied ? `Kortingscode ${DISCOUNT_CODE}: -${formatEuro(discount)}` : "Geen kortingscode",
-            `Totaal (betalen bij afhalen): ${formatEuro(total)}`,
+            delivery
+              ? [
+                  `BEZORGEN naar: ${addr.street} ${addr.number}, ${addr.postcode.toUpperCase()} ${addr.city}`,
+                  `Verzendkosten: ${shipping ? formatEuro(shipping) : "gratis"}`,
+                  `Totaal: ${formatEuro(total)} (stuur de klant een betaalverzoek, verzenden na betaling)`,
+                ].join("\n")
+              : `AFHALEN in de salon. Totaal (betalen bij afhalen): ${formatEuro(total)}`,
             form.notes ? `Opmerking: ${form.notes}` : "",
           ].filter(Boolean).join("\n"),
         }),
@@ -67,7 +78,7 @@ export default function Checkout() {
       const data = await res.json();
       if (!data.success) return setState("error");
       cart.clear();
-      setDone({ ref, total, name: form.name.split(" ")[0] });
+      setDone({ ref, total, name: form.name.split(" ")[0], method });
     } catch {
       setState("error");
     }
@@ -87,13 +98,20 @@ export default function Checkout() {
             Bedankt, <span className="accent text-gold">{done.name}</span>
           </h1>
           <p className="mt-4 text-offwhite/70">
-            Je bestelling <strong className="text-offwhite">{done.ref}</strong> is binnen. We zetten hem voor je klaar
-            en laten je weten wanneer je hem kunt ophalen.
+            Je bestelling <strong className="text-offwhite">{done.ref}</strong> is binnen.{" "}
+            {done.method === "delivery"
+              ? "Je ontvangt van ons een betaalverzoek. Zodra dat betaald is, versturen we je pakket."
+              : "We zetten hem voor je klaar en laten je weten wanneer je hem kunt ophalen."}
           </p>
           <p className="mt-6 text-sm text-offwhite/60">
-            Te betalen bij afhalen: <strong className="text-gold">{formatEuro(done.total)}</strong>
-            <br />
-            {business.address}
+            {done.method === "delivery" ? "Totaal incl. verzending" : "Te betalen bij afhalen"}:{" "}
+            <strong className="text-gold">{formatEuro(done.total)}</strong>
+            {done.method === "pickup" && (
+              <>
+                <br />
+                {business.address}
+              </>
+            )}
           </p>
           <Link href="/producten" className="mt-8 inline-block rounded-full bg-offwhite px-7 py-3 text-sm text-black hover:bg-gold">
             Verder winkelen
@@ -123,7 +141,7 @@ export default function Checkout() {
       <h1 className="text-4xl font-light md:text-5xl">
         <span className="accent text-gold-muted">Afrekenen</span>
       </h1>
-      <p className="mt-3 text-sm text-black/55">Je haalt je bestelling op in de salon en betaalt daar, contant of met pin.</p>
+      <p className="mt-3 text-sm text-black/55">Haal je bestelling op in de salon of laat hem thuisbezorgen.</p>
 
       <form onSubmit={submit} className="mt-10 grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-14">
         <div className="space-y-8">
@@ -154,12 +172,80 @@ export default function Checkout() {
           </fieldset>
 
           <fieldset>
-            <legend className="mb-4 text-xl font-light">Ophalen</legend>
-            <div className="rounded-2xl border border-black bg-offwhite p-5">
-              <p className="font-medium">Afhalen in de salon · gratis</p>
-              <p className="mt-1 text-sm text-black/60">{business.address}</p>
-              <p className="mt-1 text-xs text-black/45">We laten je weten zodra je bestelling klaarstaat.</p>
+            <legend className="mb-4 text-xl font-light">Afhalen of bezorgen</legend>
+            <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Afhalen of bezorgen">
+              {(
+                [
+                  ["pickup", "Afhalen in de salon", "Gratis · betalen in de salon", business.address],
+                  [
+                    "delivery",
+                    "Thuisbezorgen",
+                    shippingCost(subtotal - discount)
+                      ? `${formatEuro(SHIPPING.cost)} · gratis vanaf ${formatEuro(SHIPPING.freeFrom)}`
+                      : "Gratis bezorging",
+                    "Binnen 2-4 werkdagen in huis (NL)",
+                  ],
+                ] as const
+              ).map(([value, title, price, sub]) => {
+                const active = method === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    onClick={() => setMethod(value)}
+                    className={`rounded-2xl border p-5 text-left transition-colors ${
+                      active ? "border-black bg-offwhite shadow-md shadow-black/5" : "border-black/15 hover:border-black/40"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2 font-medium">
+                      <span className={`flex h-4 w-4 items-center justify-center rounded-full border ${active ? "border-black" : "border-black/30"}`}>
+                        {active && <span className="h-2 w-2 rounded-full bg-black" />}
+                      </span>
+                      {title}
+                    </span>
+                    <span className="mt-1 block text-sm text-gold-muted">{price}</span>
+                    <span className="mt-1 block text-xs text-black/50">{sub}</span>
+                  </button>
+                );
+              })}
             </div>
+
+            {delivery && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease }}
+                className="mt-5 grid gap-4 md:grid-cols-[1fr_160px]"
+              >
+                {(
+                  [
+                    ["street", "Straat", "address-line1"],
+                    ["number", "Huisnummer", "off"],
+                    ["postcode", "Postcode", "postal-code"],
+                    ["city", "Plaats", "address-level2"],
+                  ] as const
+                ).map(([key, label, ac]) => (
+                  <label key={key} className="block">
+                    <span className="mb-1.5 block text-xs text-black/55">{label}</span>
+                    <input
+                      required
+                      autoComplete={ac}
+                      // Dutch postcode, e.g. 3161 CD
+                      pattern={key === "postcode" ? "\\s*[1-9][0-9]{3}\\s?[A-Za-z]{2}\\s*" : undefined}
+                      title={key === "postcode" ? "Bijvoorbeeld 3161 CD" : undefined}
+                      value={addr[key]}
+                      onChange={(e) => setAddr({ ...addr, [key]: e.target.value })}
+                      className={field}
+                    />
+                  </label>
+                ))}
+                <p className="text-xs text-black/50 md:col-span-2">
+                  Je ontvangt na je bestelling een betaalverzoek. We versturen je pakket zodra het betaald is.
+                </p>
+              </motion.div>
+            )}
           </fieldset>
         </div>
 
@@ -215,8 +301,8 @@ export default function Checkout() {
                 </div>
               )}
               <div className="flex justify-between">
-                <dt className="text-black/55">Afhalen</dt>
-                <dd>Gratis</dd>
+                <dt className="text-black/55">{delivery ? "Verzending" : "Afhalen"}</dt>
+                <dd>{shipping ? formatEuro(shipping) : "Gratis"}</dd>
               </div>
               <div className="flex items-baseline justify-between border-t border-black/10 pt-3">
                 <dt>Totaal</dt>
@@ -236,7 +322,9 @@ export default function Checkout() {
                 Er ging iets mis. Probeer het opnieuw of bel ons.
               </p>
             )}
-            <p className="mt-3 text-center text-[11px] text-black/45">Betalen doe je bij het ophalen in de salon.</p>
+            <p className="mt-3 text-center text-[11px] text-black/45">
+              {delivery ? "Je ontvangt een betaalverzoek, daarna versturen we." : "Betalen doe je bij het ophalen in de salon."}
+            </p>
           </div>
         </aside>
       </form>

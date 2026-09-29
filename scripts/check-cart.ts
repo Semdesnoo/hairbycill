@@ -23,3 +23,8 @@ assert.equal(cartTotal(items), r(lineTotal(p, 2) + lineTotal(products[1], 1)), "
 assert.equal(cartCount(items.slice(0, 2)), 3, "count sums quantities");
 
 console.log("cart checks OK");
+
+const { shippingCost, SHIPPING } = await import("../src/lib/data.ts");
+assert.equal(shippingCost(SHIPPING.freeFrom - 0.01), SHIPPING.cost, "below threshold pays shipping");
+assert.equal(shippingCost(SHIPPING.freeFrom), 0, "at threshold ships free");
+console.log("shipping checks OK");

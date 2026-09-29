@@ -12,7 +12,7 @@ export default function BuyBox({ product }: { product: Product }) {
   const unit = euroToNumber(product.price);
   const was = product.oldPrice ? euroToNumber(product.oldPrice) : unit;
   const packs = [
-    { qty: 1, label: "1 stuk", price: unit, was, note: "Ophalen in de salon" },
+    { qty: 1, label: "1 stuk", price: unit, was, note: "Afhalen of thuisbezorgd" },
     ...(SECOND_ITEM_DISCOUNT > 0
       ? [
           {
@@ -103,7 +103,7 @@ export default function BuyBox({ product }: { product: Product }) {
       </button>
 
       <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-black/55">
-        <span>✓ Professioneel advies bij afhalen</span>
+        <span>✓ Afhalen in de salon of thuisbezorgd</span>
         <span>✓ Dezelfde producten als in de salon</span>
       </div>
     </div>

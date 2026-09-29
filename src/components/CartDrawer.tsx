@@ -90,7 +90,7 @@ export default function CartDrawer() {
                     <span className="text-sm text-black/55">Subtotaal</span>
                     <span className="text-xl">{formatEuro(cartTotal(items))}</span>
                   </div>
-                  <p className="mt-1 text-xs text-black/45">Ophalen in de salon, geen verzendkosten.</p>
+                  <p className="mt-1 text-xs text-black/45">Gratis afhalen in de salon of thuisbezorgd.</p>
                   <Link
                     href="/checkout"
                     onClick={cart.close}

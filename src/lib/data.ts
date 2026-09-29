@@ -368,3 +368,6 @@ export const formatEuro = (n: number) =>
   new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
 /** Bundle offer on product pages: discount on the 2nd item. Set to 0 to hide the 2-pack option. */
 export const SECOND_ITEM_DISCOUNT = 0.2;
+/** Home delivery (NL only). Placeholder rates: salon to confirm. */
+export const SHIPPING = { cost: 4.95, freeFrom: 50 };
+export const shippingCost = (subtotal: number) => (subtotal >= SHIPPING.freeFrom ? 0 : SHIPPING.cost);
