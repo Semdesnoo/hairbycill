@@ -203,30 +203,30 @@ export default function Home() {
               })}
             </div>
 
-            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-black/70 p-3 backdrop-blur-md md:p-5">
-              <p className="px-3 pb-3 text-xs text-offwhite/50">
+            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-offwhite p-3 text-black shadow-2xl shadow-black/30 [text-shadow:none] md:p-5">
+              <p className="px-3 pb-3 text-xs text-black/55">
                 {day}: {openingHours.find((o) => o.day === day)?.hours}
               </p>
               {treatments.map((t, i) => (
                 <div
                   key={t.slug}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-offwhite/10 px-3 py-4 md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto]"
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-black/10 px-3 py-4 md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto]"
                 >
-                  <span className="hidden text-xs text-offwhite/50 md:block">0{i + 1}</span>
+                  <span className="hidden text-xs text-black/45 md:block">0{i + 1}</span>
                   <p className="text-sm">
-                    {t.name} <span className="accent text-gold">{t.accent}</span>
+                    {t.name} <span className="accent text-gold-muted">{t.accent}</span>
                   </p>
                   <div className="relative hidden h-10 w-16 overflow-hidden rounded-lg md:block">
                     <Image src={t.image} alt="" fill sizes="64px" className="object-cover" />
                   </div>
-                  <p className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{t.description}</p>
-                  <p className="whitespace-nowrap text-xs text-offwhite/80">
+                  <p className="hidden text-xs leading-relaxed text-black/60 md:block">{t.description}</p>
+                  <p className="whitespace-nowrap text-xs text-black/80">
                     {t.duration} • {t.price}
                   </p>
                   <Link
                     href={`/afspraak?treatment=${t.slug}`}
                     className={`rounded-full px-4 py-1.5 text-xs transition-colors ${
-                      i === 0 ? "bg-offwhite text-black" : "border border-offwhite/25 hover:bg-offwhite hover:text-black"
+                      i === 0 ? "bg-black text-offwhite" : "border border-black/20 hover:bg-black hover:text-offwhite"
                     }`}
                   >
                     Boek
