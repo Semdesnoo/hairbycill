@@ -224,7 +224,7 @@ export default function BookingWizard() {
           <div className="grid gap-6 md:grid-cols-2">
             {/* Calendar */}
             <div className="rounded-3xl bg-black p-5 text-offwhite md:p-6">
-              <p className="mb-4 text-center text-lg font-light capitalize">
+              <p className="mb-6 mt-2 text-center text-3xl font-light capitalize md:text-4xl">
                 <span className="accent text-gold">{mounted ? monthLabel : " "}</span>
               </p>
               <div className="grid grid-cols-7 gap-1 text-center text-[11px] uppercase tracking-wider text-offwhite/40">
