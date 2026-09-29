@@ -75,9 +75,10 @@ export default function Home() {
         {/* HERO */}
         <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black">
           <HeroVideo className="absolute inset-0 h-full w-full object-cover opacity-70" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
 
-          <div className="relative z-10 px-6 py-32 md:px-14">
+          <div className="on-photo relative z-10 px-6 py-32 md:px-14">
             <AnimatedHeading
               as="h1"
               lines={["Jouw haar,"]}
@@ -88,7 +89,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease }}
-              className="mt-5 max-w-sm text-sm leading-relaxed text-offwhite/75"
+              className="mt-5 max-w-sm text-sm leading-relaxed text-offwhite/90"
             >
               Een rustige plek voor haar dat écht bij jou past. Persoonlijk advies, vakmanschap en
               aandacht tot in de puntjes.
@@ -160,7 +161,7 @@ export default function Home() {
                       sizes="300px"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pb-8 pt-16 text-center text-base text-offwhite">
+                    <span className="on-photo absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent pb-8 pt-16 text-center text-base text-offwhite">
                       {t.name}
                     </span>
                   </Link>
@@ -173,13 +174,13 @@ export default function Home() {
         {/* SERVICES: dark band with day tabs + treatment table */}
         <section className="relative overflow-hidden bg-black px-4 py-24 text-offwhite md:px-14 md:py-28">
           <Image src={u("1633681926022-84c23e8cb2d6", 1800)} alt="" fill sizes="100vw" className="object-cover opacity-20" />
-          <div className="relative z-10">
+          <div className="on-photo relative z-10">
             <AnimatedHeading
               lines={["Vind een behandeling"]}
               accent="die bij je past"
               className="mx-auto max-w-lg text-center text-4xl leading-[1.05] md:text-5xl"
             />
-            <p className="mx-auto mt-4 max-w-sm text-center text-sm text-offwhite/60">
+            <p className="mx-auto mt-4 max-w-sm text-center text-sm text-offwhite/85">
               Kies je dag, kies je behandeling. Wij zorgen voor de rest.
             </p>
 

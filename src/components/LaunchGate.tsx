@@ -163,14 +163,14 @@ function Waitlist() {
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-black px-6 py-24 text-offwhite">
       <HeroVideo className="absolute inset-0 h-full w-full object-cover opacity-45" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
 
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease }}
-        className="relative z-10 w-full max-w-xl text-center"
+        className="on-photo relative z-10 w-full max-w-xl text-center"
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- static export, tiny logo */}
         <img
@@ -186,7 +186,7 @@ function Waitlist() {
         <h1 className="mt-6 text-[clamp(2.5rem,7vw,4.75rem)] font-light leading-[0.95]">
           Wees de eerste <span className="accent text-gold">in de stoel</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-offwhite/75">
+        <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-offwhite/90">
           Schrijf je in voor de wachtlijst en ontvang <strong className="font-medium text-offwhite">10% korting</strong> op
           je eerste behandeling zodra we open zijn. We laten het je als eerste weten.
         </p>
@@ -239,7 +239,7 @@ function Waitlist() {
                 Dat ging niet goed. Probeer het zo nog eens of stuur ons een berichtje via Instagram.
               </p>
             )}
-            <p className="mt-4 text-[11px] leading-relaxed text-offwhite/50">
+            <p className="mt-4 text-[11px] leading-relaxed text-offwhite/70">
               We gebruiken je e-mailadres alleen om je te laten weten wanneer we open zijn en voor je
               openingskorting. Afmelden kan altijd.
             </p>
@@ -247,7 +247,7 @@ function Waitlist() {
         )}
       </motion.div>
 
-      <div className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-1 text-xs text-offwhite/55 md:bottom-8">
+      <div className="on-photo absolute inset-x-0 bottom-6 flex flex-col items-center gap-1 text-xs text-offwhite/80 md:bottom-8">
         <p>{business.address}</p>
         <a href={business.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-gold">
           Volg ons op Instagram
