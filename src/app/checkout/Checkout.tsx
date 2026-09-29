@@ -222,7 +222,7 @@ export default function Checkout() {
                 {(
                   [
                     ["street", "Straat", "address-line1"],
-                    ["number", "Huisnummer", "off"],
+                    ["number", "Huisnummer", "address-line2"],
                     ["postcode", "Postcode", "postal-code"],
                     ["city", "Plaats", "address-level2"],
                   ] as const
