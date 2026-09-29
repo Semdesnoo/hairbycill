@@ -60,7 +60,7 @@ export default function PriceList({ category, index }: { category: PriceCategory
             <span className="text-[15px] text-offwhite/85 transition-colors duration-300 group-hover:text-offwhite">{item.name}</span>
             {/* Dotted leader like a printed menu */}
             <span aria-hidden className="mb-1 flex-1 border-b border-dotted border-gold/25" />
-            <span className="price-glow whitespace-nowrap font-serif text-lg text-gold">{item.price}</span>
+            <span className="price-glow whitespace-nowrap text-base font-light tracking-wide text-gold">{item.price}</span>
           </li>
         ))}
       </ul>
