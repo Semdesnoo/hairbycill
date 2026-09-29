@@ -9,7 +9,7 @@ export default function MobileStickyCta() {
   if (pathname === "/afspraak") return null;
 
   return (
-    <div className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-gold/20 bg-black/95 backdrop-blur-md px-6 py-3">
+    <div data-sticky-cta className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-gold/20 bg-black/95 backdrop-blur-md px-6 py-3">
       <Link
         href="/afspraak"
         className="block w-full rounded-full bg-gold py-3 text-center text-sm tracking-wide text-black"

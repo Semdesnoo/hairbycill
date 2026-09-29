@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import CookieBanner from "@/components/CookieBanner";
 import CartDrawer from "@/components/CartDrawer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import LaunchGate from "@/components/LaunchGate";
 import { business, openingHours } from "@/lib/data";
 import { BASE_PATH, SITE_URL } from "@/lib/basePath";
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CookieBanner />
           <CartDrawer />
         </LaunchGate>
+        <WhatsAppButton />
       </body>
     </html>
   );
