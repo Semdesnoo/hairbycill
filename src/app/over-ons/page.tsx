@@ -76,28 +76,6 @@ export default function OverOnsPage() {
         </div>
       </section>
 
-      {/* MEET PRISCILLA */}
-      <section className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-[5fr_7fr] md:items-center md:py-32">
-        <ImageReveal
-          src={team[0].image}
-          alt="Priscilla, eigenaresse Hair by Cill"
-          className="aspect-[4/5] w-full rounded-2xl"
-          sizes="(min-width: 768px) 40vw, 100vw"
-        />
-        <Reveal delay={0.15}>
-          <p className="text-3xl leading-snug md:text-4xl">
-            &ldquo;Het mooiste resultaat is haar waarin iemand{" "}
-            <span className="accent text-gold-muted">zichzelf herkent.</span>&rdquo;
-          </p>
-          <p className="mt-4 text-sm text-black/50">Priscilla, eigenaresse</p>
-          <p className="mt-8 max-w-md text-sm leading-relaxed text-black/60">
-            Al jaren draait mijn werk om meer dan alleen haar knippen of kleuren. Het gaat om
-            vertrouwen, luisteren en het beste resultaat neerzetten voor iedere klant die bij mij in
-            de stoel zit.
-          </p>
-        </Reveal>
-      </section>
-
       {/* TEAM */}
       <section className="border-t border-black/5 px-6 py-24 md:px-14 md:py-28">
         <AnimatedHeading
