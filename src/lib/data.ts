@@ -36,7 +36,8 @@ export const navLinks = [
 ];
 
 export type PriceItem = { name: string; price: string };
-export type PriceCategory = { title: string; items: PriceItem[] };
+export type PriceIcon = "scissors" | "dryer" | "bowl" | "lotus" | "hair";
+export type PriceCategory = { title: string; icon: PriceIcon; items: PriceItem[] };
 
 export type Stylist = { slug: string; name: string; role: string; image: string };
 
@@ -64,41 +65,64 @@ export const stylists: Stylist[] = [
   },
 ];
 
+// Prices copied 1:1 from the salon's printed price list (Keune).
 export const priceList: PriceCategory[] = [
   {
     title: "Knippen",
+    icon: "scissors",
     items: [
-      { name: "Dames knippen", price: "€ 45,00" },
-      { name: "Wassen, knippen & föhnen", price: "€ 55,00" },
-      { name: "Pony knippen", price: "€ 12,50" },
+      { name: "Knippen heren", price: "€ 29,50" },
+      { name: "Knippen dames", price: "€ 29,50" },
+      { name: "Wassen knippen", price: "€ 33,50" },
+      { name: "Wassen knippen drogen kort haar", price: "€ 37,50" },
+      { name: "Wassen knippen drogen lang haar", price: "€ 39,50" },
+      { name: "Wassen knippen föhnen kort haar", price: "€ 47,50" },
+      { name: "Wassen knippen föhnen lang haar", price: "€ 52,50" },
+    ],
+  },
+  {
+    title: "Stylen",
+    icon: "dryer",
+    items: [
+      { name: "Wassen föhnen kort haar", price: "€ 32,50" },
+      { name: "Wassen föhnen lang haar", price: "€ 37,50" },
+      { name: "Wassen drogen na kleuring", price: "€ 17,50" },
     ],
   },
   {
     title: "Kleuren",
+    icon: "bowl",
     items: [
-      { name: "Uitgroei kleuren", price: "vanaf € 55,00" },
-      { name: "Volledig kleuren", price: "vanaf € 75,00" },
-      { name: "Toner", price: "vanaf € 30,00" },
+      { name: "Uitgroei binnen 6 weken", price: "€ 52,50" },
+      { name: "Kleuren kort haar", price: "€ 59,50" },
+      { name: "Kleuren lang haar", price: "€ 72,50" },
+      { name: "Folies scalp", price: "€ 69,50" },
+      { name: "Folies half", price: "€ 82,50" },
+      { name: "Folies geheel", price: "€ 92,50" },
+      { name: "Toner na folies", price: "€ 39,50" },
+      { name: "Toeslag extra lang/dik haar", price: "€ 10" },
     ],
   },
   {
-    title: "Balayage & Highlights",
+    title: "Extra's",
+    icon: "lotus",
     items: [
-      { name: "Balayage", price: "vanaf € 120,00" },
-      { name: "Highlights gedeeltelijk", price: "vanaf € 65,00" },
-      { name: "Highlights volledig", price: "vanaf € 95,00" },
+      { name: "Hoofdhuidmassage 5 min", price: "€ 9,50" },
+      { name: "Hoofdhuidmassage 10 min", price: "€ 17,50" },
+      { name: "Wenkbrauwen verven", price: "€ 12,50" },
+      { name: "Bescherming tijdens kleuring", price: "€ 19,50" },
     ],
   },
   {
-    title: "Styling",
+    title: "Haar verdikking / verlenging",
+    icon: "hair",
     items: [
-      { name: "Föhnen", price: "€ 30,00" },
-      { name: "Krullen / styling", price: "vanaf € 35,00" },
+      { name: "1 baan", price: "€ 35" },
+      { name: "2 banen", price: "€ 55" },
+      { name: "3 banen", price: "€ 75" },
+      { name: "4 banen", price: "€ 90" },
+      { name: "Verwijderen per baan", price: "€ 10" },
     ],
-  },
-  {
-    title: "Extra",
-    items: [{ name: "Hair treatment", price: "€ 25,00" }],
   },
 ];
 
@@ -118,7 +142,7 @@ export const treatments: Treatment[] = [
     slug: "knippen",
     accent: "Precisie",
     duration: "45 min",
-    price: "€ 45",
+    price: "vanaf € 29,50",
     name: "Knippen",
     description: "Een precisiecoupe afgestemd op jouw gezicht en haarstructuur.",
     image:
@@ -128,7 +152,7 @@ export const treatments: Treatment[] = [
     slug: "kleuren",
     accent: "Glans",
     duration: "90 min",
-    price: "€ 75",
+    price: "vanaf € 52,50",
     name: "Kleuren",
     description: "Diepe, egale kleur of een subtiele verfrissing van je uitgroei.",
     image:
@@ -138,7 +162,7 @@ export const treatments: Treatment[] = [
     slug: "balayage",
     accent: "Zon",
     duration: "150 min",
-    price: "€ 120",
+    price: "vanaf € 69,50",
     name: "Balayage",
     description: "Handgeschilderde highlights voor een natuurlijk, zonnig effect.",
     image:
@@ -148,7 +172,7 @@ export const treatments: Treatment[] = [
     slug: "highlights",
     accent: "Licht",
     duration: "120 min",
-    price: "€ 95",
+    price: "vanaf € 69,50",
     name: "Highlights",
     description: "Dimensie en glans met precisie geplaatste highlights.",
     image:
@@ -158,7 +182,7 @@ export const treatments: Treatment[] = [
     slug: "styling",
     accent: "Moment",
     duration: "45 min",
-    price: "€ 35",
+    price: "vanaf € 32,50",
     name: "Styling",
     description: "Föhnen, krullen of een look voor die speciale gelegenheid.",
     image:
