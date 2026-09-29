@@ -15,7 +15,7 @@ const PREVIEW_KEY = "hbc_preview";
 
 // Web3Forms access key (public by design, it only lets you SEND to the owner's inbox).
 // Get it at https://web3forms.com with the owner's email address; paste it here.
-const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
+export const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
 
 // Discount mail to the subscriber via EmailJS (free: 200/month), sent from info@hairbycill.nl
 // over Mijndomein SMTP. Template = docs/emailjs-welkomstmail.html (welcome + discount code, one mail). Empty ids = step skipped,

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { navLinks } from "@/lib/data";
+import { cart, cartCount, useCart } from "@/lib/cart";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -13,8 +14,9 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   // Product and blog detail pages start on cream, not on a dark photo hero.
-  const hasDarkHero = !/^\/(producten|blog)\/[^/]+/.test(pathname);
+  const hasDarkHero = !/^\/((producten|blog)\/[^/]+|checkout)/.test(pathname);
   const { scrollY } = useScroll();
+  const count = cartCount(useCart().items);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -63,6 +65,22 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={cart.open}
+              aria-label={`Winkelwagen${count ? `, ${count} artikelen` : ""}`}
+              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-offwhite/20 bg-offwhite/10 text-offwhite transition-colors hover:bg-offwhite/25"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+                <path d="M6 7h12l-1 13H7L6 7Z" />
+                <path d="M9 7V5a3 3 0 0 1 6 0v2" />
+              </svg>
+              {count > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-medium text-black">
+                  {count}
+                </span>
+              )}
+            </button>
             <Link
               href="/afspraak"
               className="hidden rounded-full bg-offwhite px-6 py-2.5 text-sm text-black transition-colors hover:bg-gold md:block"

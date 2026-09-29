@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Product, business, euroToNumber, formatEuro, SECOND_ITEM_DISCOUNT } from "@/lib/data";
+import { cart } from "@/lib/cart";
+import { Product, euroToNumber, formatEuro, SECOND_ITEM_DISCOUNT } from "@/lib/data";
 
 /**
- * Pack choice (1 or 2 with discount on the 2nd) + order button.
- * ponytail: no webshop/checkout yet, so ordering opens WhatsApp with a prefilled reservation
- * (pick up in the salon). Swap the href for a cart/checkout call once a shop backend exists.
+ * Pack choice (1 or 2 with discount on the 2nd) + add-to-cart (opens the cart drawer).
  */
 export default function BuyBox({ product }: { product: Product }) {
   const unit = euroToNumber(product.price);
@@ -28,8 +27,6 @@ export default function BuyBox({ product }: { product: Product }) {
   ];
   const [qty, setQty] = useState(packs.length > 1 ? 2 : 1);
   const pack = packs.find((p) => p.qty === qty)!;
-
-  const message = `Hoi Hair by Cill! Ik wil graag ${pack.qty}x ${product.brand} ${product.name} (${product.volume}) reserveren voor ${formatEuro(pack.price)}. Ik haal het op in de salon.`;
 
   return (
     <div>
@@ -92,10 +89,9 @@ export default function BuyBox({ product }: { product: Product }) {
         Op voorraad in de salon
       </p>
 
-      <a
-        href={`${business.whatsappHref}?text=${encodeURIComponent(message)}`}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
+        onClick={() => cart.add(product.slug, pack.qty)}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -103,8 +99,8 @@ export default function BuyBox({ product }: { product: Product }) {
           <circle cx="9" cy="20" r="1.3" />
           <circle cx="17" cy="20" r="1.3" />
         </svg>
-        Reserveren · {formatEuro(pack.price)}
-      </a>
+        In winkelwagen · {formatEuro(pack.price)}
+      </button>
 
       <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-black/55">
         <span>✓ Professioneel advies bij afhalen</span>
