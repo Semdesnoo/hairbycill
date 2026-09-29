@@ -1,4 +1,4 @@
-import ImageReveal from "./ImageReveal";
+import Image from "next/image";
 import AnimatedHeading from "./AnimatedHeading";
 import Button from "./Button";
 
@@ -21,7 +21,7 @@ export default function CTA({
   return (
     <section className="px-4 pb-20 pt-20 md:px-14">
       <div className="on-photo relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 py-24 text-center">
-        <ImageReveal src={image} alt="" className="absolute inset-0 -z-20" />
+        <Image src={image} alt="" fill sizes="(min-width:1152px) 1152px, 100vw" className="-z-20 object-cover" />
         <div className="absolute inset-0 -z-10 bg-black/65" />
         <AnimatedHeading
           lines={[title]}
