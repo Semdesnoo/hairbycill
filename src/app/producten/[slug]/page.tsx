@@ -182,23 +182,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      {/* SPECS + FAQ */}
-      <section className="mx-auto grid max-w-6xl gap-14 px-6 py-24 md:grid-cols-2 md:py-28">
+      {/* FAQ */}
+      <section className="mx-auto max-w-3xl px-6 py-24 md:py-28">
         <Reveal>
-          <h2 className="text-3xl md:text-4xl">
-            Alles <span className="accent text-gold-muted">op een rij</span>
-          </h2>
-          <dl className="mt-8 divide-y divide-black/10 border-y border-black/10">
-            {specs.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-[150px_1fr] gap-4 py-4 text-sm">
-                <dt className="text-black/50">{k}</dt>
-                <dd>{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <h2 className="text-3xl md:text-4xl">
+          <h2 className="text-center text-3xl md:text-4xl">
             Veelgestelde <span className="accent text-gold-muted">vragen</span>
           </h2>
           <div className="mt-8">
