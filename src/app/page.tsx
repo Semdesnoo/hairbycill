@@ -343,7 +343,7 @@ export default function Home() {
           />
           <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2">
             {tips.slice(0, 2).map((t, i) => (
-              <Reveal key={t.title} delay={i * 0.08}>
+              <Reveal key={t.slug} delay={i * 0.08}>
                 <Link href={`/blog/${t.slug}`} className="group grid h-full grid-cols-[42%_1fr] gap-5 rounded-2xl bg-ivory/70 p-3">
                   <div className="relative aspect-square overflow-hidden rounded-xl">
                     <Image src={t.image} alt={t.h1} fill sizes="240px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -361,8 +361,8 @@ export default function Home() {
             ))}
           </div>
           <div className="mx-auto mt-5 grid max-w-6xl gap-5 sm:grid-cols-3">
-            {tips.slice(2).map((t, i) => (
-              <Reveal key={t.title} delay={i * 0.08}>
+            {tips.slice(2, 5).map((t, i) => (
+              <Reveal key={t.slug} delay={i * 0.08}>
                 <Link href={`/blog/${t.slug}`} className="group block h-full rounded-2xl bg-ivory/70 p-3">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                     <Image src={t.image} alt={t.h1} fill sizes="(min-width:640px) 30vw, 90vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
