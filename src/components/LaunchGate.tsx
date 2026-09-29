@@ -12,7 +12,7 @@ import { business } from "@/lib/data";
 // real security (the pages ship in the JS bundle). Real auth needs the backend. Launch = PRELAUNCH false.
 const PRELAUNCH = true;
 // SHA-256 of the login code (the code itself is not in the bundle). New code: sha256 hex of it.
-const LOGIN_HASH = "56d00a287aaccb6cfbb52c335a41c3ed330f5c909fd6b030275c4ce654f873ae";
+const LOGIN_HASH = "073ca22a49c593342fbbd8c56981a2f6d158f7aab237b554728f9cbee941a65b";
 const PREVIEW_KEY = "hbc_preview";
 
 // Web3Forms access key (public by design, it only lets you SEND to the owner's inbox).
