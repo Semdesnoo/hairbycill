@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ElementType } from "react";
 
 /**
- * Heading whose lines reveal upward (overflow-hidden mask + translateY 110% -> 0),
+ * Heading whose lines reveal upward (overflow-hidden mask + translateY 135% -> 0),
  * staggered per line. Pass each line as a separate string in `lines`.
  */
 export default function AnimatedHeading({
@@ -27,7 +27,9 @@ export default function AnimatedHeading({
         // In-view trigger on the MASK: the moving text starts clipped by overflow-hidden, so observing it never fires.
         <motion.span
           key={line}
-          className="block overflow-hidden"
+          // Padding gives descenders (g, j, p) and tall italic accents room inside the clipping mask;
+          // the equal negative margin keeps the heading's layout/line spacing unchanged.
+          className="-mb-[0.22em] -mt-[0.1em] block overflow-hidden pb-[0.22em] pt-[0.1em]"
           initial="hidden"
           // h1 sits above the fold: play on mount instead of waiting for an in-view event.
           {...(Tag === "h1"
@@ -36,7 +38,7 @@ export default function AnimatedHeading({
         >
           <motion.span
             className="block"
-            variants={{ hidden: { y: "110%" }, shown: { y: "0%" } }}
+            variants={{ hidden: { y: "135%" }, shown: { y: "0%" } }}
             transition={{
               duration: 0.8,
               delay: delay + i * 0.09,
