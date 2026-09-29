@@ -203,14 +203,14 @@ export default function Home() {
               })}
             </div>
 
-            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-offwhite p-3 text-black shadow-2xl shadow-black/30 [text-shadow:none] md:p-5">
-              <p className="px-3 pb-3 text-xs text-black/55">
+            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-offwhite p-3 text-black shadow-2xl shadow-black/30 [text-shadow:none] md:grid md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto] md:gap-x-4 md:p-5">
+              <p className="px-3 pb-3 text-xs text-black/55 md:col-span-full">
                 {day}: {openingHours.find((o) => o.day === day)?.hours}
               </p>
               {treatments.map((t, i) => (
                 <div
                   key={t.slug}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-black/10 px-3 py-4 md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto]"
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-black/10 px-3 py-4 md:col-span-full md:grid-cols-subgrid"
                 >
                   <span className="hidden text-xs text-black/45 md:block">0{i + 1}</span>
                   <p className="text-sm">
