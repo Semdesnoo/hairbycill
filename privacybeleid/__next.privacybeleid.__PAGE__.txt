@@ -1,0 +1,20 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+7:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"ViewportBoundary"]
+8:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"MetadataBoundary"]
+9:I[27201,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"IconMark"]
+b:I[39756,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"default"]
+c:I[37457,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"default"]
+6:X
+e:X
+e:C
+0:{"buildId":"V-GcLDXluO4VvwemXFsrV","data":[{"rsc":["$","$1","c",{"children":[["$","section",null,{"className":"mx-auto max-w-2xl px-6 pb-28 pt-40 md:pt-48","children":[["$","h1",null,{"className":"text-4xl md:text-5xl","children":["Privacy",["$","span",null,{"className":"accent text-gold-muted","children":"beleid"}]]}],["$","p",null,{"className":"mt-6 text-sm leading-relaxed text-black/60","children":"Hair by Cill respecteert jouw privacy. Deze pagina wordt binnenkort aangevuld met het volledige privacybeleid conform de AVG/GDPR."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":"$@5","staleTime":"$6","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L7",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L8",null,{"children":["$","$3",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Privacybeleid - Hair by Cill"}],["$","meta","1",{"name":"description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","meta","2",{"property":"og:title","content":"Privacybeleid - Hair by Cill"}],["$","meta","3",{"property":"og:description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","meta","4",{"property":"og:site_name","content":"Hair by Cill"}],["$","meta","5",{"property":"og:locale","content":"nl_NL"}],["$","meta","6",{"property":"og:type","content":"website"}],["$","meta","7",{"name":"twitter:card","content":"summary"}],["$","meta","8",{"name":"twitter:title","content":"Privacybeleid - Hair by Cill"}],["$","meta","9",{"name":"twitter:description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","link","10",{"rel":"icon","href":"/favicon.ico?favicon.1-oe-krlw33s2.ico","sizes":"256x256","type":"image/x-icon"}],["$","link","11",{"rel":"icon","href":"/favicon-32.png","sizes":"32x32","type":"image/png"}],["$","link","12",{"rel":"icon","href":"/icon-192.png","sizes":"192x192","type":"image/png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png"}],["$","$L9","14",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@a","staleTime":"$6","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lb",null,{"parallelRouterKey":"children","template":["$","$Lc",null,{}]}]]}],"isPartial":"$@d","staleTime":"$6","varyParams":"$e"}],"isUpgradeableISRFallback":false,"a":"$@f","rootVaryParams":null,"needsRuntimeRequest":"$@10"}
+4:null
+10:true
+6:300
+6:C
+f:0
+a:"$undefined"
+d:"$undefined"
+5:"$undefined"

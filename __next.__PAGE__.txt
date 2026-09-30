@@ -1,0 +1,19 @@
+1:"$Sreact.fragment"
+2:I[47257,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"ClientPageRoot"]
+3:I[52683,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js","/_next/static/chunks/30a4su5k4h0yq.js"],"default"]
+6:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+b:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"ViewportBoundary"]
+c:I[97367,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"MetadataBoundary"]
+d:I[27201,["/_next/static/chunks/3_a9mmg2004-7.js","/_next/static/chunks/0jrfrlljx05ad.js","/_next/static/chunks/17jiw4ytol32m.js"],"IconMark"]
+a:X
+0:{"buildId":"V-GcLDXluO4VvwemXFsrV","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/30a4su5k4h0yq.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":"$@9","staleTime":"$a","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$Lb",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Hair by Cill - Luxury Hair Salon"}],["$","meta","1",{"name":"description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","meta","2",{"property":"og:title","content":"Hair by Cill - Luxury Hair Salon"}],["$","meta","3",{"property":"og:description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","meta","4",{"property":"og:site_name","content":"Hair by Cill"}],["$","meta","5",{"property":"og:locale","content":"nl_NL"}],["$","meta","6",{"property":"og:type","content":"website"}],["$","meta","7",{"name":"twitter:card","content":"summary"}],["$","meta","8",{"name":"twitter:title","content":"Hair by Cill - Luxury Hair Salon"}],["$","meta","9",{"name":"twitter:description","content":"Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak."}],["$","link","10",{"rel":"icon","href":"/favicon.ico?favicon.1-oe-krlw33s2.ico","sizes":"256x256","type":"image/x-icon"}],["$","link","11",{"rel":"icon","href":"/favicon-32.png","sizes":"32x32","type":"image/png"}],["$","link","12",{"rel":"icon","href":"/icon-192.png","sizes":"192x192","type":"image/png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png"}],["$","$Ld","14",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@e","staleTime":"$a","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@f","rootVaryParams":null,"needsRuntimeRequest":"$@10"}
+4:{}
+5:"$0:data:0:rsc:props:children:0:props:serverProvidedParams:params"
+8:null
+10:true
+a:300
+a:C
+f:0
+e:"$undefined"
+9:"$undefined"
