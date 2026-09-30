@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cart } from "@/lib/cart";
+import { loadStock } from "@/lib/bookingApi";
 import { Product, euroToNumber, formatEuro, SECOND_ITEM_DISCOUNT } from "@/lib/data";
 
 /**
@@ -27,6 +28,12 @@ export default function BuyBox({ product }: { product: Product }) {
   ];
   const [qty, setQty] = useState(packs.length > 1 ? 2 : 1);
   const pack = packs.find((p) => p.qty === qty)!;
+  // Live stock from the dashboard; null = unknown (offline), then we don't block.
+  const [stock, setStock] = useState<number | null>(null);
+  useEffect(() => {
+    loadStock().then((s) => setStock(s[product.slug] ?? 0)).catch(() => {});
+  }, [product.slug]);
+  const soldOut = stock === 0;
 
   return (
     <div>
@@ -86,13 +93,14 @@ export default function BuyBox({ product }: { product: Product }) {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-muted" />
         </span>
-        Op voorraad in de salon
+        {soldOut ? "Tijdelijk uitverkocht" : stock !== null && stock <= 3 ? `Nog ${stock} op voorraad` : "Op voorraad in de salon"}
       </p>
 
       <button
         type="button"
-        onClick={() => cart.add(product.slug, pack.qty)}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black"
+        onClick={() => cart.add(product.slug, stock === null ? pack.qty : Math.min(pack.qty, stock))}
+        disabled={soldOut}
+        className="disabled:cursor-not-allowed disabled:opacity-40 mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6.2" />

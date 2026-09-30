@@ -1,0 +1,47 @@
+# Rebuild hairbycill.nl when the dashboard clicks "Website bijwerken" (repository_dispatch "products"),
+# or by hand (Actions → Deploy → Run workflow). Pulls the shop from Supabase, builds, force-pushes gh-pages
+# (same as the manual deploy: GitHub Pages serves the gh-pages branch).
+name: Deploy
+on:
+  repository_dispatch:
+    types: [products]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/fetch-products.mjs
+      - name: Commit refreshed products.json (keeps main = what is live)
+        run: |
+          if ! git diff --quiet src/lib/products.json; then
+            git config user.name "hairbycill-dashboard"
+            git config user.email "actions@users.noreply.github.com"
+            git commit -m "Products from dashboard" src/lib/products.json
+            git push origin HEAD:main
+          fi
+      - run: npm run build
+      - run: test -f out/index.html && test -f out/producten.html
+      - name: Push to gh-pages
+        run: |
+          cd out
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "hairbycill-dashboard"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "Deploy ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages

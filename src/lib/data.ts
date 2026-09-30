@@ -1,3 +1,5 @@
+import productsJson from "./products.json" with { type: "json" };
+
 // Centraal data-bestand: pas hier prijzen, behandelingen, producten en
 // contactgegevens aan. Alle pagina's lezen hieruit — nergens anders hardcoded.
 
@@ -232,113 +234,8 @@ export type Product = {
   freeOf: string[];
 };
 
-export const products: Product[] = [
-  {
-    slug: "silk-repair-shampoo",
-    brand: "Kevin Murphy",
-    name: "Silk Repair Shampoo",
-    price: "€24,95",
-    volume: "250 ml",
-    oldPrice: "€29,95",
-    highlights: ["Sulfaatvrij en kleurbeschermend", "Herstelt droog en beschadigd haar", "Zachte glans zonder te verzwaren"],
-    category: "Shampoo",
-    description: "Reinigt zacht terwijl het de haarvezel herstelt en beschermt.",
-    benefit: "Voor zacht, glanzend en verzorgd haar.",
-    usage: "Aanbrengen op nat haar, masseren, uitspoelen en herhalen indien nodig.",
-    hairType: "Droog en beschadigd haar",
-    ingredients: "Keratine, arganolie, vitamine E. Vrij van sulfaten.",
-    faqs: [
-      { q: "Geschikt voor gekleurd haar?", a: "Ja, sulfaatvrij en kleurbeschermend." },
-      { q: "Dagelijks te gebruiken?", a: "Ja, mild genoeg voor dagelijks gebruik." },
-    ],
-    story: { title: "Zacht reinigen, zichtbaar herstel", text: "Een milde, sulfaatvrije shampoo die je haar reinigt zonder het uit te drogen. Keratine en arganolie verzorgen de haarvezel bij elke wasbeurt, zodat droog en beschadigd haar weer zacht en glanzend wordt. Wij gebruiken hem zelf dagelijks in de salon." },
-    features: [
-      { title: "Herstel bij elke wasbeurt", text: "Keratine vult de zwakke plekken in de haarvezel op, terwijl arganolie en vitamine E je haar voeden. Zo bouw je wasbeurt na wasbeurt aan sterker haar.", bullets: ["Minder breuk en gespleten punten", "Zachter en makkelijker te kammen", "Mild genoeg voor dagelijks gebruik"] },
-      { title: "Je kleur blijft langer mooi", text: "Omdat de formule vrij is van sulfaten, spoelt je kleur minder snel uit. Ideaal na een kleurbehandeling of folies in de salon.", bullets: ["Kleurbeschermend en sulfaatvrij", "Zachte glans zonder te verzwaren", "Geschikt voor gekleurd en gelicht haar"] },
-    ],
-    steps: ["Maak je haar goed nat met lauw water.", "Masseer een kleine hoeveelheid in je hoofdhuid en laat het schuim door de lengtes lopen.", "Spoel goed uit en herhaal bij veel stylingproducten. Volg met een conditioner."],
-    tip: "Was met lauw in plaats van heet water. Zo blijft de schubbenlaag gesloten en blijft je kleur langer mooi.",
-    freeOf: ["Sulfaten"],
-    image:
-      "https://images.unsplash.com/photo-1585232351009-aa87416fca90?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    slug: "hydrate-conditioner",
-    brand: "Kevin Murphy",
-    name: "Hydrate-Me Conditioner",
-    price: "€27,95",
-    volume: "250 ml",
-    highlights: ["Diepe hydratatie in 2 minuten", "Makkelijker doorkammen, minder klitten", "Voor zacht en soepel haar"],
-    category: "Conditioner",
-    description: "Intense hydratatie voor droog en dof haar.",
-    benefit: "Voor diep gevoed en soepel haar.",
-    usage: "Na het shampooën aanbrengen, 2-3 minuten laten intrekken.",
-    hairType: "Droog, dof haar",
-    ingredients: "Kokosolie, aloë vera, panthenol.",
-    faqs: [{ q: "Maakt het plat haar?", a: "Nee, lichte formule zonder verzwaring." }],
-    story: { title: "Diepe hydratatie in twee minuten", text: "Een lichte conditioner die droog en dof haar direct vocht geeft. Kokosolie, aloë vera en panthenol maken je haar zacht en soepel, zonder het plat te maken." },
-    features: [
-      { title: "Vocht dat je voelt", text: "Aloë vera en panthenol trekken vocht de haarvezel in, kokosolie houdt het vast. Het resultaat: soepel haar dat zacht aanvoelt, ook de dagen erna.", bullets: ["Direct zachter haar", "Makkelijker doorkammen, minder klitten", "Minder pluis bij droog weer"] },
-      { title: "Licht, dus geen plat haar", text: "De formule is licht genoeg voor dagelijks gebruik, zodat je haar volume en beweging houdt.", bullets: ["Verzwaart niet", "Snel uitgespoeld", "Fijne basis voor iedere styling"] },
-    ],
-    steps: ["Knijp na het shampooën het overtollige water uit je haar.", "Verdeel de conditioner over de lengtes en punten, niet op de hoofdhuid.", "Laat 2 tot 3 minuten intrekken en spoel goed uit met koel water."],
-    tip: "Kam de conditioner met een grove kam door je haar terwijl hij intrekt. Zo ontwar je zonder breuk.",
-    freeOf: [],
-    image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    slug: "repair-mask",
-    brand: "Olaplex",
-    name: "No.8 Bond Intense Mask",
-    price: "€34,95",
-    volume: "100 ml",
-    oldPrice: "€42,95",
-    highlights: ["Herstelt verbindingen in de haarvezel", "Ideaal na kleuren of blonderen", "Zichtbaar sterker haar na 1 gebruik"],
-    category: "Treatment",
-    description: "Intensief herstellend masker dat glans en veerkracht teruggeeft.",
-    benefit: "Voor direct zichtbaar herstel en glans.",
-    usage: "1x per week aanbrengen op handdoekdroog haar, 10 minuten laten intrekken.",
-    hairType: "Beschadigd, gekleurd haar",
-    ingredients: "Bond-building complex, zonnebloemzaadolie.",
-    faqs: [{ q: "Kan het samen met kleurbehandeling?", a: "Ja, juist aanbevolen na kleuren." }],
-    story: { title: "Herstel tot diep in de haarvezel", text: "Een intensief masker dat de verbindingen in je haar herstelt die breken door kleuren, blonderen en hitte. Je haar voelt direct sterker aan en krijgt zijn glans en veerkracht terug." },
-    features: [
-      { title: "Gemaakt voor gekleurd haar", text: "Kleuren en blonderen verzwakken de verbindingen in de haarvezel. Het bond-building complex herstelt die, zodat je haar sterker en gezonder wordt.", bullets: ["Ideaal na kleuren, folies of blonderen", "Zichtbaar sterker haar", "Meer glans en veerkracht"] },
-      { title: "Eén keer per week is genoeg", text: "Gebruik het masker wekelijks als intensieve kuur. Je merkt het verschil na de eerste keer, en na een paar weken is je haar echt steviger.", bullets: ["Intensieve weekkuur", "Rijke maar lichte textuur", "Ook fijn na een zonvakantie"] },
-    ],
-    steps: ["Was je haar en dep het handdoekdroog.", "Breng het masker royaal aan van midden tot punten.", "Laat 10 minuten intrekken en spoel goed uit."],
-    tip: "Zet er een warme handdoek omheen tijdens het intrekken. De warmte helpt het masker dieper door te dringen.",
-    freeOf: [],
-    image:
-      "https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    slug: "heat-protect-spray",
-    brand: "ghd",
-    name: "Heat Protect Spray",
-    price: "€19,95",
-    volume: "120 ml",
-    highlights: ["Beschermt tot 230 graden", "Geen plakkerig gevoel", "Langer houdbare styling"],
-    category: "Styling",
-    description: "Beschermt tegen hitteschade tot 230°C, zonder verzwaring.",
-    benefit: "Voor bescherming en extra glans bij stylen.",
-    usage: "Sprayen op handdoekdroog haar voor het föhnen of stylen.",
-    hairType: "Alle haartypes",
-    ingredients: "Siliconen-complex, UV-filters.",
-    faqs: [{ q: "Laat het haar vet aanvoelen?", a: "Nee, lichte spray-formule." }],
-    story: { title: "Styling zonder hitteschade", text: "Deze spray legt een beschermend laagje om je haar voordat je gaat föhnen, stijlen of krullen. Je haar blijft sterk en glanzend, en je styling blijft langer mooi zitten." },
-    features: [
-      { title: "Bescherming tot 230 graden", text: "Of je nu föhnt, stijlt of krult: de spray verdeelt de warmte en beschermt de haarvezel tegen uitdroging en breuk.", bullets: ["Voor föhn, stijltang en krultang", "Minder droge en gespleten punten", "Beschermt ook tegen UV"] },
-      { title: "Licht en onzichtbaar", text: "Geen plakkerig of vet gevoel: de spray trekt direct in en voegt alleen een zachte glans toe.", bullets: ["Verzwaart niet", "Geschikt voor alle haartypes", "Langer houdbare styling"] },
-    ],
-    steps: ["Sprayen op handdoekdroog haar, op zo'n 20 centimeter afstand.", "Kam de spray door zodat elk plukje bedekt is.", "Föhn of style zoals je gewend bent."],
-    tip: "Zet je stijltang niet hoger dan 180 graden. Met deze spray is dat genoeg voor een gladde, glanzende look.",
-    freeOf: [],
-    image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+// Managed in the dashboard (Supabase); scripts/fetch-products.mjs refreshes this file before each build.
+export const products: Product[] = productsJson as Product[];
 
 export type Review = { name: string; treatment: string; text: string; image: string };
 

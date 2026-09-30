@@ -1,45 +1,72 @@
-// Booking storage + slot logic.
-//
-// ponytail: no backend yet (user said "komt later"), so this stores bookings
-// in localStorage on the visitor's own browser. That means: no real
-// cross-device availability check, no server-sent confirmation email via
-// Resend, no automatic WhatsApp message. Once a backend (Vercel functions +
-// DB) exists, replace the three functions below with real fetch() calls to
-// it — the wizard and cancel page only talk to this file, so that's the only
-// place that needs to change.
-import { hourBlocks, openingHours, stylists } from "./data";
+// Booking + order backend: Supabase (schema lives in Semdesnoo/hairbycill-dashboard/supabase/schema.sql).
+// The anon key is public by design: the site can only call the security-definer functions
+// (free_slots, create_booking, find_booking, cancel_booking, create_order) and read staff/products.
+// Client data never comes back to the browser except her own booking via code + email.
+import { stylists as fallbackStylists } from "./data";
+
+export const SUPABASE_URL = "https://REPLACE_ME.supabase.co";
+export const SUPABASE_ANON_KEY = "REPLACE_ME";
+
+async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify(args),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.message ?? `HTTP ${res.status}`);
+  return data as T;
+}
 
 export type Booking = {
-  id: string;
-  /** 6-char code the client uses (with her email) to cancel. */
   code: string;
   name: string;
-  email: string;
-  phone: string;
   treatment: string;
   stylistSlug: string;
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
-  notes: string;
-  /** Explicit opt-in for promo mail (AVG: unticked by default). */
-  newsletter: boolean;
-  createdAt: string;
 };
 
-const KEY = "hbc_bookings";
-const MIN_CANCEL_HOURS = 12;
+export type StylistOption = { slug: string; name: string; role: string };
 
-function readAll(): Booking[] {
-  if (typeof window === "undefined") return [];
+/** Active stylists from the dashboard, plus "Geen voorkeur". Falls back to data.ts when offline. */
+export async function loadStylists(): Promise<StylistOption[]> {
+  const any = fallbackStylists.find((s) => s.slug === "any")!;
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? "[]");
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/staff?select=slug,name,role&active=eq.true&order=sort`, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+    });
+    if (!res.ok) throw new Error();
+    const staff: StylistOption[] = await res.json();
+    return staff.length > 1 ? [...staff, any] : staff;
   } catch {
-    return [];
+    return fallbackStylists;
   }
 }
 
-function writeAll(bookings: Booking[]) {
-  localStorage.setItem(KEY, JSON.stringify(bookings));
+/** Free start times per date for the chosen stylist ("any" = union of everyone). */
+export type Slots = Record<string, string[]>;
+
+export async function loadSlots(from: string, to: string, stylistSlug: string): Promise<Slots> {
+  const rows = await rpc<{ staff_slug: string; day: string; start: string }[]>("free_slots", { p_from: from, p_to: to });
+  return groupSlots(rows, stylistSlug);
+}
+
+export function groupSlots(rows: { staff_slug: string; day: string; start: string }[], stylistSlug: string): Slots {
+  const out: Slots = {};
+  for (const r of rows) {
+    if (stylistSlug !== "any" && r.staff_slug !== stylistSlug) continue;
+    const day = (out[r.day] ??= []);
+    if (!day.includes(r.start)) day.push(r.start);
+  }
+  for (const d in out) out[d].sort();
+  return out;
+}
+
+/** "Geen voorkeur": first stylist who is free at that moment. */
+export async function pickStylist(date: string, time: string): Promise<string | null> {
+  const rows = await rpc<{ staff_slug: string; day: string; start: string }[]>("free_slots", { p_from: date, p_to: date });
+  return rows.find((r) => r.start === time)?.staff_slug ?? null;
 }
 
 // No 0/O/1/I/L: codes get read from an email and typed back in.
@@ -50,51 +77,79 @@ export function makeCode(): string {
   return Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
 }
 
-export function createBooking(input: Omit<Booking, "id" | "code" | "createdAt">): Booking {
-  const booking: Booking = { ...input, id: crypto.randomUUID(), code: makeCode(), createdAt: new Date().toISOString() };
-  writeAll([...readAll(), booking]);
-  return booking;
-}
+export class SlotTakenError extends Error {}
 
-export function findBooking(code: string, email: string): Booking | undefined {
-  const c = code.trim().toUpperCase();
-  const e = email.trim().toLowerCase();
-  return readAll().find((b) => b.code === c && b.email.toLowerCase() === e);
-}
-
-export function hoursUntil(booking: Booking): number {
-  const start = new Date(`${booking.date}T${booking.time}:00`);
-  return (start.getTime() - Date.now()) / 3_600_000;
-}
-
-export function canCancel(booking: Booking): boolean {
-  return hoursUntil(booking) >= MIN_CANCEL_HOURS;
-}
-
-export function cancelBooking(id: string) {
-  writeAll(readAll().filter((b) => b.id !== id));
-}
-
-// Slot generation: hourly slots within opening hours, next 21 days, minus
-// whatever is already taken in localStorage for that stylist.
-export function availableSlots(date: string, stylistSlug: string): string[] {
-  const blocks = openHours(date);
-
-  const taken = new Set(
-    readAll()
-      .filter((b) => b.date === date && (b.stylistSlug === stylistSlug || stylistSlug === "any"))
-      .map((b) => b.time),
-  );
-
-  const slots: string[] = [];
-  // Hourly start times inside each open block; the last one still ends by closing time.
-  for (const [open, close] of blocks) {
-    for (let m = open; m + 60 <= close; m += 60) {
-      const time = `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
-      if (!taken.has(time)) slots.push(time);
-    }
+export async function createBooking(input: {
+  name: string; email: string; phone: string; treatment: string; stylistSlug: string;
+  date: string; time: string; notes: string; newsletter: boolean;
+}): Promise<Booking> {
+  const stylistSlug = input.stylistSlug === "any" ? await pickStylist(input.date, input.time) : input.stylistSlug;
+  if (!stylistSlug) throw new SlotTakenError();
+  const code = makeCode();
+  try {
+    await rpc("create_booking", {
+      p_code: code, p_name: input.name, p_email: input.email, p_phone: input.phone, p_treatment: input.treatment,
+      p_stylist_slug: stylistSlug, p_date: input.date, p_time: input.time, p_notes: input.notes, p_newsletter: input.newsletter,
+    });
+  } catch (e) {
+    if (/slot_taken|duplicate/.test((e as Error).message)) throw new SlotTakenError();
+    throw e;
   }
-  return slots;
+  rememberContact(input);
+  return { code, name: input.name, treatment: input.treatment, stylistSlug, date: input.date, time: input.time };
+}
+
+export async function findBooking(code: string, email: string): Promise<Booking | undefined> {
+  const rows = await rpc<{ name: string; treatment: string; stylist_slug: string; day: string; start: string }[]>("find_booking", {
+    p_code: code, p_email: email,
+  });
+  const r = rows[0];
+  return r && { code: code.trim().toUpperCase(), name: r.name, treatment: r.treatment, stylistSlug: r.stylist_slug, date: r.day, time: r.start };
+}
+
+/** Server enforces the 12h rule; false = too late or not found. */
+export const cancelBooking = (code: string, email: string) =>
+  rpc<boolean | null>("cancel_booking", { p_code: code, p_email: email }).then((ok) => ok === true);
+
+export const MIN_CANCEL_HOURS = 12;
+
+export function hoursUntil(booking: Pick<Booking, "date" | "time">): number {
+  return (new Date(`${booking.date}T${booking.time}:00`).getTime() - Date.now()) / 3_600_000;
+}
+
+export const canCancel = (booking: Pick<Booking, "date" | "time">) => hoursUntil(booking) >= MIN_CANCEL_HOURS;
+
+export type OrderInput = {
+  items: { slug: string; qty: number }[];
+  name: string; email: string; phone: string; method: "pickup" | "delivery";
+  street: string; number: string; postcode: string; city: string; notes: string; code: string;
+};
+
+export class OutOfStockError extends Error {}
+
+/** Server recomputes prices, discount, shipping and stock; returns the final ref + total. */
+export async function createOrder(o: OrderInput): Promise<{ ref: string; total: number }> {
+  try {
+    const [r] = await rpc<{ ref: string; total: number }[]>("create_order", {
+      p_items: o.items, p_name: o.name, p_email: o.email, p_phone: o.phone, p_method: o.method,
+      p_street: o.street, p_number: o.number, p_postcode: o.postcode, p_city: o.city, p_notes: o.notes, p_code: o.code,
+    });
+    return { ref: r.ref, total: Number(r.total) };
+  } catch (e) {
+    const m = (e as Error).message.match(/out_of_stock:(.*)/);
+    if (m) throw new OutOfStockError(m[1].trim());
+    throw e;
+  }
+}
+
+/** Live stock per slug (products the dashboard switched offline are missing = 0). */
+export async function loadStock(): Promise<Record<string, number>> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=slug,stock,active`, {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const rows: { slug: string; stock: number; active: boolean }[] = await res.json();
+  return Object.fromEntries(rows.map((r) => [r.slug, r.active ? r.stock : 0]));
 }
 
 /** Local YYYY-MM-DD (toISOString is UTC and shifts the day around midnight in NL). */
@@ -111,16 +166,22 @@ export function nextBookableDates(count = 28): string[] {
   return dates;
 }
 
-export const isClosed = (date: string) => openHours(date).length === 0;
+// Returning client: prefill her contact details next time (her own browser only).
+const CONTACT_KEY = "hbc_contact";
+type Contact = { name: string; email: string; phone: string };
 
-function openHours(date: string): [number, number][] {
-  const day = new Date(`${date}T00:00:00`).getDay();
-  const dayName = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"][day];
-  return hourBlocks(openingHours.find((o) => o.day === dayName)?.hours ?? "");
+function rememberContact({ name, email, phone }: Contact) {
+  try {
+    localStorage.setItem(CONTACT_KEY, JSON.stringify({ name, email, phone }));
+  } catch {}
 }
 
-export function stylistName(slug: string): string {
-  return stylists.find((s) => s.slug === slug)?.name ?? slug;
+export function lastContact(): Contact | null {
+  try {
+    return JSON.parse(localStorage.getItem(CONTACT_KEY) ?? "null");
+  } catch {
+    return null;
+  }
 }
 
 // Cookie consent.
@@ -137,10 +198,4 @@ export function getConsent(): Consent | null {
 
 export function saveConsent(c: Omit<Consent, "at">) {
   localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...c, at: new Date().toISOString() }));
-}
-
-/** Contact details of this browser's most recent booking, to prefill the next one (sites can't read the browser's account email). */
-export function lastContact(): Pick<Booking, "name" | "email" | "phone"> | null {
-  const b = readAll().at(-1);
-  return b ? { name: b.name, email: b.email, phone: b.phone } : null;
 }

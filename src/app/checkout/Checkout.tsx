@@ -7,13 +7,11 @@ import { motion } from "framer-motion";
 import { QtyStepper } from "@/components/CartDrawer";
 import { DISCOUNT_CODE, WEB3FORMS_KEY } from "@/components/LaunchGate";
 import { cart, cartLines, cartTotal, useCart } from "@/lib/cart";
+import { createOrder, OutOfStockError } from "@/lib/bookingApi";
 import { business, formatEuro, SHIPPING, shippingCost } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const DISCOUNT_RATE = 0.1; // waitlist code = 10% off
-
-/** Short readable order number, e.g. HBC-MG4K2Q1A (called from the submit handler only). */
-const orderRef = () => `HBC-${Date.now().toString(36).toUpperCase()}`;
 
 type Method = "pickup" | "delivery";
 type Done = { ref: string; total: number; name: string; method: Method };
@@ -29,6 +27,7 @@ export default function Checkout() {
   const [codeApplied, setCodeApplied] = useState(false);
   const [codeError, setCodeError] = useState(false);
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
+  const [stockError, setStockError] = useState("");
   const [done, setDone] = useState<Done | null>(null);
 
   const discount = codeApplied ? Math.round(subtotal * DISCOUNT_RATE * 100) / 100 : 0;
@@ -45,7 +44,22 @@ export default function Checkout() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setState("sending");
-    const ref = orderRef();
+    setStockError("");
+    // 1. Order + stock in the database (server recomputes prices, the dashboard shows it live).
+    let ref: string;
+    let serverTotal: number;
+    try {
+      ({ ref, total: serverTotal } = await createOrder({
+        items: items.map(({ slug, qty }) => ({ slug, qty })),
+        name: form.name, email: form.email, phone: form.phone, method,
+        street: addr.street, number: addr.number, postcode: addr.postcode, city: addr.city,
+        notes: form.notes, code: codeApplied ? DISCOUNT_CODE : "",
+      }));
+    } catch (e) {
+      if (e instanceof OutOfStockError) setStockError(`Sorry, van ${e.message} hebben we niet genoeg meer op voorraad. Pas het aantal aan.`);
+      return setState("error");
+    }
+    // 2. Mail to the salon: best effort, the order is already safe in the dashboard.
     const order = lines.map((l) => `${l.qty}x ${l.product.brand} ${l.product.name} (${l.product.volume}) = ${formatEuro(l.total)}`).join("\n");
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
@@ -53,7 +67,7 @@ export default function Checkout() {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: `Nieuwe bestelling ${ref}: ${formatEuro(total)}`,
+          subject: `Nieuwe bestelling ${ref}: ${formatEuro(serverTotal)}`,
           from_name: "Webshop hairbycill.nl",
           replyto: form.email,
           email: form.email,
@@ -75,13 +89,10 @@ export default function Checkout() {
           ].filter(Boolean).join("\n"),
         }),
       });
-      const data = await res.json();
-      if (!data.success) return setState("error");
-      cart.clear();
-      setDone({ ref, total, name: form.name.split(" ")[0], method });
-    } catch {
-      setState("error");
-    }
+      await res.json();
+    } catch {}
+    cart.clear();
+    setDone({ ref, total: serverTotal, name: form.name.split(" ")[0], method });
   }
 
   if (done) {
@@ -319,7 +330,7 @@ export default function Checkout() {
             </button>
             {state === "error" && (
               <p role="alert" className="mt-3 text-sm text-red-700">
-                Er ging iets mis. Probeer het opnieuw of bel ons.
+                {stockError || "Er ging iets mis. Probeer het opnieuw of bel ons."}
               </p>
             )}
             <p className="mt-3 text-center text-[11px] text-black/45">

@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { openingHours, treatments, stylists } from "@/lib/data";
-import { availableSlots, nextBookableDates, createBooking, isClosed, isoDate, lastContact, Booking } from "@/lib/bookingApi";
+import { treatments, stylists as fallbackStylists } from "@/lib/data";
+import {
+  loadSlots, loadStylists, nextBookableDates, createBooking, isoDate, lastContact, SlotTakenError,
+  type Booking, type Slots, type StylistOption,
+} from "@/lib/bookingApi";
 
 const noop = () => () => {};
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -56,7 +59,12 @@ const choice = (active: boolean) =>
 
 export default function BookingWizard() {
   const [treatment, setTreatment] = useState(treatments[0].slug);
-  const [stylistSlug, setStylistSlug] = useState(stylists[stylists.length - 1].slug);
+  const [stylists, setStylists] = useState<StylistOption[]>(fallbackStylists);
+  const [stylistSlug, setStylistSlug] = useState(fallbackStylists[fallbackStylists.length - 1].slug);
+  const [allSlots, setAllSlots] = useState<Slots | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
@@ -67,11 +75,47 @@ export default function BookingWizard() {
   const mounted = useSyncExternalStore(noop, () => true, () => false);
   const dates = useMemo(() => nextBookableDates(), []);
   const weeks = useMemo(() => calendarWeeks(dates), [dates]);
-  const slots = useMemo(() => (date ? availableSlots(date, stylistSlug) : []), [date, stylistSlug]);
+  const slots = (date && allSlots?.[date]) || [];
+  const isClosed = (iso: string) => !allSlots?.[iso]?.length;
   const t = treatments.find((x) => x.slug === treatment)!;
-  const s = stylists.find((x) => x.slug === stylistSlug)!;
-  const ready = date && time && form.name && /\S+@\S+\.\S+/.test(form.email) && form.phone;
-  const confirm = () => setConfirmed(createBooking({ ...form, newsletter, treatment, stylistSlug, date, time }));
+  const s = stylists.find((x) => x.slug === stylistSlug) ?? stylists[stylists.length - 1];
+  const ready = date && time && form.name && /\S+@\S+\.\S+/.test(form.email) && form.phone && !busy;
+
+  // Live availability from the salon's roster (dashboard), refreshed when the stylist changes.
+  const refresh = useCallback(() => {
+    loadSlots(dates[0], dates[dates.length - 1], stylistSlug)
+      .then((r) => {
+        setAllSlots(r);
+        setLoadError(false);
+      })
+      .catch(() => setLoadError(true));
+  }, [dates, stylistSlug]);
+  useEffect(refresh, [refresh]);
+  useEffect(() => {
+    loadStylists().then((list) => {
+      setStylists(list);
+      setStylistSlug((cur) => (list.some((x) => x.slug === cur) ? cur : list[list.length - 1].slug));
+    });
+  }, []);
+
+  async function confirm() {
+    setBusy(true);
+    setSubmitError("");
+    try {
+      setConfirmed(await createBooking({ ...form, newsletter, treatment: t.name, stylistSlug, date, time }));
+    } catch (e) {
+      setSubmitError(
+        e instanceof SlotTakenError
+          ? "Deze tijd is net door iemand anders geboekt. Kies een andere tijd."
+          : "Boeken lukte niet. Controleer je internet of bel/WhatsApp ons even.",
+      );
+      if (e instanceof SlotTakenError) {
+        setTime("");
+        refresh();
+      }
+    }
+    setBusy(false);
+  }
 
   const monthLabel = useMemo(() => {
     const fmt = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { month: "long" });
@@ -214,6 +258,7 @@ export default function BookingWizard() {
           >
             Afspraak bevestigen
           </button>
+          {submitError && <p role="alert" className="mt-3 text-center text-sm text-red-700">{submitError}</p>}
           <p className="mt-3 text-center text-[11px] text-black/45">Kosteloos annuleren tot 12 uur van tevoren</p>
         </div>
       </aside>
@@ -265,7 +310,7 @@ export default function BookingWizard() {
                 })}
               </div>
               <p className="mt-4 text-center text-[11px] text-offwhite/40">
-                {openingHours.filter((o) => o.hours === "Gesloten").map((o) => o.day.toLowerCase()).join(", ").replace(/^./, (c) => c.toUpperCase()).replace(/, ([^,]*)$/, " en $1")} gesloten
+                {loadError ? "Beschikbaarheid laden mislukt, ververs de pagina" : allSlots ? "Doorgestreepte dagen zijn vol of gesloten" : "Beschikbaarheid laden..."}
               </p>
             </div>
 
@@ -292,7 +337,7 @@ export default function BookingWizard() {
                   >
                     <p className="mb-4 text-lg font-light capitalize">{longDate(date)}</p>
                     {slots.length === 0 ? (
-                      <p className="text-sm text-black/50">Geen vrije tijden meer op deze dag.</p>
+                      <p className="text-sm text-black/50">{allSlots ? "Geen vrije tijden meer op deze dag." : "Laden..."}</p>
                     ) : (
                       <div className="grid grid-cols-3 gap-2">
                         {slots.map((sl, i) => (
@@ -355,6 +400,7 @@ export default function BookingWizard() {
           </label>
         </Step>
 
+        {submitError && <p role="alert" className="hidden text-right text-sm text-red-700 lg:block">{submitError}</p>}
         {/* Desktop: confirm right where the form ends (mobile uses the summary card below) */}
         <div className="hidden items-center justify-between gap-6 rounded-3xl bg-ivory p-6 lg:flex">
           <p className="text-sm text-black/60">

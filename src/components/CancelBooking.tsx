@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { findBooking, canCancel, hoursUntil, cancelBooking, stylistName, Booking } from "@/lib/bookingApi";
-import { treatments } from "@/lib/data";
+import { findBooking, canCancel, hoursUntil, cancelBooking, type Booking } from "@/lib/bookingApi";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const longDate = (iso: string) =>
@@ -15,6 +14,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
   const [email, setEmail] = useState("");
   const [booking, setBooking] = useState<Booking | null | undefined>(undefined);
   const [cancelled, setCancelled] = useState(false);
+  const [err, setErr] = useState("");
 
   const field = `w-full rounded-full border bg-transparent px-5 py-3 text-sm focus:outline-none ${
     dark
@@ -22,9 +22,24 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
       : "border-black/15 placeholder:text-black/35 focus:border-black"
   }`;
 
-  function lookup(e: React.FormEvent) {
+  async function lookup(e: React.FormEvent) {
     e.preventDefault();
-    setBooking(findBooking(code, email) ?? null);
+    setErr("");
+    try {
+      setBooking((await findBooking(code, email)) ?? null);
+    } catch {
+      setErr("Zoeken lukte niet. Controleer je internet en probeer opnieuw.");
+    }
+  }
+
+  async function cancel() {
+    setErr("");
+    try {
+      if (await cancelBooking(code, email)) setCancelled(true);
+      else setErr("Annuleren lukte niet (minder dan 12 uur van tevoren?). Bel of WhatsApp ons even.");
+    } catch {
+      setErr("Annuleren lukte niet. Controleer je internet en probeer opnieuw.");
+    }
   }
 
   if (cancelled) {
@@ -67,6 +82,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
         </button>
       </form>
 
+      {err && <p role="alert" className="mt-4 text-sm text-red-400">{err}</p>}
       <AnimatePresence mode="wait">
         {booking === null && (
           <motion.p
@@ -82,7 +98,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
         )}
         {booking && (
           <motion.div
-            key={booking.id}
+            key={booking.code}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -90,18 +106,15 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
             className={`mt-5 rounded-2xl p-5 text-sm ${dark ? "bg-offwhite/10" : "bg-ivory/70"}`}
           >
             <p className="text-base">
-              {treatments.find((t) => t.slug === booking.treatment)?.name ?? booking.treatment}
+              {booking.treatment}
             </p>
             <p className="mt-1 opacity-70">
-              {longDate(booking.date)} om {booking.time} · {stylistName(booking.stylistSlug)}
+              {longDate(booking.date)} om {booking.time} · {booking.stylistSlug.replace(/^./, (c) => c.toUpperCase())}
             </p>
             {canCancel(booking) ? (
               <button
                 type="button"
-                onClick={() => {
-                  cancelBooking(booking.id);
-                  setCancelled(true);
-                }}
+                onClick={cancel}
                 className="mt-4 rounded-full border border-red-400/60 px-5 py-2 text-xs text-red-400 transition-colors hover:bg-red-500 hover:text-white"
               >
                 Afspraak definitief annuleren
