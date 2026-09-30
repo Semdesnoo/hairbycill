@@ -4,8 +4,8 @@
 // Client data never comes back to the browser except her own booking via code + email.
 import { stylists as fallbackStylists } from "./data";
 
-export const SUPABASE_URL = "https://REPLACE_ME.supabase.co";
-export const SUPABASE_ANON_KEY = "REPLACE_ME";
+export const SUPABASE_URL = "https://vpxboaozrdsdrvendips.supabase.co";
+export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZweGJvYW96cmRzZHJ2ZW5kaXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3OTE0MzUsImV4cCI6MjEwNjM2NzQzNX0.UBMK4Cbjwo-lLU6L_s1g_nbPKKsDQAOFknuXh89GtV8";
 
 async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
