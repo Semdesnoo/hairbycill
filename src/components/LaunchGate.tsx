@@ -19,19 +19,6 @@ const PREVIEW_KEY = "hbc_preview";
 // Get it at https://web3forms.com with the owner's email address; paste it here.
 export const WEB3FORMS_KEY = "3ce21fd0-5daf-42fc-a05e-349ee2b5931c";
 
-// Discount mail to the subscriber via EmailJS (free: 200/month), sent from info@hairbycill.nl
-// over Mijndomein SMTP. Template = docs/emailjs-welkomstmail.html (welcome + discount code, one mail). Empty ids = step skipped,
-// the signup itself (Web3Forms) still works.
-const EMAILJS = { service: "service_ana3dki", template: "template_k80f7zl", publicKey: "nPF3Dcdcmjpvhe8SO" };
-export const DISCOUNT_CODE = "HAIRBYCILL2026";
-
-/** "28 november 2026": discount deadline, 2 months after signup. */
-export function validUntil(from = new Date()): string {
-  const d = new Date(from);
-  d.setMonth(d.getMonth() + 2);
-  return d.toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" });
-}
-
 const ease = [0.16, 1, 0.3, 1] as const;
 const noop = () => () => {};
 
@@ -136,24 +123,11 @@ function Waitlist() {
           subject: "Nieuwe aanmelding wachtlijst Hair by Cill",
           from_name: "Wachtlijst hairbycill.nl",
           email,
-          message: `${email} wil 10% openingskorting en een bericht zodra Hair by Cill opent.`,
+          message: `${email} wil een bericht zodra Hair by Cill opent.`,
         }),
       });
       const data = await res.json();
       if (!data.success) return setState("error");
-      // The signup is in; a failed discount mail must not show an error to the visitor.
-      if (EMAILJS.service) {
-        await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            service_id: EMAILJS.service,
-            template_id: EMAILJS.template,
-            user_id: EMAILJS.publicKey,
-            template_params: { to_email: email, code: DISCOUNT_CODE, valid_until: validUntil() },
-          }),
-        }).catch(() => {});
-      }
       setState("done");
     } catch {
       setState("error");
@@ -187,8 +161,7 @@ function Waitlist() {
           Wees de eerste <span className="accent text-gold">in de stoel</span>
         </h1>
         <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-offwhite/90">
-          Schrijf je in voor de wachtlijst en ontvang <strong className="font-medium text-offwhite">10% korting</strong> op
-          je eerste behandeling zodra we open zijn. We laten het je als eerste weten.
+          Schrijf je in voor de wachtlijst en we laten het je als eerste weten zodra we open zijn.
         </p>
 
         {state === "done" ? (
@@ -202,12 +175,7 @@ function Waitlist() {
             <p className="text-2xl font-light">
               Je staat <span className="accent text-gold">op de lijst</span>
             </p>
-            <p className="mt-4 text-xs text-offwhite/60">Jouw kortingscode voor 10% korting</p>
-            <p className="mt-2 select-all font-mono text-2xl tracking-[0.2em] text-gold">{DISCOUNT_CODE}</p>
-            <p className="mt-3 text-sm text-offwhite/70">
-              Geldig tot en met {validUntil()}.
-              {EMAILJS.service ? ` We hebben de code ook gemaild naar ${email}.` : " Maak een screenshot of noteer de code."}
-            </p>
+            <p className="mt-3 text-sm text-offwhite/70">We laten het je als eerste weten zodra we open zijn.</p>
           </motion.div>
         ) : (
           <form onSubmit={submit} className="mx-auto mt-9 max-w-md">
@@ -240,8 +208,7 @@ function Waitlist() {
               </p>
             )}
             <p className="mt-4 text-[11px] leading-relaxed text-offwhite/70">
-              We gebruiken je e-mailadres alleen om je te laten weten wanneer we open zijn en voor je
-              openingskorting. Afmelden kan altijd.
+              We gebruiken je e-mailadres alleen om je te laten weten wanneer we open zijn. Afmelden kan altijd.
             </p>
           </form>
         )}

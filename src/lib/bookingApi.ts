@@ -122,17 +122,17 @@ export const canCancel = (booking: Pick<Booking, "date" | "time">) => hoursUntil
 export type OrderInput = {
   items: { slug: string; qty: number }[];
   name: string; email: string; phone: string; method: "pickup" | "delivery";
-  street: string; number: string; postcode: string; city: string; notes: string; code: string;
+  street: string; number: string; postcode: string; city: string; notes: string;
 };
 
 export class OutOfStockError extends Error {}
 
-/** Server recomputes prices, discount, shipping and stock; returns the final ref + total. */
+/** Server recomputes prices, shipping and stock; returns the final ref + total. */
 export async function createOrder(o: OrderInput): Promise<{ ref: string; total: number }> {
   try {
     const [r] = await rpc<{ ref: string; total: number }[]>("create_order", {
       p_items: o.items, p_name: o.name, p_email: o.email, p_phone: o.phone, p_method: o.method,
-      p_street: o.street, p_number: o.number, p_postcode: o.postcode, p_city: o.city, p_notes: o.notes, p_code: o.code,
+      p_street: o.street, p_number: o.number, p_postcode: o.postcode, p_city: o.city, p_notes: o.notes, p_code: "",
     });
     return { ref: r.ref, total: Number(r.total) };
   } catch (e) {

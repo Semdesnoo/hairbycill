@@ -5,13 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { QtyStepper } from "@/components/CartDrawer";
-import { DISCOUNT_CODE, WEB3FORMS_KEY } from "@/components/LaunchGate";
+import { WEB3FORMS_KEY } from "@/components/LaunchGate";
 import { cart, cartLines, cartTotal, useCart } from "@/lib/cart";
 import { createOrder, OutOfStockError } from "@/lib/bookingApi";
 import { business, formatEuro, SHIPPING, shippingCost } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const DISCOUNT_RATE = 0.1; // waitlist code = 10% off
 
 type Method = "pickup" | "delivery";
 type Done = { ref: string; total: number; name: string; method: Method };
@@ -23,23 +22,13 @@ export default function Checkout() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
   const [method, setMethod] = useState<Method>("pickup");
   const [addr, setAddr] = useState({ street: "", number: "", postcode: "", city: "" });
-  const [code, setCode] = useState("");
-  const [codeApplied, setCodeApplied] = useState(false);
-  const [codeError, setCodeError] = useState(false);
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
   const [stockError, setStockError] = useState("");
   const [done, setDone] = useState<Done | null>(null);
 
-  const discount = codeApplied ? Math.round(subtotal * DISCOUNT_RATE * 100) / 100 : 0;
   const delivery = method === "delivery";
-  const shipping = delivery ? shippingCost(subtotal - discount) : 0;
-  const total = subtotal - discount + shipping;
-
-  function applyCode() {
-    const ok = code.trim().toUpperCase() === DISCOUNT_CODE;
-    setCodeApplied(ok);
-    setCodeError(!ok);
-  }
+  const shipping = delivery ? shippingCost(subtotal) : 0;
+  const total = subtotal + shipping;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,7 +42,7 @@ export default function Checkout() {
         items: items.map(({ slug, qty }) => ({ slug, qty })),
         name: form.name, email: form.email, phone: form.phone, method,
         street: addr.street, number: addr.number, postcode: addr.postcode, city: addr.city,
-        notes: form.notes, code: codeApplied ? DISCOUNT_CODE : "",
+        notes: form.notes,
       }));
     } catch (e) {
       if (e instanceof OutOfStockError) setStockError(`Sorry, van ${e.message} hebben we niet genoeg meer op voorraad. Pas het aantal aan.`);
@@ -77,7 +66,6 @@ export default function Checkout() {
             `Bestelling ${ref}`,
             order,
             `Subtotaal: ${formatEuro(subtotal)}`,
-            codeApplied ? `Kortingscode ${DISCOUNT_CODE}: -${formatEuro(discount)}` : "Geen kortingscode",
             delivery
               ? [
                   `BEZORGEN naar: ${addr.street} ${addr.number}, ${addr.postcode.toUpperCase()} ${addr.city}`,
@@ -191,7 +179,7 @@ export default function Checkout() {
                   [
                     "delivery",
                     "Thuisbezorgen",
-                    shippingCost(subtotal - discount)
+                    shippingCost(subtotal)
                       ? `${formatEuro(SHIPPING.cost)} · gratis vanaf ${formatEuro(SHIPPING.freeFrom)}`
                       : "Gratis bezorging",
                     "Binnen 2-4 werkdagen in huis (NL)",
@@ -282,35 +270,11 @@ export default function Checkout() {
               ))}
             </ul>
 
-            <div className="mt-6 flex gap-2">
-              <input
-                value={code}
-                onChange={(e) => {
-                  setCode(e.target.value);
-                  setCodeError(false);
-                }}
-                placeholder="Kortingscode"
-                aria-label="Kortingscode"
-                className="min-w-0 flex-1 rounded-full border border-black/15 bg-offwhite px-4 py-2.5 text-sm uppercase focus:border-black focus:outline-none"
-              />
-              <button type="button" onClick={applyCode} className="rounded-full border border-black px-4 text-sm hover:bg-black hover:text-offwhite">
-                Toepassen
-              </button>
-            </div>
-            {codeError && <p className="mt-2 text-xs text-red-700">Deze code is niet geldig.</p>}
-            {codeApplied && <p className="mt-2 text-xs text-gold-muted">Code {DISCOUNT_CODE} toegepast: 10% korting.</p>}
-
             <dl className="mt-6 space-y-2 border-t border-black/10 pt-4 text-sm">
               <div className="flex justify-between">
                 <dt className="text-black/55">Subtotaal</dt>
                 <dd>{formatEuro(subtotal)}</dd>
               </div>
-              {discount > 0 && (
-                <div className="flex justify-between text-gold-muted">
-                  <dt>Korting</dt>
-                  <dd>-{formatEuro(discount)}</dd>
-                </div>
-              )}
               <div className="flex justify-between">
                 <dt className="text-black/55">{delivery ? "Verzending" : "Afhalen"}</dt>
                 <dd>{shipping ? formatEuro(shipping) : "Gratis"}</dd>
