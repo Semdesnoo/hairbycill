@@ -6,8 +6,8 @@ import productsJson from "./products.json" with { type: "json" };
 export const business = {
   name: "Hair by Cill",
   tagline: "Hair that feels like you.",
-  phone: "+31 6 83 02 45 90",
-  phoneHref: "tel:+31683024590",
+  phone: "+31 (0)85 782 6818",
+  phoneHref: "tel:+31857826818",
   whatsappHref: "https://wa.me/31683024590",
   email: "info@hairbycill.nl",
   address: "Dorpsdijk 114, 3161 CD Rhoon",
