@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { cart } from "@/lib/cart";
 import { loadStock } from "@/lib/bookingApi";
-import { Product, euroToNumber, formatEuro, SECOND_ITEM_DISCOUNT } from "@/lib/data";
+import { Product, euroToNumber, formatEuro, SECOND_ITEM_DISCOUNT, SHIPPING } from "@/lib/data";
 
 /**
  * Pack choice (1 or 2 with discount on the 2nd) + add-to-cart (opens the cart drawer).
@@ -34,6 +35,18 @@ export default function BuyBox({ product }: { product: Product }) {
     loadStock().then((s) => setStock(s[product.slug] ?? 0)).catch(() => {});
   }, [product.slug]);
   const soldOut = stock === 0;
+  const add = () => cart.add(product.slug, stock === null ? pack.qty : Math.min(pack.qty, stock));
+
+  // Sticky buy bar (D&R): shows once the main button has scrolled up out of view.
+  const buyRef = useRef<HTMLButtonElement>(null);
+  const [stuck, setStuck] = useState(false);
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setStuck(!e.isIntersecting && e.boundingClientRect.top < 0));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div>
@@ -97,8 +110,9 @@ export default function BuyBox({ product }: { product: Product }) {
       </p>
 
       <button
+        ref={buyRef}
         type="button"
-        onClick={() => cart.add(product.slug, stock === null ? pack.qty : Math.min(pack.qty, stock))}
+        onClick={add}
         disabled={soldOut}
         className="disabled:cursor-not-allowed disabled:opacity-40 mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black"
       >
@@ -110,9 +124,50 @@ export default function BuyBox({ product }: { product: Product }) {
         In winkelwagen · {formatEuro(pack.price)}
       </button>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-black/55">
-        <span>✓ Afhalen in de salon of thuisbezorgd</span>
-        <span>✓ Dezelfde producten als in de salon</span>
+      {/* Perks (D&R "+ FREE travel pouch" rows) */}
+      <ul className="mt-5 space-y-2 rounded-2xl border border-black/10 p-4 text-sm">
+        {[
+          ["Gratis afhalen in de salon", "€ 0"],
+          [`Gratis bezorging vanaf ${formatEuro(SHIPPING.freeFrom)}`, `${formatEuro(SHIPPING.cost)}`],
+          ["Persoonlijk advies van onze stylisten", "Gratis"],
+        ].map(([label, value]) => (
+          <li key={label} className="flex items-center justify-between gap-4">
+            <span>
+              <span className="mr-2 text-gold-muted">+</span>
+              {label}
+            </span>
+            <span className="text-xs text-black/45">{value}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div
+        {...(stuck ? { "data-sticky-cta": "" } : {})}
+        aria-hidden={!stuck}
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-offwhite/95 px-4 py-3 backdrop-blur-md transition-transform duration-500 md:inset-x-auto md:bottom-5 md:left-1/2 md:w-[560px] md:-translate-x-1/2 md:rounded-2xl md:border md:shadow-xl md:shadow-black/10 ${
+          stuck ? "translate-y-0" : "pointer-events-none translate-y-[150%]"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-lg bg-ivory">
+            <Image src={product.image} alt="" fill sizes="44px" className="object-cover" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-sm font-medium">{product.name}</span>
+            <span className="block text-xs text-black/55">
+              {pack.label} · {formatEuro(pack.price)}
+            </span>
+          </span>
+          <button
+            type="button"
+            onClick={add}
+            disabled={soldOut}
+            tabIndex={stuck ? 0 : -1}
+            className="rounded-xl bg-black px-5 py-3 text-xs uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-40"
+          >
+            {soldOut ? "Uitverkocht" : "In winkelwagen"}
+          </button>
+        </div>
       </div>
     </div>
   );

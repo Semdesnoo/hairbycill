@@ -8,8 +8,9 @@ import ProductGrid from "@/components/ProductGrid";
 import Reveal from "@/components/Reveal";
 import { discountPct } from "@/components/ProductCard";
 import { BASE_PATH } from "@/lib/basePath";
-import { business, formatEuro, products, SHIPPING } from "@/lib/data";
+import { business, euroToNumber, formatEuro, products, SHIPPING, team } from "@/lib/data";
 import BuyBox from "./BuyBox";
+import ProductGallery from "./ProductGallery";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -56,19 +57,39 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       {/* ABOVE THE FOLD: photo + buy box */}
       <section className="px-4 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32">
         <div className="grid gap-10 lg:grid-cols-[1fr_minmax(420px,0.95fr)] lg:gap-14">
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <div>
             {/* Above the fold: CSS fade on load, NOT whileInView (the observer never fired here and left it at opacity 0) */}
-            <div className="relative aspect-square w-full animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] overflow-hidden rounded-2xl bg-ivory lg:aspect-[4/3.4]">
-              <Image src={product.image} alt={product.name} fill priority sizes="(min-width: 1024px) 52vw, 100vw" className="object-cover" />
-            </div>
+            <ProductGallery
+              alt={product.name}
+              images={[
+                { src: product.image },
+                ...FEATURE_PHOTOS.map((src) => ({ src: `${BASE_PATH}${src}`, label: "Resultaat uit de salon" })),
+              ]}
+            />
           </div>
 
           <Reveal delay={0.1}>
-            <p className="text-xs text-black/50">{product.brand}</p>
-            <h1 className="mt-1 text-4xl font-medium tracking-tight md:text-5xl">{product.name}</h1>
+            <p className="text-[11px] uppercase tracking-[0.25em] text-gold-muted">{product.brand}</p>
+            <h1 className="mt-2 text-4xl tracking-tight md:text-5xl">{product.name}</h1>
             <p className="mt-2 text-sm text-black/60">
               {product.benefit} · {product.volume}
             </p>
+
+            {/* Social proof (D&R "Lucy and 500,000+ others"): our own stylists, no invented numbers */}
+            <div className="mt-5 flex items-center gap-3">
+              <span className="flex -space-x-2">
+                {team.map((m) => (
+                  <span key={m.name} className="relative h-8 w-8 overflow-hidden rounded-full ring-2 ring-offwhite">
+                    <Image src={m.image} alt="" fill sizes="32px" className="object-cover" />
+                  </span>
+                ))}
+              </span>
+              <p className="text-xs text-black/65">
+                <span className="font-medium text-black">Aanbevolen door {team.map((m) => m.name).join(" & ")}</span>
+                <br />
+                Dagelijks gebruikt in onze salon
+              </p>
+            </div>
 
             <ul className="mt-6 space-y-2.5">
               {product.highlights.map((h) => (
@@ -80,12 +101,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </ul>
 
             <p className="mt-6 flex items-center gap-3">
-              {product.oldPrice && <span className="text-sm text-red-700 line-through">{product.oldPrice}</span>}
               <span className="text-2xl">{product.price}</span>
+              {product.oldPrice && <span className="text-sm text-black/40 line-through">{product.oldPrice}</span>}
               {pct > 0 && (
                 <span className="rounded-md bg-black px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-gold">{pct}% korting</span>
               )}
             </p>
+            {product.oldPrice && (
+              <p className="mt-3 rounded-lg bg-gold/15 px-4 py-2.5 text-xs">
+                Salonaanbieding · je bespaart{" "}
+                <span className="font-medium">{formatEuro(euroToNumber(product.oldPrice) - euroToNumber(product.price))}</span>
+              </p>
+            )}
 
             <p className="mt-6 text-xs">
               <span className="font-medium uppercase tracking-wider">Geschikt voor</span>
@@ -106,7 +133,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="mt-6">
               <Accordion
                 items={[
-                  { title: "Details", content: specs.map(([k, v]) => `${k}: ${v}`).join(" · ") },
+                  {
+                    title: "Details",
+                    content: (
+                      <dl className="divide-y divide-black/5">
+                        {specs.map(([k, v]) => (
+                          <div key={k} className="grid grid-cols-[9rem_1fr] gap-3 py-2">
+                            <dt className="font-medium text-black">{k}</dt>
+                            <dd>{v}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    ),
+                  },
                   { title: "Gebruik", content: product.usage },
                   {
                     title: "Verzending en afhalen",
@@ -186,7 +225,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="mx-auto max-w-3xl px-6 py-24 md:py-28">
         <Reveal>
           <h2 className="text-center text-3xl md:text-4xl">
-            Veelgestelde <span className="accent text-gold-muted">vragen</span>
+            Van twijfel naar <span className="accent text-gold-muted">zeker</span>
           </h2>
           <div className="mt-8">
             <Accordion

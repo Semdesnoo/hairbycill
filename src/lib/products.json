@@ -77,9 +77,9 @@
     ],
     "description": "Intense hydratatie voor droog en dof haar.",
     "benefit": "Voor diep gevoed en soepel haar.",
-    "usage": "Na het shampoo├½n aanbrengen, 2-3 minuten laten intrekken.",
+    "usage": "Na het shampooën aanbrengen, 2-3 minuten laten intrekken.",
     "hairType": "Droog, dof haar",
-    "ingredients": "Kokosolie, alo├½ vera, panthenol.",
+    "ingredients": "Kokosolie, aloë vera, panthenol.",
     "faqs": [
       {
         "a": "Nee, lichte formule zonder verzwaring.",
@@ -87,12 +87,12 @@
       }
     ],
     "story": {
-      "text": "Een lichte conditioner die droog en dof haar direct vocht geeft. Kokosolie, alo├½ vera en panthenol maken je haar zacht en soepel, zonder het plat te maken.",
+      "text": "Een lichte conditioner die droog en dof haar direct vocht geeft. Kokosolie, aloë vera en panthenol maken je haar zacht en soepel, zonder het plat te maken.",
       "title": "Diepe hydratatie in twee minuten"
     },
     "features": [
       {
-        "text": "Alo├½ vera en panthenol trekken vocht de haarvezel in, kokosolie houdt het vast. Het resultaat: soepel haar dat zacht aanvoelt, ook de dagen erna.",
+        "text": "Aloë vera en panthenol trekken vocht de haarvezel in, kokosolie houdt het vast. Het resultaat: soepel haar dat zacht aanvoelt, ook de dagen erna.",
         "title": "Vocht dat je voelt",
         "bullets": [
           "Direct zachter haar",
@@ -111,7 +111,7 @@
       }
     ],
     "steps": [
-      "Knijp na het shampoo├½n het overtollige water uit je haar.",
+      "Knijp na het shampooën het overtollige water uit je haar.",
       "Verdeel de conditioner over de lengtes en punten, niet op de hoofdhuid.",
       "Laat 2 tot 3 minuten intrekken en spoel goed uit met koel water."
     ],
@@ -159,7 +159,7 @@
       },
       {
         "text": "Gebruik het masker wekelijks als intensieve kuur. Je merkt het verschil na de eerste keer, en na een paar weken is je haar echt steviger.",
-        "title": "E├®n keer per week is genoeg",
+        "title": "Eén keer per week is genoeg",
         "bullets": [
           "Intensieve weekkuur",
           "Rijke maar lichte textuur",
@@ -188,9 +188,9 @@
       "Geen plakkerig gevoel",
       "Langer houdbare styling"
     ],
-    "description": "Beschermt tegen hitteschade tot 230┬░C, zonder verzwaring.",
+    "description": "Beschermt tegen hitteschade tot 230°C, zonder verzwaring.",
     "benefit": "Voor bescherming en extra glans bij stylen.",
-    "usage": "Sprayen op handdoekdroog haar voor het f├Âhnen of stylen.",
+    "usage": "Sprayen op handdoekdroog haar voor het föhnen of stylen.",
     "hairType": "Alle haartypes",
     "ingredients": "Siliconen-complex, UV-filters.",
     "faqs": [
@@ -200,15 +200,15 @@
       }
     ],
     "story": {
-      "text": "Deze spray legt een beschermend laagje om je haar voordat je gaat f├Âhnen, stijlen of krullen. Je haar blijft sterk en glanzend, en je styling blijft langer mooi zitten.",
+      "text": "Deze spray legt een beschermend laagje om je haar voordat je gaat föhnen, stijlen of krullen. Je haar blijft sterk en glanzend, en je styling blijft langer mooi zitten.",
       "title": "Styling zonder hitteschade"
     },
     "features": [
       {
-        "text": "Of je nu f├Âhnt, stijlt of krult: de spray verdeelt de warmte en beschermt de haarvezel tegen uitdroging en breuk.",
+        "text": "Of je nu föhnt, stijlt of krult: de spray verdeelt de warmte en beschermt de haarvezel tegen uitdroging en breuk.",
         "title": "Bescherming tot 230 graden",
         "bullets": [
-          "Voor f├Âhn, stijltang en krultang",
+          "Voor föhn, stijltang en krultang",
           "Minder droge en gespleten punten",
           "Beschermt ook tegen UV"
         ]
@@ -226,7 +226,7 @@
     "steps": [
       "Sprayen op handdoekdroog haar, op zo'n 20 centimeter afstand.",
       "Kam de spray door zodat elk plukje bedekt is.",
-      "F├Âhn of style zoals je gewend bent."
+      "Föhn of style zoals je gewend bent."
     ],
     "tip": "Zet je stijltang niet hoger dan 180 graden. Met deze spray is dat genoeg voor een gladde, glanzende look.",
     "freeOf": []

@@ -80,7 +80,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <LaunchGate>
           <Header />
-          <main className="isolate flex-1 overflow-x-hidden bg-offwhite">{children}</main>
+          <main className="isolate flex-1 overflow-x-clip bg-offwhite">{children}</main>
           <Footer />
           <MobileStickyCta />
           <CookieBanner />

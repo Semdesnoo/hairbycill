@@ -9,7 +9,9 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { openingHours, team, treatments } from "@/lib/data";
+import { openingHours, products, team, treatments } from "@/lib/data";
+import ProductCard from "@/components/ProductCard";
+import ScrollScissors from "@/components/ScrollScissors";
 import { posts as tips } from "@/lib/blog";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -124,115 +126,133 @@ export default function Home() {
           </motion.a>
         </section>
 
-        {/* TREATMENTS: arched portraits that sweep in from the left and right edges */}
-        <section id="behandelingen" className="scroll-mt-20 py-24 md:py-36">
+        {/* TREATMENTS: Dore & Rose editorial tiles (one wide, then pairs) with a white button bottom-left */}
+        <section id="behandelingen" className="scroll-mt-20 px-3 py-24 md:px-6 md:py-32">
           <AnimatedHeading
             lines={["Onze"]}
             accent="behandelingen"
             className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
           />
-          {/* Parent observes the viewport: children start off-screen, so they can't trigger whileInView themselves */}
-          <motion.div
-            initial="out"
-            whileInView="in"
-            viewport={{ once: true, amount: 0.3 }}
-            className="mt-16 flex snap-x justify-center-safe gap-4 overflow-x-auto px-6 [scrollbar-width:none] md:gap-5 md:px-14"
-          >
-            {treatments.map((t, i) => {
-              const side = i - (treatments.length - 1) / 2; // <0 left, 0 middle, >0 right
-              return (
-                <motion.div
-                  key={t.slug}
-                  variants={{
-                    out: { opacity: 0, x: `${side * 45}vw`, y: side === 0 ? 80 : 0, rotate: side * 4 },
-                    in: { opacity: 1, x: 0, y: 0, rotate: 0 },
-                  }}
-                  transition={{ duration: 1.3, ease }}
-                  className="shrink-0 snap-start"
+          <p className="mx-auto mt-4 max-w-sm px-6 text-center text-sm text-black/60">
+            Van een frisse coupe tot een complete kleurmetamorfose.
+          </p>
+          <div className="mt-12 grid gap-3 md:mt-16 md:grid-cols-2 md:gap-4">
+            {treatments.map((t, i) => (
+              <Reveal key={t.slug} delay={(i % 2) * 0.08} className={i === 0 ? "md:col-span-2" : ""}>
+                <Link
+                  href={`/afspraak?treatment=${t.slug}`}
+                  className={`group relative block overflow-hidden rounded-2xl bg-ivory ${
+                    i === 0 ? "h-[420px] md:h-[min(68vh,560px)]" : "h-[340px] md:h-[440px]"
+                  }`}
                 >
-                  <Link
-                    href={`/afspraak?treatment=${t.slug}`}
-                    className="group relative block aspect-[3/5] w-44 overflow-hidden rounded-full md:w-52 xl:w-60 2xl:w-64 min-[1800px]:w-72"
-                  >
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      fill
-                      sizes="300px"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <span className="on-photo absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent pb-8 pt-16 text-center text-base text-offwhite">
-                      {t.name}
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    fill
+                    sizes={i === 0 ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
+                    className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-black/75 via-black/15 to-transparent" />
+                  <div className="on-photo absolute inset-x-6 bottom-6 text-offwhite md:inset-x-9 md:bottom-9">
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-offwhite/80">
+                      0{i + 1} · {t.duration}
+                    </p>
+                    <h3 className={`mt-2 leading-none ${i === 0 ? "text-4xl md:text-6xl" : "text-3xl md:text-4xl"}`}>
+                      {t.name} <span className="accent text-offwhite/90">{t.accent}</span>
+                    </h3>
+                    <p className="mt-3 max-w-xs text-sm leading-relaxed text-offwhite/85">{t.description}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 rounded-md bg-offwhite px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-black transition-colors duration-300 [text-shadow:none] group-hover:bg-gold">
+                      Boek {t.name.toLowerCase()}
+                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                     </span>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </section>
 
-        {/* SERVICES: dark band with day tabs + treatment table */}
-        <section className="relative overflow-hidden bg-black px-4 py-24 text-offwhite md:px-14 md:py-28">
+        {/* SERVICES: dark band with day picker + treatment menu card */}
+        <section className="relative overflow-hidden bg-black px-3 py-24 text-offwhite md:px-14 md:py-32">
           <Image src={u("1633681926022-84c23e8cb2d6", 1800)} alt="" fill sizes="100vw" className="object-cover opacity-20" />
           <div className="on-photo relative z-10">
             <AnimatedHeading
               lines={["Vind een behandeling"]}
               accent="die bij je past"
-              className="mx-auto max-w-lg text-center text-4xl leading-[1.05] md:text-5xl"
+              className="mx-auto max-w-lg px-3 text-center text-4xl leading-[1.05] md:text-5xl"
             />
-            <p className="mx-auto mt-4 max-w-sm text-center text-sm text-offwhite/85">
+            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-offwhite/85">
               Kies je dag, kies je behandeling. Wij zorgen voor de rest.
             </p>
 
-            <div className="mt-8 flex flex-wrap justify-center gap-1.5">
+            <div
+              role="tablist"
+              aria-label="Kies een dag"
+              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-offwhite/15 bg-black/40 p-1 backdrop-blur-md [scrollbar-width:none]"
+            >
               {openingHours.map((o) => {
                 const closed = o.hours === "Gesloten";
+                const on = day === o.day;
                 return (
                   <button
                     key={o.day}
                     type="button"
+                    role="tab"
+                    aria-selected={on}
                     disabled={closed}
                     onClick={() => setDay(o.day)}
-                    className={`rounded-full px-4 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
-                      day === o.day ? "bg-offwhite text-black" : "bg-offwhite/10 hover:bg-offwhite/20"
+                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-offwhite/30 md:px-5 ${
+                      on ? "text-black [text-shadow:none]" : "hover:text-gold"
                     }`}
                   >
-                    {o.day.slice(0, 2)}
+                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-offwhite" transition={{ duration: 0.5, ease }} />}
+                    <span className="relative">{o.day.slice(0, 2)}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="mx-auto mt-10 max-w-4xl rounded-2xl bg-offwhite p-3 text-black shadow-2xl shadow-black/30 [text-shadow:none] md:grid md:grid-cols-[2rem_1.2fr_4rem_1.5fr_auto_auto] md:gap-x-4 md:p-5">
-              <p className="px-3 pb-3 text-xs text-black/55 md:col-span-full">
-                {day}: {openingHours.find((o) => o.day === day)?.hours}
-              </p>
-              {treatments.map((t, i) => (
-                <div
-                  key={t.slug}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-t border-black/10 px-3 py-4 md:col-span-full md:grid-cols-subgrid"
-                >
-                  <span className="hidden text-xs text-black/45 md:block">0{i + 1}</span>
-                  <p className="text-sm">
-                    {t.name} <span className="accent text-gold-muted">{t.accent}</span>
-                  </p>
-                  <div className="relative hidden h-10 w-16 overflow-hidden rounded-lg md:block">
-                    <Image src={t.image} alt="" fill sizes="64px" className="object-cover" />
-                  </div>
-                  <p className="hidden text-xs leading-relaxed text-black/60 md:block">{t.description}</p>
-                  <p className="whitespace-nowrap text-xs text-black/80">
-                    {t.duration} • {t.price}
-                  </p>
-                  <Link
-                    href={`/afspraak?treatment=${t.slug}`}
-                    className={`rounded-full px-4 py-1.5 text-xs transition-colors ${
-                      i === 0 ? "bg-black text-offwhite" : "border border-black/20 hover:bg-black hover:text-offwhite"
-                    }`}
-                  >
-                    Boek
-                  </Link>
-                </div>
-              ))}
+            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl bg-offwhite text-black shadow-2xl shadow-black/40 [text-shadow:none]">
+              <div className="flex items-center justify-between gap-4 border-b border-black/10 px-5 py-4 md:px-8">
+                <p className="text-lg">
+                  {day} <span className="accent text-gold-muted">geopend</span>
+                </p>
+                <p className="flex items-center gap-2 text-xs text-black/60">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                  {openingHours.find((o) => o.day === day)?.hours.replace(" & ", " · ")}
+                </p>
+              </div>
+              <ul className="p-2 md:p-3">
+                {treatments.map((t, i) => (
+                  <li key={t.slug}>
+                    <Link
+                      href={`/afspraak?treatment=${t.slug}`}
+                      className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-ivory/70 md:grid-cols-[2rem_5rem_1fr_1.3fr_auto_auto] md:gap-5 md:px-5"
+                    >
+                      <span className="hidden text-xs tabular-nums text-black/40 md:block">0{i + 1}</span>
+                      <span className="relative block aspect-square overflow-hidden rounded-xl md:aspect-[4/3]">
+                        <Image src={t.image} alt="" fill sizes="80px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                      </span>
+                      <span>
+                        <span className="block text-base md:text-lg">
+                          {t.name} <span className="accent text-gold-muted">{t.accent}</span>
+                        </span>
+                        <span className="mt-0.5 block text-xs text-black/50 md:hidden">
+                          {t.duration} · {t.price}
+                        </span>
+                      </span>
+                      <span className="hidden text-xs leading-relaxed text-black/55 md:block">{t.description}</span>
+                      <span className="hidden whitespace-nowrap text-right md:block">
+                        <span className="block text-sm">{t.price.replace("vanaf ", "")}</span>
+                        <span className="block text-[11px] text-black/45">vanaf · {t.duration}</span>
+                      </span>
+                      <span className="flex h-10 items-center gap-2 rounded-full bg-black px-4 text-xs text-offwhite transition-colors group-hover:bg-gold group-hover:text-black">
+                        Boek <span aria-hidden className="hidden transition-transform group-hover:translate-x-0.5 md:inline">→</span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="mt-10 text-center">
@@ -241,58 +261,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ABOUT: text + stats */}
-        <section className="px-6 py-24 text-center md:py-32">
-          <AnimatedHeading
-            lines={["Jouw plek om te ontspannen,"]}
-            accent="stralen en groeien"
-            className="mx-auto max-w-xl text-4xl leading-[1.05] md:text-5xl"
-          />
-          <p className="mx-auto mt-5 max-w-md text-sm text-black/60">
-            We maken salonzorg toegankelijk voor iedereen, waar je ook begint en hoe druk je dag ook is
-            geweest.
-          </p>
+        {/* ABOUT: pinned scroll story with the spinning 3D shears */}
+        <ScrollScissors />
 
-          {/* Mobile: swipeable snap row (next card peeks in); md+: 3-col grid */}
-          <div className="-mx-6 mt-16 flex snap-x snap-mandatory divide-x divide-black/10 overflow-x-auto border-t border-black/10 [scrollbar-width:none] md:mx-auto md:grid md:max-w-5xl md:grid-cols-3 md:overflow-visible">
-            {[
-              { n: "93", title: "Voelt zich", accent: "zelfverzekerder", text: "Klanten geven aan zich zekerder te voelen na hun eerste afspraak." },
-              { n: "87", title: "Komt", accent: "graag terug", text: "Een warme salon vol vaste gezichten die zich thuis voelen." },
-              { n: "95", title: "Tevreden over", accent: "het advies", text: "Persoonlijk advies dat past bij jouw haar en jouw ritme." },
-            ].map((s) => (
-              <div key={s.n} className="w-[78%] shrink-0 snap-center px-8 py-10 md:w-auto">
-                <p className="text-4xl font-light">
-                  {s.n}<sup className="text-sm">%</sup>
-                </p>
-                <p className="mt-2 text-sm font-medium">
-                  {s.title} <span className="accent text-base text-gold-muted">{s.accent}</span>
-                </p>
-                <p className="mx-auto mt-3 max-w-[220px] text-xs leading-relaxed text-black/55">{s.text}</p>
-              </div>
-            ))}
-          </div>
-          <Button href="/over-ons" className="mt-6">Meer over ons</Button>
-        </section>
-
-        {/* TEAM: copy left, two portraits right, one aligned block */}
-        <section className="relative px-6 py-24 md:px-14 md:py-32">
-          {/* Real steel shears photo (user's, Lanczos-upscaled to 2400px) spanning the About/Team seam; multiply blend drops its white bg */}
-          <motion.img
-            src={`${BASE_PATH}/scissors.jpg`}
-            alt=""
-            aria-hidden
-            initial={{ opacity: 0, rotate: -14, scale: 0.94 }}
-            whileInView={{ opacity: 0.09, rotate: -8, scale: 1 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 1.8, ease }}
-            className="pointer-events-none absolute left-1/2 top-0 -z-10 w-[120vw] max-w-none mix-blend-multiply -translate-x-1/2 -translate-y-1/2 select-none [mask-image:radial-gradient(closest-side,black_60%,transparent)]"
-          />
-          <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
+        {/* TEAM: copy left, two portrait tiles right (name on the photo, D&R tile style) */}
+        <section className="px-6 py-24 md:px-14 md:py-32">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
             <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-gold-muted">Het team</p>
               <AnimatedHeading
                 lines={["Gestyled met aandacht,", "geknipt"]}
                 accent="met liefde"
-                className="text-4xl leading-[1.05] md:text-5xl"
+                className="mt-3 text-4xl leading-[1.05] md:text-5xl"
               />
               <p className="mt-5 max-w-sm text-sm leading-relaxed text-black/60">
                 Een klein team dat luistert, meedenkt en weet wat jouw haar nodig heeft. Bij ons zit je
@@ -301,23 +281,29 @@ export default function Home() {
               <Button href="/afspraak" className="mt-10">Afspraak maken</Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 md:gap-5">
               {team.map((m, i) => (
-                <Reveal key={m.name} delay={i * 0.12} className={i === 1 ? "mt-12 md:mt-16" : ""}>
-                  <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-ivory">
+                <Reveal key={m.name} delay={i * 0.12} className={i === 1 ? "mt-14 md:mt-20" : ""}>
+                  <Link href="/afspraak" className="group relative block aspect-[3/4.3] overflow-hidden rounded-2xl bg-ivory">
                     <Image
                       src={m.image}
                       alt={m.name}
                       fill
-                      sizes="(min-width:1024px) 320px, 50vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(min-width:1024px) 340px, 50vw"
+                      className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
                     />
-                  </div>
-                  <p className="mt-4 text-lg">
-                    {m.name} <span className="accent text-gold-muted">stylist</span>
-                  </p>
-                  <p className="mt-0.5 text-[11px] uppercase tracking-wider text-black/45">{m.role}</p>
-                  <p className="mt-2 text-xs leading-relaxed text-black/55">{m.bio}</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <div className="on-photo absolute inset-x-4 bottom-4 text-offwhite md:inset-x-6 md:bottom-6">
+                      <p className="text-xl md:text-2xl">
+                        {m.name} <span className="accent text-gold">stylist</span>
+                      </p>
+                      <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-offwhite/75">{m.role}</p>
+                      <span className="mt-3 hidden rounded-md bg-offwhite px-4 py-2 text-[10px] font-medium uppercase tracking-[0.18em] text-black [text-shadow:none] transition-colors group-hover:bg-gold md:inline-block">
+                        Boek bij {m.name}
+                      </span>
+                    </div>
+                  </Link>
+                  <p className="mt-3 text-xs leading-relaxed text-black/55">{m.bio}</p>
                 </Reveal>
               ))}
             </div>
@@ -326,6 +312,27 @@ export default function Home() {
 
         {/* OUR WORK: two scroll-driven rows */}
         <WorkMarquee />
+
+        {/* SHOP: Dore & Rose "Bestsellers" row: heading left, shop link right, swipeable product cards */}
+        <section className="py-24 md:py-28">
+          <div className="flex items-end justify-between gap-6 px-6 md:px-14">
+            <AnimatedHeading lines={["Favoriet in"]} accent="de salon" className="text-4xl leading-[1.05] md:text-5xl" />
+            <Link href="/producten" className="group mb-1 flex shrink-0 items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.18em]">
+              Shop alles
+              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
+          </div>
+          <p className="mt-3 max-w-sm px-6 text-sm text-black/60 md:px-14">
+            De producten die wij zelf dagelijks gebruiken. Afhalen in Rhoon of thuisbezorgd.
+          </p>
+          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-2 [scrollbar-width:none] md:scroll-px-14 md:gap-5 md:px-14">
+            {products.map((p) => (
+              <li key={p.slug} className="w-[64vw] shrink-0 snap-start sm:w-[42vw] md:w-[30vw] xl:w-[calc((100vw-7rem-3.75rem)/4)]">
+                <ProductCard product={p} />
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* TIPS */}
         <section className="px-6 py-24 md:px-14 md:py-28">

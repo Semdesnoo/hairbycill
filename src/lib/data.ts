@@ -1,3 +1,4 @@
+import { BASE_PATH } from "./basePath";
 import productsJson from "./products.json" with { type: "json" };
 
 // Centraal data-bestand: pas hier prijzen, behandelingen, producten en
@@ -54,14 +55,14 @@ export const stylists: Stylist[] = [
     name: "Priscilla",
     role: "Eigenaar & stylist",
     image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
+      `${BASE_PATH}/team/priscilla.jpg`,
   },
   {
-    slug: "mellissa",
-    name: "Mellissa",
+    slug: "mellissa", // DB key (roster/bookings); display name below
+    name: "Cecilia",
     role: "Stylist",
     image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
+      `${BASE_PATH}/team/cecilia.jpg`,
   },
   {
     slug: "any",
@@ -276,7 +277,6 @@ export type TeamMember = {
   name: string;
   role: string;
   bio: string;
-  email: string;
   image: string;
 };
 
@@ -285,17 +285,15 @@ export const team: TeamMember[] = [
     name: "Priscilla",
     role: "Eigenaar & stylist",
     bio: "Oprichter van Hair by Cill. Bij haar ben je in vertrouwde handen.",
-    email: "priscilla@hairbycill.nl",
     image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
+      `${BASE_PATH}/team/priscilla.jpg`,
   },
   {
-    name: "Mellissa",
+    name: "Cecilia",
     role: "Stylist",
     bio: "Knippen, kleuren en stylen met oog voor detail. Bij haar ben je in vertrouwde handen.",
-    email: "mellissa@hairbycill.nl",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
+        image:
+      `${BASE_PATH}/team/cecilia.jpg`,
   },
 ];
 
