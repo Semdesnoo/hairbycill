@@ -16,9 +16,9 @@ if (url.includes("REPLACE_ME")) {
 }
 const res = await fetch(`${url}/rest/v1/products?select=*&active=eq.true&order=sort,name`, {
   headers: { apikey: key, Authorization: `Bearer ${key}` },
-});
+}).catch((e) => ({ ok: false, status: e.cause?.code ?? e.message })); // unreachable Supabase = same as HTTP error
 if (!res.ok) {
-  console.error(`fetch-products: HTTP ${res.status}, keeping products.json`);
+  console.error(`fetch-products: ${res.status}, keeping products.json`);
   process.exit(0);
 }
 const rows = await res.json();
