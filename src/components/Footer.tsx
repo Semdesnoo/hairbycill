@@ -1,6 +1,11 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import Logo from "./Logo";
-import { business, navLinks, openingHours } from "@/lib/data";
+import { FormEvent, useState } from "react";
+import { WEB3FORMS_KEY } from "./LaunchGate";
+import { BASE_PATH } from "@/lib/basePath";
+import { business, products, treatments } from "@/lib/data";
 
 // Official brand glyphs (Simple Icons, CC0).
 const SOCIALS = [
@@ -9,107 +14,170 @@ const SOCIALS = [
   { label: "Facebook", href: business.facebook, path: "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" },
 ];
 
-const MAPS = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.name}, ${business.address}`)}`;
+const CAT_NL: Record<string, string> = { Shampoo: "Shampoo", Conditioner: "Conditioner", Treatment: "Haarmaskers", Styling: "Styling" };
+const categories = [...new Set(products.map((p) => p.category))];
 
-const heading = "mb-5 text-[11px] uppercase tracking-[0.2em] text-gold";
-const link = "text-offwhite/65 transition-colors hover:text-gold";
+// Every link lands on a real page (treatments prefill the booking form, categories prefilter the shop).
+const COLUMNS = [
+  {
+    title: "Salon",
+    links: [
+      { href: "/over-ons", label: "Over ons" },
+      { href: "/over-ons", label: "Ons team" },
+      { href: "/prijslijst", label: "Prijslijst" },
+      { href: "/blog", label: "Haartips" },
+      { href: "/contact", label: "Contact & route" },
+    ],
+  },
+  {
+    title: "Behandelingen",
+    links: [
+      ...treatments.map((t) => ({ href: `/afspraak?treatment=${t.slug}`, label: t.name })),
+      { href: "/prijslijst", label: "Alle prijzen" },
+    ],
+  },
+  {
+    title: "Shop",
+    links: [
+      { href: "/producten", label: "Alle producten" },
+      ...categories.map((c) => ({ href: `/producten?categorie=${encodeURIComponent(c)}`, label: CAT_NL[c] ?? c })),
+      { href: "/checkout", label: "Winkelwagen" },
+    ],
+  },
+  {
+    title: "Klantenservice",
+    links: [
+      { href: "/afspraak", label: "Afspraak maken" },
+      { href: "/afspraak#annuleren", label: "Afspraak annuleren" },
+      { href: "/contact", label: "Openingstijden" },
+      { href: "/privacybeleid", label: "Privacybeleid" },
+      { href: "/voorwaarden", label: "Algemene voorwaarden" },
+    ],
+  },
+];
 
+// Accepted at the salon's pin terminal and for webshop payment requests.
+const PAY = [
+  { file: "ideal", label: "iDEAL" },
+  { file: "maestro", label: "Maestro" },
+  { file: "mastercard", label: "Mastercard" },
+  { file: "visa", label: "Visa" },
+  { file: "applepay", label: "Apple Pay" },
+  { file: "googlepay", label: "Google Pay" },
+];
+
+function Newsletter() {
+  const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const email = new FormData(e.currentTarget).get("email");
+    setState("busy");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject: "Nieuwe aanmelding nieuwsbrief", from_name: business.name, email, message: `Nieuwsbrief-aanmelding: ${email}` }),
+      });
+      setState(res.ok ? "done" : "error");
+    } catch {
+      setState("error");
+    }
+  }
+
+  if (state === "done") return <p className="mt-6 text-sm text-gold">Bedankt, je bent aangemeld.</p>;
+  return (
+    <form onSubmit={submit} className="mt-6">
+      <label htmlFor="footer-email" className="sr-only">E-mailadres</label>
+      <div className="flex items-center border-b border-offwhite/30 focus-within:border-gold">
+        <input
+          id="footer-email"
+          name="email"
+          type="email"
+          required
+          placeholder="jouw@email.nl"
+          className="min-w-0 flex-1 bg-transparent py-3 text-sm text-offwhite placeholder:text-offwhite/45 focus:outline-none"
+        />
+        <button type="submit" disabled={state === "busy"} aria-label="Aanmelden" className="px-2 text-xl text-offwhite transition-colors hover:text-gold disabled:opacity-40">
+          →
+        </button>
+      </div>
+      {state === "error" && <p className="mt-2 text-xs text-red-300">Dat lukte niet. Probeer het later opnieuw.</p>}
+    </form>
+  );
+}
+
+const heading = "border-b border-offwhite/15 pb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-gold";
+const link = "text-sm text-offwhite/70 transition-colors hover:text-gold";
+
+/** Dore & Rose style footer: round logo on the top edge, four link columns, newsletter panel, payment icons. */
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black px-6 pb-8 pt-20 text-offwhite md:px-14 max-md:[body:has([data-sticky-cta])_&]:pb-28">
-      <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Gold divider between the last page section and the footer (every page) */}
-        <div aria-hidden className="h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
-        <div className="mt-16 grid gap-12 sm:grid-cols-2 md:mt-20 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-10">
-          <div>
-            <Logo dark />
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-offwhite/65">
-              Wij geloven dat mooi haar geen haast kent. Het is iets wat je samen opbouwt, afspraak na afspraak.
-            </p>
-            <div className="mt-6 flex gap-2">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${business.name} op ${s.label}`}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-offwhite/15 text-offwhite transition-colors hover:border-gold hover:bg-gold hover:text-black"
-                >
-                  <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden>
-                    <path d={s.path} />
-                  </svg>
-                </a>
-              ))}
+    <footer className="relative mt-20 bg-black text-offwhite max-md:[body:has([data-sticky-cta])_&]:pb-24">
+      {/* Logo sits on the top edge, half above the footer */}
+      <Link href="/" aria-label={`${business.name} home`} className="absolute left-1/2 top-0 z-10 block h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-offwhite md:h-28 md:w-28">
+        <Image src={`${BASE_PATH}/icon-512.png`} alt={business.name} fill sizes="112px" className="rounded-full object-cover" />
+      </Link>
+
+      <div className="grid lg:grid-cols-[2fr_1fr]">
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-12 px-6 pb-14 pt-24 md:grid-cols-4 md:px-14 md:pt-28">
+          {COLUMNS.map((col) => (
+            <div key={col.title}>
+              <h3 className={heading}>{col.title}</h3>
+              <ul className="mt-5 space-y-3">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    <Link href={l.href} className={link}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
             </div>
+          ))}
+        </nav>
+
+        <div className="bg-soft-black px-6 py-14 md:px-14 lg:pt-28">
+          <h3 className={heading}>Blijf op de hoogte</h3>
+          <p className="mt-5 text-lg leading-snug">
+            Haartips, acties en nieuwe producten. <span className="accent text-gold">Als eerste</span> in je inbox.
+          </p>
+          <p className="mt-3 text-xs leading-relaxed text-offwhite/55">
+            Door je aan te melden ga je akkoord met e-mails van ons. Afmelden kan altijd. Lees ons{" "}
+            <Link href="/privacybeleid" className="underline hover:text-gold">privacybeleid</Link>.
+          </p>
+          <Newsletter />
+
+          <div className="mt-10 space-y-1.5 text-sm text-offwhite/70">
+            <p>{business.address}</p>
+            <p><a href={business.phoneHref} className="hover:text-gold">{business.phone}</a></p>
+            <p><a href={`mailto:${business.email}`} className="hover:text-gold">{business.email}</a></p>
           </div>
-
-          <nav aria-label="Footer">
-            <h3 className={heading}>Ontdek</h3>
-            <ul className="space-y-3 text-sm">
-              {[...navLinks, { href: "/blog", label: "Haartips" }].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className={link}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <h3 className={heading}>Contact</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href={MAPS} target="_blank" rel="noopener noreferrer" className={link}>
-                  {business.address.split(", ").map((line) => (
-                    <span key={line} className="block">{line}</span>
-                  ))}
-                </a>
-              </li>
-              <li><a href={business.phoneHref} className={link}>{business.phone}</a></li>
-              <li><a href={business.whatsappHref} target="_blank" rel="noopener noreferrer" className={link}>WhatsApp</a></li>
-              <li><a href={`mailto:${business.email}`} className={link}>{business.email}</a></li>
-            </ul>
-            <Link
-              href="/afspraak"
-              className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-sm text-black transition-colors hover:bg-offwhite"
-            >
-              Afspraak maken
-            </Link>
-          </div>
-
-          <div>
-            <h3 className={heading}>Openingstijden</h3>
-            <ul className="text-sm">
-              {openingHours.map((o) => (
-                <li key={o.day} className="flex justify-between gap-4 border-b border-offwhite/10 py-2 first:pt-0">
-                  <span className="text-offwhite/65">{o.day}</span>
-                  <span className={`text-right ${o.hours === "Gesloten" ? "text-offwhite/40" : "text-offwhite"}`}>
-                    {o.hours.split(" & ").map((h) => (
-                      <span key={h} className="block">{h}</span>
-                    ))}
-                  </span>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-6 flex gap-2">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${business.name} op ${s.label}`}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-offwhite/15 transition-colors hover:border-gold hover:bg-gold hover:text-black"
+              >
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden><path d={s.path} /></svg>
+              </a>
+            ))}
           </div>
         </div>
+      </div>
 
-        <p
-          aria-hidden
-          className="accent pointer-events-none mt-16 select-none text-center text-[clamp(4rem,17vw,15rem)] leading-[0.8] text-offwhite/[0.07]"
-        >
-          Hair by Cill
-        </p>
-
-        <div className="mt-6 flex flex-col gap-3 border-t border-offwhite/10 pt-6 text-xs text-offwhite/45 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {business.name}. Alle rechten voorbehouden.</p>
-          <div className="flex gap-5">
-            <Link href="/privacybeleid" className="transition-colors hover:text-gold">Privacybeleid</Link>
-            <Link href="/voorwaarden" className="transition-colors hover:text-gold">Voorwaarden</Link>
-          </div>
-        </div>
+      <div className="flex flex-col gap-5 border-t border-offwhite/10 px-6 py-6 md:flex-row md:items-center md:justify-between md:pl-14 md:pr-28">
+        <p className="text-xs uppercase tracking-[0.15em] text-offwhite/50">© {new Date().getFullYear()} {business.name}</p>
+        <ul aria-label="Betaalmethoden" className="flex flex-wrap gap-2">
+          {PAY.map((p) => (
+            <li key={p.file} className="flex h-8 w-12 items-center justify-center rounded-md bg-white px-1.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${BASE_PATH}/pay/${p.file}.svg`} alt={p.label} title={p.label} className="max-h-5 w-full object-contain" />
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

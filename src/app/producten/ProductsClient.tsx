@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductGrid from "@/components/ProductGrid";
 import { products, Product } from "@/lib/data";
 
@@ -49,6 +49,11 @@ export default function ProductsClient() {
   const [cats, setCats] = useState<Category[]>([]);
   const [brandSel, setBrandSel] = useState<string[]>([]);
   const [saleOnly, setSaleOnly] = useState(false);
+  // Footer links: /producten?categorie=Shampoo preselects that category.
+  useEffect(() => {
+    const c = new URLSearchParams(window.location.search).get("categorie") as Category | null;
+    if (c && products.some((p) => p.category === c)) setCats([c]); // eslint-disable-line react-hooks/set-state-in-effect
+  }, []);
 
   const filtered = products.filter(
     (p) =>
