@@ -31,8 +31,8 @@ function WorkMarquee() {
           <div
             key={r}
             // Endless CSS marquee: top row glides left -> right, bottom row right -> left (margins, not gap, so -50% loops exactly).
-            style={{ animationDuration: "70s" }}
-            className={`flex w-max animate-marquee will-change-transform hover:[animation-play-state:paused] ${r === 0 ? "[animation-direction:reverse]" : ""}`}
+            style={{ animationDuration: "70s", animationDirection: r === 0 ? "reverse" : "normal" }}
+            className={`flex w-max animate-marquee will-change-transform`}
           >
             {/* 4 copies = 2 identical halves (each wider than any screen), so the -50% keyframe loops seamlessly */}
             {[...row, ...row, ...row, ...row].map((src, i) => (
