@@ -9,18 +9,15 @@ const longDate = (iso: string) =>
   new Date(`${iso}T00:00:00`).toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
 
 /** Cancel an appointment with email + the 6-char code from the confirmation. Allowed until 12h before. */
-export default function CancelBooking({ dark = false }: { dark?: boolean }) {
+export default function CancelBooking() {
   const [code, setCode] = useState("");
   const [email, setEmail] = useState("");
   const [booking, setBooking] = useState<Booking | null | undefined>(undefined);
   const [cancelled, setCancelled] = useState(false);
   const [err, setErr] = useState("");
 
-  const field = `w-full rounded-full border bg-transparent px-5 py-3 text-sm focus:outline-none ${
-    dark
-      ? "border-offwhite/20 text-offwhite placeholder:text-offwhite/40 focus:border-offwhite/70"
-      : "border-black/15 placeholder:text-black/35 focus:border-black"
-  }`;
+  const field =
+    "w-full rounded-full border border-black/20 bg-white px-5 py-3 text-sm text-black placeholder:text-black/45 focus:border-black focus:outline-none focus:ring-1 focus:ring-black";
 
   async function lookup(e: React.FormEvent) {
     e.preventDefault();
@@ -44,7 +41,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
 
   if (cancelled) {
     return (
-      <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-sm opacity-75">
+      <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-800">
         Je afspraak is geannuleerd. Het tijdslot komt weer vrij. Tot een volgende keer!
       </motion.p>
     );
@@ -74,15 +71,13 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
         />
         <button
           type="submit"
-          className={`rounded-full px-7 py-3 text-sm transition-colors ${
-            dark ? "bg-offwhite text-black hover:bg-gold" : "bg-black text-offwhite hover:bg-gold hover:text-black"
-          }`}
+          className="rounded-full bg-black px-7 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-gold hover:text-black"
         >
           Zoeken
         </button>
       </form>
 
-      {err && <p role="alert" className="mt-4 text-sm text-red-400">{err}</p>}
+      {err && <p role="alert" className="mt-4 text-sm text-red-700">{err}</p>}
       <AnimatePresence mode="wait">
         {booking === null && (
           <motion.p
@@ -91,7 +86,7 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             role="alert"
-            className="mt-4 text-sm text-red-400"
+            className="mt-4 text-sm text-red-700"
           >
             Geen afspraak gevonden met deze code en dit e-mailadres.
           </motion.p>
@@ -103,24 +98,24 @@ export default function CancelBooking({ dark = false }: { dark?: boolean }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease }}
-            className={`mt-5 rounded-2xl p-5 text-sm ${dark ? "bg-offwhite/10" : "bg-ivory/70"}`}
+            className="mt-5 rounded-2xl border border-black/10 bg-white p-5 text-sm"
           >
-            <p className="text-base">
+            <p className="text-base font-medium">
               {booking.treatment}
             </p>
-            <p className="mt-1 opacity-70">
+            <p className="mt-1 text-black/65">
               {longDate(booking.date)} om {booking.time} · {booking.stylistSlug.replace(/^./, (c) => c.toUpperCase())}
             </p>
             {canCancel(booking) ? (
               <button
                 type="button"
                 onClick={cancel}
-                className="mt-4 rounded-full border border-red-400/60 px-5 py-2 text-xs text-red-400 transition-colors hover:bg-red-500 hover:text-white"
+                className="mt-4 rounded-full bg-red-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-red-800"
               >
                 Afspraak definitief annuleren
               </button>
             ) : (
-              <p className="mt-4 text-red-400">
+              <p className="mt-4 text-red-700">
                 Annuleren kan tot 12 uur van tevoren (nog {Math.max(0, Math.round(hoursUntil(booking)))} uur tot je
                 afspraak). Bel ons even, dan kijken we samen wat mogelijk is.
               </p>
