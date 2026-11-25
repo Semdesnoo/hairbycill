@@ -18,7 +18,7 @@ export default function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
   // White text over the dark home video (and the black mobile menu); dark text on cream everywhere else.
-  const light = open || (pathname === "/" && !scrolled);
+  const light = open || ((pathname === "/" || pathname === "/afspraak") && !scrolled);
 
   // Hide while scrolling down, reveal on any scroll up.
   useMotionValueEvent(scrollY, "change", (y) => {

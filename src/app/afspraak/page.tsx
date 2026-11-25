@@ -1,24 +1,18 @@
 import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import CancelBooking from "@/components/CancelBooking";
-import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import BookingHero from "./BookingHero";
 import BookingWizard from "./BookingWizard";
-import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = { title: "Afspraak maken" };
 
 export default function AfspraakPage() {
   return (
     <>
-      <PageHero
-        title="Maak een"
-        accent="afspraak"
-        intro="Kies je behandeling, stylist en een moment dat jou uitkomt. Binnen een minuut geregeld."
-        image={`${BASE_PATH}/img/knippen-nat.jpg`}
-      />
+      <BookingHero />
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+      <section id="boeken" className="mx-auto max-w-7xl scroll-mt-20 px-6 py-16 md:px-10 md:py-24">
         <BookingWizard />
       </section>
 

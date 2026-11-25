@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { treatments, stylists as fallbackStylists } from "@/lib/data";
+import Image from "next/image";
+import { team, treatments, stylists as fallbackStylists } from "@/lib/data";
 import {
   loadSlots, loadStylists, nextBookableDates, createBooking, isoDate, lastContact, SlotTakenError,
   type Booking, type Slots, type StylistOption,
@@ -39,7 +40,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8%" }}
       transition={{ duration: 0.7, ease }}
-      className="border-t border-black/10 pt-8 first:border-t-0 first:pt-0"
+      className="min-w-0 border-t border-black/10 pt-8 first:border-t-0 first:pt-0"
     >
       <legend className="mb-5 flex items-baseline gap-3 text-2xl font-light">
         <span className="accent text-gold-muted">{String(n).padStart(2, "0")}</span>
@@ -70,6 +71,11 @@ export default function BookingWizard() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
   const [newsletter, setNewsletter] = useState(false);
   const [confirmed, setConfirmed] = useState<Booking | null>(null);
+  const [query, setQuery] = useState("");
+  const shown = treatments.filter((x) => `${x.name} ${x.description}`.toLowerCase().includes(query.trim().toLowerCase()));
+  // DB stylists carry no photo: take it from the static list (slug) or the team (display name).
+  const photoOf = (slug: string) =>
+    fallbackStylists.find((x) => x.slug === slug && slug !== "any")?.image ?? team.find((m) => m.name === stylists.find((x) => x.slug === slug)?.name)?.image;
 
   // Dates depend on "today": false during static prerender, true in the browser.
   const mounted = useSyncExternalStore(noop, () => true, () => false);
@@ -180,20 +186,59 @@ export default function BookingWizard() {
         </a>
       </div>
     <div className="grid gap-10 lg:grid-cols-[1fr_320px] lg:gap-12">
-      <div className="space-y-10">
+      <div className="min-w-0 space-y-10">
         <Step n={1} title="Kies je behandeling">
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {treatments.map((x) => (
-              <button key={x.slug} type="button" onClick={() => setTreatment(x.slug)} className={choice(treatment === x.slug)}>
-                <span className="block text-base">
-                  {x.name} <span className={`accent ${treatment === x.slug ? "text-gold" : "text-gold-muted"}`}>{x.accent}</span>
-                </span>
-                <span className="mt-1 block text-xs opacity-60">
-                  {x.duration} · {x.price}
-                </span>
-              </button>
-            ))}
-          </div>
+          <label className="relative mb-4 block">
+            <span className="sr-only">Zoek een behandeling</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Zoek een behandeling..."
+              className="w-full rounded-2xl border border-black/10 bg-white py-3.5 pl-5 pr-14 text-sm shadow-[0_8px_24px_-12px_rgba(14,12,10,0.18)] focus:border-gold focus:outline-none"
+            />
+            <span aria-hidden className="absolute right-1.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-black text-gold">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+            </span>
+          </label>
+          <ul className="space-y-3">
+            {shown.map((x, i) => {
+              const on = treatment === x.slug;
+              return (
+                <motion.li
+                  key={x.slug}
+                  initial={{ opacity: 0, x: -40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.07, ease }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setTreatment(x.slug)}
+                    aria-pressed={on}
+                    className={`flex w-full items-center gap-4 rounded-2xl border p-3 text-left transition-all duration-300 ${
+                      on ? "border-black bg-black text-offwhite shadow-xl shadow-black/20" : "border-black/5 bg-white shadow-[0_8px_24px_-14px_rgba(14,12,10,0.25)] hover:-translate-y-0.5"
+                    }`}
+                  >
+                    <span className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl ring-2 ${on ? "ring-gold" : "ring-transparent"}`}>
+                      <Image src={x.image} alt="" fill sizes="64px" className="object-cover" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-medium">{x.name}</span>
+                      <span className={`block truncate text-xs ${on ? "text-offwhite/60" : "text-black/50"}`}>{x.description}</span>
+                      <span className={`mt-1 block text-sm ${on ? "text-gold" : "text-gold-muted"}`}>
+                        {x.price} <span className={on ? "text-offwhite/40" : "text-black/35"}>· {x.duration}</span>
+                      </span>
+                    </span>
+                    <span className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-colors ${on ? "bg-gold text-black" : "bg-black text-offwhite"}`}>
+                      {on ? "Gekozen ✓" : "Kies"}
+                    </span>
+                  </button>
+                </motion.li>
+              );
+            })}
+            {!shown.length && <li className="py-6 text-center text-sm text-black/50">Geen behandeling gevonden.</li>}
+          </ul>
         </Step>
 
         <Step n={2} title="Bij wie?">
@@ -208,8 +253,15 @@ export default function BookingWizard() {
                 }}
                 className={choice(stylistSlug === x.slug)}
               >
-                <span className="block text-base">{x.name}</span>
-                <span className="mt-1 block text-xs opacity-60">{x.role}</span>
+                <span className="flex items-center gap-3">
+                  <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-ivory ring-2 ring-gold/60">
+                    {photoOf(x.slug) && <Image src={photoOf(x.slug)!} alt="" fill sizes="44px" className="object-cover" />}
+                  </span>
+                  <span>
+                    <span className="block text-base">{x.name}</span>
+                    <span className="mt-0.5 block text-xs opacity-60">{x.role}</span>
+                  </span>
+                </span>
               </button>
             ))}
           </div>
@@ -264,7 +316,7 @@ export default function BookingWizard() {
       </aside>
 
       {/* Steps 3-4 span the full width (under the steps and the summary) */}
-      <div className="space-y-10 lg:col-span-2">
+      <div className="min-w-0 space-y-10 lg:col-span-2">
         <Step n={3} title="Datum & tijd">
           <div className="grid gap-6 md:grid-cols-2">
             {/* Calendar */}
