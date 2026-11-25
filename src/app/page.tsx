@@ -5,11 +5,11 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { products, team, treatments } from "@/lib/data";
+import { products, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
+import InstagramRow from "@/components/InstagramRow";
 import HomeHero from "@/components/HomeHero";
 import Manifesto from "@/components/Manifesto";
 
@@ -142,51 +142,8 @@ export default function Home() {
         </section>
 
 
-        {/* TEAM: copy left, two portrait tiles right (name on the photo, D&R tile style) */}
-        <section className="px-6 py-24 md:px-14 md:py-32">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-gold-muted">Het team</p>
-              <AnimatedHeading
-                lines={["Gestyled met aandacht,", "geknipt"]}
-                accent="met liefde"
-                className="mt-3 text-4xl leading-[1.05] md:text-5xl"
-              />
-              <p className="mt-5 max-w-sm text-sm leading-relaxed text-black/60">
-                Een klein team dat luistert, meedenkt en weet wat jouw haar nodig heeft. Bij ons zit je
-                altijd bij een vast, vertrouwd gezicht.
-              </p>
-              <Button href="/afspraak" className="mt-10">Afspraak maken</Button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 md:gap-5">
-              {team.map((m, i) => (
-                <Reveal key={m.name} delay={i * 0.12} className={i === 1 ? "mt-14 md:mt-20" : ""}>
-                  <Link href="/afspraak" className="group relative block aspect-[3/4.3] overflow-hidden rounded-2xl bg-ivory">
-                    <Image
-                      src={m.image}
-                      alt={m.name}
-                      fill
-                      sizes="(min-width:1024px) 340px, 50vw"
-                      className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="on-photo absolute inset-x-4 bottom-4 text-offwhite md:inset-x-6 md:bottom-6">
-                      <p className="text-xl md:text-2xl">
-                        {m.name} <span className="accent text-gold">stylist</span>
-                      </p>
-                      <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-offwhite/75">{m.role}</p>
-                      <span className="mt-3 hidden rounded-md bg-offwhite px-4 py-2 text-[10px] font-medium uppercase tracking-[0.18em] text-black [text-shadow:none] transition-colors group-hover:bg-gold md:inline-block">
-                        Boek bij {m.name}
-                      </span>
-                    </div>
-                  </Link>
-                  <p className="mt-3 text-xs leading-relaxed text-black/55">{m.bio}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* INSTAGRAM: our posts, photo and video alternating */}
+        <InstagramRow />
 
         {/* OUR WORK: two scroll-driven rows */}
         <WorkMarquee />
