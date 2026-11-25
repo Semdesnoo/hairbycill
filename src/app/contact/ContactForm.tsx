@@ -16,7 +16,7 @@ export default function ContactForm() {
   }
 
   const fieldClass =
-    "w-full border-b border-black/20 bg-transparent py-3 text-sm outline-none focus:border-gold";
+    "w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-gold";
   const labelClass = "mb-1.5 block text-xs text-black/50";
 
   return (

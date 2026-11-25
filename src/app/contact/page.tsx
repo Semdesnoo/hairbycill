@@ -21,8 +21,8 @@ export default function ContactPage() {
         image={`${BASE_PATH}/img/spiegel.jpg`}
       />
 
-      <section className="mx-auto grid max-w-6xl gap-5 px-6 py-20 md:py-28 lg:grid-cols-[2fr_3fr]">
-        <Reveal className="space-y-5">
+      <section className="mx-auto grid max-w-6xl gap-5 px-6 pb-8 pt-20 md:py-28 lg:grid-cols-[2fr_3fr]">
+        <Reveal className="flex flex-col gap-5">
           <div className="rounded-2xl bg-black p-7 text-offwhite">
             <h2 className="text-2xl">
               Kom <span className="accent text-gold">langs</span>
@@ -40,7 +40,7 @@ export default function ContactPage() {
               </li>
             </ul>
           </div>
-          <div className="rounded-2xl bg-ivory/70 p-7">
+          <div className="flex-1 rounded-2xl bg-ivory p-7">
             <h2 className="text-2xl">
               Opening<span className="accent text-gold-muted">stijden</span>
             </h2>
@@ -77,13 +77,13 @@ export default function ContactPage() {
       </section>
 
       <section className="px-4 pb-20 md:px-14">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-3xl">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl">
           <iframe
             src={business.mapsEmbedSrc}
             width="100%"
             height="420"
             loading="lazy"
-            className="border-0 sepia-[.35]"
+            className="border-0 grayscale"
             title="Hair by Cill op de kaart"
           />
         </div>
