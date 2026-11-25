@@ -8,10 +8,10 @@ import { useSyncExternalStore } from "react";
 import { euroToNumber, products, SECOND_ITEM_DISCOUNT, type Product } from "./data";
 
 export type CartItem = { slug: string; qty: number };
-type State = { items: CartItem[]; open: boolean };
+type State = { items: CartItem[]; open: boolean; quick: string | null };
 
 const KEY = "hbc_cart";
-const EMPTY: State = { items: [], open: false };
+const EMPTY: State = { items: [], open: false, quick: null };
 let state: State = EMPTY;
 let loaded = false;
 const listeners = new Set<() => void>();
@@ -46,7 +46,7 @@ export const cart = {
     const items = state.items.some((i) => i.slug === slug)
       ? state.items.map((i) => (i.slug === slug ? { ...i, qty: i.qty + qty } : i))
       : [...state.items, { slug, qty }];
-    set({ items, open: true });
+    set({ items, open: true, quick: null });
   },
   setQty(slug: string, qty: number) {
     load();
@@ -55,6 +55,8 @@ export const cart = {
   clear: () => set({ items: [] }),
   open: () => set({ open: true }),
   close: () => set({ open: false }),
+  /** Quick-add popup (product card cart bubble): pick quantity without leaving the page. */
+  quick: (slug: string | null) => set({ quick: slug }),
 };
 
 export function useCart(): State {
