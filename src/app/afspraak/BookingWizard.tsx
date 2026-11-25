@@ -85,7 +85,27 @@ export default function BookingWizard() {
   const isClosed = (iso: string) => !allSlots?.[iso]?.length;
   const t = treatments.find((x) => x.slug === treatment)!;
   const s = stylists.find((x) => x.slug === stylistSlug) ?? stylists[stylists.length - 1];
-  const ready = date && time && form.name && /\S+@\S+\.\S+/.test(form.email) && form.phone && !busy;
+  // Contact details are mandatory and must look real; the bot check is a honeypot + a small sum + a minimum fill time.
+  // ponytail: client-side only (static site); add Cloudflare Turnstile verified inside create_booking if bots get through.
+  const valid = {
+    name: form.name.trim().length >= 2,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim()),
+    phone: form.phone.replace(/\D/g, "").length >= 10,
+  };
+  const [sum] = useState(() => [2 + Math.floor(Math.random() * 8), 2 + Math.floor(Math.random() * 8)]);
+  const [answer, setAnswer] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [shownAt] = useState(() => Date.now());
+  const human = Number(answer) === sum[0] + sum[1] && !honeypot;
+  const missing = [
+    !date && "een dag",
+    !time && "een tijd",
+    !valid.name && "je naam",
+    !valid.email && "een geldig e-mailadres",
+    !valid.phone && "een geldig telefoonnummer",
+    !human && "de controlevraag",
+  ].filter(Boolean) as string[];
+  const ready = missing.length === 0 && !busy;
 
   // Live availability from the salon's roster (dashboard), refreshed when the stylist changes.
   const refresh = useCallback(() => {
@@ -105,6 +125,8 @@ export default function BookingWizard() {
   }, []);
 
   async function confirm() {
+    if (!ready) return;
+    if (Date.now() - shownAt < 4000) return setSubmitError("Dat ging wel erg snel. Controleer je gegevens en probeer het opnieuw.");
     setBusy(true);
     setSubmitError("");
     try {
@@ -432,24 +454,67 @@ export default function BookingWizard() {
           <div className="grid gap-4 md:grid-cols-2">
             {(
               [
-                ["name", "Naam", "text", "name"],
-                ["email", "E-mailadres", "email", "email"],
-                ["phone", "Telefoon", "tel", "tel"],
-                ["notes", "Opmerking (optioneel)", "text", "off"],
+                ["name", "Naam *", "text", "name", "Vul je voor- en achternaam in"],
+                ["email", "E-mailadres *", "email", "email", "Vul een geldig e-mailadres in"],
+                ["phone", "Telefoon *", "tel", "tel", "Vul een geldig telefoonnummer in (10 cijfers)"],
+                ["notes", "Opmerking (optioneel)", "text", "off", ""],
               ] as const
-            ).map(([key, label, type, ac]) => (
-              <label key={key} className="block">
-                <span className="mb-1.5 block text-xs text-black/55">{label}</span>
-                <input
-                  type={type}
-                  autoComplete={ac}
-                  required={key !== "notes"}
-                  value={form[key]}
-                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                  className="w-full rounded-full border border-black/15 bg-offwhite px-5 py-3 text-sm transition-colors focus:border-black focus:outline-none"
-                />
-              </label>
-            ))}
+            ).map(([key, label, type, ac, err]) => {
+              const bad = key !== "notes" && form[key] !== "" && !valid[key];
+              return (
+                <label key={key} className="block">
+                  <span className="mb-1.5 block text-xs text-black/55">{label}</span>
+                  <input
+                    type={type}
+                    autoComplete={ac}
+                    required={key !== "notes"}
+                    aria-invalid={bad}
+                    value={form[key]}
+                    onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                    className={`w-full rounded-full border bg-offwhite px-5 py-3 text-sm transition-colors focus:outline-none ${
+                      bad ? "border-red-600" : "border-black/15 focus:border-black"
+                    }`}
+                  />
+                  {bad && <span className="mt-1 block pl-5 text-xs text-red-700">{err}</span>}
+                </label>
+              );
+            })}
+          </div>
+
+          {/* Bot check: hidden honeypot (bots fill every field) + a small sum for humans */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            className="absolute -left-[9999px] h-0 w-0 opacity-0"
+          />
+          <div className="mt-5 flex flex-wrap items-center gap-4 rounded-2xl border border-black/10 bg-white p-4">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-gold" aria-hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+            </span>
+            <label className="flex flex-1 flex-wrap items-center gap-3 text-sm">
+              <span>
+                Controle tegen robots: hoeveel is <strong>{mounted ? `${sum[0]} + ${sum[1]}` : "…"}</strong>? *
+              </span>
+              <input
+                inputMode="numeric"
+                required
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value.replace(/\D/g, ""))}
+                aria-invalid={answer !== "" && !human}
+                className={`w-20 rounded-full border bg-offwhite px-4 py-2 text-center text-sm focus:outline-none ${
+                  answer !== "" && !human ? "border-red-600" : "border-black/15 focus:border-black"
+                }`}
+              />
+              {human && <span className="text-xs font-medium text-emerald-700">✓ Gelukt</span>}
+            </label>
           </div>
           <label className="mt-5 flex cursor-pointer items-start gap-3 text-sm text-black/65">
             <input
@@ -460,6 +525,11 @@ export default function BookingWizard() {
             />
             Ja, stuur mij acties en haartips van Hair by Cill. Afmelden kan altijd.
           </label>
+          {missing.length > 0 && (
+            <p className="mt-4 text-xs text-black/55">
+              Nog nodig om te bevestigen: <span className="font-medium text-black">{missing.join(", ")}</span>.
+            </p>
+          )}
         </Step>
 
         {submitError && <p role="alert" className="hidden text-right text-sm text-red-700 lg:block">{submitError}</p>}
