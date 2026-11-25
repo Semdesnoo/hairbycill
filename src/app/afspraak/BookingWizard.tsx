@@ -201,44 +201,54 @@ export default function BookingWizard() {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
             </span>
           </label>
-          <ul className="space-y-3">
-            {shown.map((x, i) => {
-              const on = treatment === x.slug;
-              return (
-                <motion.li
-                  key={x.slug}
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.07, ease }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setTreatment(x.slug)}
-                    aria-pressed={on}
-                    className={`flex w-full items-center gap-4 rounded-2xl border p-3 text-left transition-all duration-300 ${
-                      on ? "border-black bg-black text-offwhite shadow-xl shadow-black/20" : "border-black/5 bg-white shadow-[0_8px_24px_-14px_rgba(14,12,10,0.25)] hover:-translate-y-0.5"
-                    }`}
+          {/* Treatment menu card (same layout as the home "Vind een behandeling" card), black & gold */}
+          <div className="overflow-hidden rounded-3xl border border-gold/25 bg-black text-offwhite shadow-[0_30px_80px_-30px_rgba(210,174,98,0.3)]">
+            <ul className="p-2 md:p-3">
+              {shown.map((x, i) => {
+                const on = treatment === x.slug;
+                return (
+                  <motion.li
+                    key={x.slug}
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: i * 0.07, ease }}
                   >
-                    <span className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl ring-2 ${on ? "ring-gold" : "ring-transparent"}`}>
-                      <Image src={x.image} alt="" fill sizes="64px" className="object-cover" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-medium">{x.name}</span>
-                      <span className={`block truncate text-xs ${on ? "text-offwhite/60" : "text-black/50"}`}>{x.description}</span>
-                      <span className={`mt-1 block text-sm ${on ? "text-gold" : "text-gold-muted"}`}>
-                        {x.price} <span className={on ? "text-offwhite/40" : "text-black/35"}>· {x.duration}</span>
+                    <button
+                      type="button"
+                      onClick={() => setTreatment(x.slug)}
+                      aria-pressed={on}
+                      className={`group grid w-full grid-cols-[3.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-3 text-left transition-colors md:grid-cols-[2rem_5rem_1fr_1.3fr_auto_auto] md:gap-5 md:px-5 ${
+                        on ? "bg-gold/[0.12] ring-1 ring-gold/50" : "hover:bg-offwhite/[0.04]"
+                      }`}
+                    >
+                      <span className="hidden text-xs tabular-nums text-gold/60 md:block">0{i + 1}</span>
+                      <span className="relative block aspect-square overflow-hidden rounded-xl md:aspect-[4/3]">
+                        <Image src={x.image} alt="" fill sizes="80px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                       </span>
-                    </span>
-                    <span className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-colors ${on ? "bg-gold text-black" : "bg-black text-offwhite"}`}>
-                      {on ? "Gekozen ✓" : "Kies"}
-                    </span>
-                  </button>
-                </motion.li>
-              );
-            })}
-            {!shown.length && <li className="py-6 text-center text-sm text-black/50">Geen behandeling gevonden.</li>}
-          </ul>
+                      <span className="min-w-0">
+                        <span className="block text-base md:text-lg">
+                          {x.name} <span className="accent text-gold">{x.accent}</span>
+                        </span>
+                        <span className="mt-0.5 block text-xs text-offwhite/50 md:hidden">
+                          {x.duration} · {x.price}
+                        </span>
+                      </span>
+                      <span className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{x.description}</span>
+                      <span className="hidden whitespace-nowrap text-right md:block">
+                        <span className="block text-sm">{x.price.replace("vanaf ", "")}</span>
+                        <span className="block text-[11px] text-offwhite/45">vanaf · {x.duration}</span>
+                      </span>
+                      <span className={`flex h-10 items-center gap-1.5 rounded-full px-4 text-xs font-medium transition-colors ${on ? "bg-gold text-black" : "border border-gold/40 text-gold group-hover:bg-gold group-hover:text-black"}`}>
+                        {on ? "Gekozen ✓" : "Kies"}
+                      </span>
+                    </button>
+                  </motion.li>
+                );
+              })}
+              {!shown.length && <li className="py-6 text-center text-sm text-offwhite/50">Geen behandeling gevonden.</li>}
+            </ul>
+          </div>
         </Step>
 
         <Step n={2} title="Bij wie?">
@@ -270,9 +280,9 @@ export default function BookingWizard() {
 
       {/* Summary: next to steps 1-2 on desktop, last on mobile */}
       <aside className="order-last lg:order-none">
-        <div className="rounded-3xl bg-ivory p-7">
+        <div className="rounded-3xl border border-gold/25 bg-black p-7 text-offwhite lg:sticky lg:top-24">
           <p className="text-xl font-light">
-            Jouw <span className="accent text-gold-muted">afspraak</span>
+            Jouw <span className="accent text-gold">afspraak</span>
           </p>
           <dl className="mt-6 space-y-4 text-sm">
             {[
@@ -281,8 +291,8 @@ export default function BookingWizard() {
               ["Datum", date ? longDate(date) : "Nog niet gekozen"],
               ["Tijd", time || "Nog niet gekozen"],
             ].map(([k, v]) => (
-              <div key={k} className="flex justify-between gap-4 border-b border-black/10 pb-3">
-                <dt className="text-black/50">{k}</dt>
+              <div key={k} className="flex justify-between gap-4 border-b border-offwhite/10 pb-3">
+                <dt className="text-offwhite/50">{k}</dt>
                 <AnimatePresence mode="wait">
                   <motion.dd
                     key={v}
@@ -299,19 +309,19 @@ export default function BookingWizard() {
             ))}
           </dl>
           <div className="mt-5 flex items-baseline justify-between">
-            <span className="text-sm text-black/50">Totaal</span>
-            <span className="text-2xl font-light">{t.price}</span>
+            <span className="text-sm text-offwhite/50">Totaal</span>
+            <span className="text-2xl font-light text-gold">{t.price}</span>
           </div>
           <button
             type="button"
             disabled={!ready}
             onClick={confirm}
-            className="mt-6 w-full rounded-full bg-black py-4 text-sm text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
+            className="mt-6 w-full rounded-full bg-gold py-4 text-sm font-medium text-black transition-colors hover:bg-offwhite disabled:cursor-not-allowed disabled:opacity-30"
           >
             Afspraak bevestigen
           </button>
-          {submitError && <p role="alert" className="mt-3 text-center text-sm text-red-700">{submitError}</p>}
-          <p className="mt-3 text-center text-[11px] text-black/45">Kosteloos annuleren tot 12 uur van tevoren</p>
+          {submitError && <p role="alert" className="mt-3 text-center text-sm text-red-300">{submitError}</p>}
+          <p className="mt-3 text-center text-[11px] text-offwhite/45">Kosteloos annuleren tot 12 uur van tevoren</p>
         </div>
       </aside>
 
