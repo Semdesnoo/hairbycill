@@ -2,7 +2,7 @@
 // The anon key is public by design: the site can only call the security-definer functions
 // (free_slots, create_booking, find_booking, cancel_booking, create_order) and read staff/products.
 // Client data never comes back to the browser except her own booking via code + email.
-import { stylists as fallbackStylists } from "./data";
+import { hourBlocks, openingHours, stylists as fallbackStylists } from "./data";
 
 export const SUPABASE_URL = "https://vpxboaozrdsdrvendips.supabase.co";
 export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZweGJvYW96cmRzZHJ2ZW5kaXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3OTE0MzUsImV4cCI6MjEwNjM2NzQzNX0.UBMK4Cbjwo-lLU6L_s1g_nbPKKsDQAOFknuXh89GtV8";
@@ -48,8 +48,25 @@ export async function loadStylists(): Promise<StylistOption[]> {
 export type Slots = Record<string, string[]>;
 
 export async function loadSlots(from: string, to: string, stylistSlug: string): Promise<Slots> {
-  const rows = await rpc<{ staff_slug: string; day: string; start: string }[]>("free_slots", { p_from: from, p_to: to });
-  return groupSlots(rows, stylistSlug);
+  // ponytail: roster unreachable (Supabase paused) -> show example times from the opening hours so the
+  // calendar still looks alive; the booking itself still goes through create_booking and fails honestly.
+  const rows = await rpc<{ staff_slug: string; day: string; start: string }[]>("free_slots", { p_from: from, p_to: to }).catch(() => null);
+  return rows ? groupSlots(rows, stylistSlug) : exampleSlots(from, to);
+}
+
+/** Every 30 minutes inside the opening hours (last start 1 hour before closing), skipping times already past. */
+export function exampleSlots(from: string, to: string, now = new Date()): Slots {
+  const out: Slots = {};
+  for (const d = new Date(`${from}T00:00`); isoDate(d) <= to; d.setDate(d.getDate() + 1)) {
+    const iso = isoDate(d);
+    const nowMin = iso === isoDate(now) ? now.getHours() * 60 + now.getMinutes() : -1;
+    const times: string[] = [];
+    for (const [open, close] of hourBlocks(openingHours[(d.getDay() + 6) % 7].hours))
+      for (let m = open; m <= close - 60; m += 30)
+        if (m > nowMin) times.push(`${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`);
+    if (times.length) out[iso] = times;
+  }
+  return out;
 }
 
 export function groupSlots(rows: { staff_slug: string; day: string; start: string }[], stylistSlug: string): Slots {
