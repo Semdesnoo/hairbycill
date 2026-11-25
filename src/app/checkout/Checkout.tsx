@@ -4,31 +4,55 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { QtyStepper } from "@/components/CartDrawer";
 import { WEB3FORMS_KEY } from "@/components/LaunchGate";
 import { cart, cartLines, cartTotal, useCart } from "@/lib/cart";
 import { createOrder, OutOfStockError } from "@/lib/bookingApi";
-import { business, formatEuro, SHIPPING, shippingCost } from "@/lib/data";
+import { business, euroToNumber, formatEuro, SHIPPING, shippingCost } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 type Method = "pickup" | "delivery";
 type Done = { ref: string; total: number; name: string; method: Method };
 
+/** Shopify-style input: rectangular, label inside as placeholder. */
+function Field({
+  label,
+  value,
+  onChange,
+  className = "",
+  ...rest
+}: { label: string; value: string; onChange: (v: string) => void; className?: string } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value">) {
+  return (
+    <label className={`block ${className}`}>
+      <span className="sr-only">{label}</span>
+      <input
+        {...rest}
+        value={value}
+        placeholder={label}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-md border border-black/20 bg-white px-3.5 py-3 text-sm placeholder:text-black/45 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+      />
+    </label>
+  );
+}
+
 export default function Checkout() {
   const { items } = useCart();
   const lines = cartLines(items);
   const subtotal = cartTotal(items);
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "" });
-  const [method, setMethod] = useState<Method>("pickup");
+  const [method, setMethod] = useState<Method>("delivery");
   const [addr, setAddr] = useState({ street: "", number: "", postcode: "", city: "" });
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
   const [stockError, setStockError] = useState("");
   const [done, setDone] = useState<Done | null>(null);
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   const delivery = method === "delivery";
   const shipping = delivery ? shippingCost(subtotal) : 0;
   const total = subtotal + shipping;
+  const saved = lines.reduce((s, l) => s + euroToNumber(l.product.oldPrice ?? l.product.price) * l.qty - l.total, 0);
+  const count = lines.reduce((s, l) => s + l.qty, 0);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -133,174 +157,200 @@ export default function Checkout() {
     );
   }
 
-  const field = "w-full rounded-full border border-black/15 bg-offwhite px-5 py-3 text-sm focus:border-black focus:outline-none";
+  const summary = (
+    <>
+      <ul className="space-y-4">
+        {lines.map(({ product, qty, total: lt }) => (
+          <li key={product.slug} className="flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 rounded-lg border border-black/10 bg-white">
+              <Image src={product.image} alt={product.name} fill sizes="64px" className="rounded-lg object-cover" />
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1.5 text-[11px] font-medium text-offwhite">
+                {qty}
+              </span>
+            </div>
+            <div className="min-w-0 flex-1 text-sm">
+              <p className="truncate font-medium">{product.name}</p>
+              <p className="text-xs text-black/55">
+                {product.brand} · {product.volume}
+              </p>
+            </div>
+            <span className="text-sm">{formatEuro(lt)}</span>
+          </li>
+        ))}
+      </ul>
+
+      <dl className="mt-6 space-y-2 text-sm">
+        <div className="flex justify-between">
+          <dt>Subtotaal · {count} {count === 1 ? "artikel" : "artikelen"}</dt>
+          <dd>{formatEuro(subtotal)}</dd>
+        </div>
+        <div className="flex justify-between">
+          <dt>{delivery ? "Verzending" : "Afhalen in de salon"}</dt>
+          <dd>{shipping ? formatEuro(shipping) : "Gratis"}</dd>
+        </div>
+        <div className="flex items-baseline justify-between pt-3">
+          <dt className="text-lg font-semibold">Totaal</dt>
+          <dd className="text-lg font-semibold">
+            <span className="mr-2 text-xs font-normal text-black/55">EUR</span>
+            {formatEuro(total)}
+          </dd>
+        </div>
+        {saved > 0.004 && (
+          <div className="flex items-center gap-2 pt-1 font-semibold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M3 12V4h8l10 10-8 8L3 12Zm5-5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+            </svg>
+            Totale besparing {formatEuro(saved)}
+          </div>
+        )}
+      </dl>
+    </>
+  );
+
+  const heading = "mb-3 text-xl font-semibold";
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-28 pt-32 md:pt-40">
-      <h1 className="text-4xl font-light md:text-5xl">
-        <span className="accent text-gold-muted">Afrekenen</span>
-      </h1>
-      <p className="mt-3 text-sm text-black/55">Haal je bestelling op in de salon of laat hem thuisbezorgen.</p>
+    <section className="pt-20 md:pt-24">
+      {/* Mobile: collapsible order summary bar (Shopify) */}
+      <div className="border-b border-black/10 bg-[#f5f5f5] lg:hidden">
+        <button type="button" onClick={() => setSummaryOpen((o) => !o)} aria-expanded={summaryOpen} className="flex w-full items-center justify-between px-5 py-4 text-sm">
+          <span className="flex items-center gap-1.5 text-gold-muted">
+            {summaryOpen ? "Verberg" : "Toon"} besteloverzicht
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={summaryOpen ? "rotate-180" : ""} aria-hidden>
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </span>
+          <span className="text-base font-semibold">{formatEuro(total)}</span>
+        </button>
+        {summaryOpen && <div className="px-5 pb-6">{summary}</div>}
+      </div>
 
-      <form onSubmit={submit} className="mt-10 grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-14">
-        <div className="space-y-8">
-          <fieldset>
-            <legend className="mb-4 text-xl font-light">Jouw gegevens</legend>
-            <div className="grid gap-4 md:grid-cols-2">
-              {(
-                [
-                  ["name", "Naam", "text", "name", true],
-                  ["email", "E-mailadres", "email", "email", true],
-                  ["phone", "Telefoon", "tel", "tel", true],
-                  ["notes", "Opmerking (optioneel)", "text", "off", false],
-                ] as const
-              ).map(([key, label, type, ac, required]) => (
-                <label key={key} className="block">
-                  <span className="mb-1.5 block text-xs text-black/55">{label}</span>
-                  <input
-                    type={type}
-                    autoComplete={ac}
-                    required={required}
-                    value={form[key]}
-                    onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                    className={field}
-                  />
-                </label>
-              ))}
-            </div>
-          </fieldset>
+      <form onSubmit={submit} className="grid lg:min-h-[calc(100svh-6rem)] lg:grid-cols-2">
+        {/* LEFT: form */}
+        <div className="bg-white px-5 py-10 lg:flex lg:justify-end lg:border-r lg:border-black/10 lg:px-14">
+          <div className="w-full max-w-[560px] space-y-10">
+            <nav aria-label="Stappen" className="flex flex-wrap items-center gap-2 text-xs text-black/55">
+              <Link href="/producten" className="text-gold-muted hover:underline">
+                Winkelwagen
+              </Link>
+              <span>›</span>
+              <span className="font-medium text-black">Gegevens</span>
+              <span>›</span>
+              <span>Bevestiging</span>
+            </nav>
 
-          <fieldset>
-            <legend className="mb-4 text-xl font-light">Afhalen of bezorgen</legend>
-            <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Afhalen of bezorgen">
-              {(
-                [
-                  ["pickup", "Afhalen in de salon", "Gratis · betalen in de salon", business.address],
-                  [
-                    "delivery",
-                    "Thuisbezorgen",
-                    shippingCost(subtotal)
-                      ? `${formatEuro(SHIPPING.cost)} · gratis vanaf ${formatEuro(SHIPPING.freeFrom)}`
-                      : "Gratis bezorging",
-                    "Binnen 2-4 werkdagen in huis (NL)",
-                  ],
-                ] as const
-              ).map(([value, title, price, sub]) => {
-                const active = method === value;
-                return (
-                  <button
-                    key={value}
-                    type="button"
-                    role="radio"
-                    aria-checked={active}
-                    onClick={() => setMethod(value)}
-                    className={`rounded-2xl border p-5 text-left transition-colors ${
-                      active ? "border-black bg-offwhite shadow-md shadow-black/5" : "border-black/15 hover:border-black/40"
-                    }`}
-                  >
-                    <span className="flex items-center gap-2 font-medium">
-                      <span className={`flex h-4 w-4 items-center justify-center rounded-full border ${active ? "border-black" : "border-black/30"}`}>
-                        {active && <span className="h-2 w-2 rounded-full bg-black" />}
-                      </span>
-                      {title}
-                    </span>
-                    <span className="mt-1 block text-sm text-gold-muted">{price}</span>
-                    <span className="mt-1 block text-xs text-black/50">{sub}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <fieldset>
+              <legend className={heading}>Contact</legend>
+              <div className="space-y-3">
+                <Field label="E-mailadres" type="email" autoComplete="email" required value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+                <Field label="Telefoonnummer" type="tel" autoComplete="tel" required value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+              </div>
+            </fieldset>
 
-            {delivery && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease }}
-                className="mt-5 grid gap-4 md:grid-cols-[1fr_160px]"
-              >
+            <fieldset>
+              <legend className={heading}>Bezorging</legend>
+              <div role="radiogroup" aria-label="Afhalen of bezorgen" className="overflow-hidden rounded-md border border-black/20">
                 {(
                   [
-                    ["street", "Straat", "address-line1"],
-                    ["number", "Huisnummer", "address-line2"],
-                    ["postcode", "Postcode", "postal-code"],
-                    ["city", "Plaats", "address-level2"],
+                    ["delivery", "Thuisbezorgen", "Binnen 2-4 werkdagen in huis (NL)", shippingCost(subtotal) ? formatEuro(SHIPPING.cost) : "Gratis"],
+                    ["pickup", "Afhalen in de salon", business.address, "Gratis"],
                   ] as const
-                ).map(([key, label, ac]) => (
-                  <label key={key} className="block">
-                    <span className="mb-1.5 block text-xs text-black/55">{label}</span>
-                    <input
+                ).map(([value, title, sub, price], i) => {
+                  const active = method === value;
+                  return (
+                    <button
+                      key={value}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => setMethod(value)}
+                      className={`flex w-full items-center gap-3 px-4 py-4 text-left text-sm transition-colors ${i ? "border-t border-black/20" : ""} ${
+                        active ? "bg-gold/10 outline outline-1 -outline-offset-1 outline-black" : "hover:bg-black/[0.02]"
+                      }`}
+                    >
+                      <span className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border ${active ? "border-black bg-black" : "border-black/30"}`}>
+                        {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </span>
+                      <span className="flex-1">
+                        <span className="block font-medium">{title}</span>
+                        <span className="block text-xs text-black/55">{sub}</span>
+                      </span>
+                      <span className="font-medium">{price}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              {delivery && shippingCost(subtotal) > 0 && (
+                <p className="mt-2 text-xs text-black/55">Nog {formatEuro(SHIPPING.freeFrom - subtotal)} tot gratis verzending.</p>
+              )}
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <Field label="Voor- en achternaam" autoComplete="name" required className="col-span-2" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+                {delivery && (
+                  <>
+                    <Field label="Straat" autoComplete="address-line1" required value={addr.street} onChange={(v) => setAddr({ ...addr, street: v })} />
+                    <Field label="Huisnummer" autoComplete="address-line2" required value={addr.number} onChange={(v) => setAddr({ ...addr, number: v })} />
+                    <Field
+                      label="Postcode"
+                      autoComplete="postal-code"
                       required
-                      autoComplete={ac}
                       // Dutch postcode, e.g. 3161 CD
-                      pattern={key === "postcode" ? "\\s*[1-9][0-9]{3}\\s?[A-Za-z]{2}\\s*" : undefined}
-                      title={key === "postcode" ? "Bijvoorbeeld 3161 CD" : undefined}
-                      value={addr[key]}
-                      onChange={(e) => setAddr({ ...addr, [key]: e.target.value })}
-                      className={field}
+                      pattern={"\\s*[1-9][0-9]{3}\\s?[A-Za-z]{2}\\s*"}
+                      title="Bijvoorbeeld 3161 CD"
+                      value={addr.postcode}
+                      onChange={(v) => setAddr({ ...addr, postcode: v })}
                     />
-                  </label>
-                ))}
-                <p className="text-xs text-black/50 md:col-span-2">
-                  Je ontvangt na je bestelling een betaalverzoek. We versturen je pakket zodra het betaald is.
+                    <Field label="Plaats" autoComplete="address-level2" required value={addr.city} onChange={(v) => setAddr({ ...addr, city: v })} />
+                  </>
+                )}
+                <Field label="Opmerking (optioneel)" autoComplete="off" className="col-span-2" value={form.notes} onChange={(v) => setForm({ ...form, notes: v })} />
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend className={heading}>Betaling</legend>
+              <p className="-mt-1 mb-3 text-xs text-black/55">Alle transacties zijn beveiligd.</p>
+              <div className="rounded-md border border-black bg-gold/10 px-4 py-4 text-sm">
+                <p className="font-medium">{delivery ? "Betaalverzoek (iDEAL, Tikkie)" : "Betalen bij afhalen"}</p>
+                <p className="mt-1 text-xs text-black/60">
+                  {delivery
+                    ? "Na je bestelling ontvang je een betaalverzoek. Zodra het betaald is, versturen we je pakket."
+                    : "Je betaalt in de salon met pin of contant wanneer je je bestelling ophaalt."}
                 </p>
-              </motion.div>
-            )}
-          </fieldset>
+              </div>
+            </fieldset>
+
+            <div>
+              <button
+                type="submit"
+                disabled={state === "sending"}
+                className="w-full rounded-md bg-black py-4 text-base font-semibold text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-50"
+              >
+                {state === "sending" ? "Even geduld..." : `Bestelling plaatsen · ${formatEuro(total)}`}
+              </button>
+              {state === "error" && (
+                <p role="alert" className="mt-3 text-sm text-red-700">
+                  {stockError || "Er ging iets mis. Probeer het opnieuw of bel ons."}
+                </p>
+              )}
+              <p className="mt-6 flex flex-wrap gap-x-4 gap-y-1 border-t border-black/10 pt-4 text-xs text-gold-muted">
+                <Link href="/voorwaarden" className="hover:underline">
+                  Voorwaarden
+                </Link>
+                <Link href="/privacybeleid" className="hover:underline">
+                  Privacybeleid
+                </Link>
+                <Link href="/contact" className="hover:underline">
+                  Contact
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
 
-        <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-3xl bg-ivory p-7">
-            <p className="text-xl font-light">
-              Jouw <span className="accent text-gold-muted">bestelling</span>
-            </p>
-            <ul className="mt-5 space-y-4">
-              {lines.map(({ product, qty, total: lt }) => (
-                <li key={product.slug} className="flex gap-3">
-                  <div className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg bg-offwhite">
-                    <Image src={product.image} alt={product.name} fill sizes="56px" className="object-cover" />
-                  </div>
-                  <div className="flex flex-1 flex-col text-sm">
-                    <span className="leading-tight">{product.name}</span>
-                    <div className="mt-auto flex items-center justify-between">
-                      <QtyStepper slug={product.slug} qty={qty} />
-                      <span>{formatEuro(lt)}</span>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <dl className="mt-6 space-y-2 border-t border-black/10 pt-4 text-sm">
-              <div className="flex justify-between">
-                <dt className="text-black/55">Subtotaal</dt>
-                <dd>{formatEuro(subtotal)}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-black/55">{delivery ? "Verzending" : "Afhalen"}</dt>
-                <dd>{shipping ? formatEuro(shipping) : "Gratis"}</dd>
-              </div>
-              <div className="flex items-baseline justify-between border-t border-black/10 pt-3">
-                <dt>Totaal</dt>
-                <dd className="text-2xl">{formatEuro(total)}</dd>
-              </div>
-            </dl>
-
-            <button
-              type="submit"
-              disabled={state === "sending"}
-              className="mt-6 w-full rounded-xl bg-black py-4 text-sm uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-50"
-            >
-              {state === "sending" ? "Even geduld..." : `Bestelling plaatsen · ${formatEuro(total)}`}
-            </button>
-            {state === "error" && (
-              <p role="alert" className="mt-3 text-sm text-red-700">
-                {stockError || "Er ging iets mis. Probeer het opnieuw of bel ons."}
-              </p>
-            )}
-            <p className="mt-3 text-center text-[11px] text-black/45">
-              {delivery ? "Je ontvangt een betaalverzoek, daarna versturen we." : "Betalen doe je bij het ophalen in de salon."}
-            </p>
-          </div>
+        {/* RIGHT: order summary (desktop), grey panel to the edge */}
+        <aside className="hidden bg-[#f5f5f5] px-14 py-10 lg:block">
+          <div className="sticky top-28 max-w-[440px]">{summary}</div>
         </aside>
       </form>
     </section>
