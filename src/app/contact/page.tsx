@@ -19,6 +19,7 @@ export default function ContactPage() {
         accent="kennismaken"
         intro="Een vraag, een idee of gewoon even overleggen? Bel, mail of laat een bericht achter."
         image={`${BASE_PATH}/img/spiegel.jpg`}
+        portrait
       />
 
       <section className="mx-auto grid max-w-6xl gap-5 px-6 pb-8 pt-20 md:py-28 lg:grid-cols-[2fr_3fr]">

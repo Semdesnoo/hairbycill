@@ -34,7 +34,7 @@ export default function OverOnsPage() {
         title="Dit is"
         accent="Hair by Cill"
         intro="Een warme salon waar jouw haar en jouw verhaal centraal staan."
-        image={`${BASE_PATH}/img/kleuren.jpg`}
+        image={`${BASE_PATH}/img/knippen-rood.jpg`}
       />
 
       {/* STORY */}

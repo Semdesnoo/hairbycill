@@ -7,15 +7,28 @@ export default function PageHero({
   accent,
   intro,
   image,
+  portrait,
 }: {
   title: string;
   accent: string;
   intro?: string;
   image: string;
+  /** Portrait photo: on wide screens show it whole on the right over a blurred copy, instead of cropping/zooming it. */
+  portrait?: boolean;
 }) {
   return (
-    <section className="relative flex min-h-[62svh] items-end overflow-hidden bg-black md:min-h-[72svh]">
-      <Image src={image} alt="" fill priority sizes="100vw" className="animate-[fade-up_1.1s_cubic-bezier(0.16,1,0.3,1)_both] object-cover" />
+    <section className="relative flex min-h-[62svh] items-end overflow-hidden bg-black md:min-h-[64svh]">
+      <Image
+        src={image}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className={`animate-[fade-up_1.1s_cubic-bezier(0.16,1,0.3,1)_both] object-cover ${portrait ? "md:scale-110 md:blur-2xl" : ""}`}
+      />
+      {portrait && (
+        <Image src={image} alt="" fill sizes="50vw" className="hidden animate-[fade-up_1.1s_cubic-bezier(0.16,1,0.3,1)_both] object-contain object-right md:block" />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/45" />
       <div className="on-photo relative z-10 w-full px-6 pb-12 pt-32 md:px-14 md:pb-16">
         <AnimatedHeading

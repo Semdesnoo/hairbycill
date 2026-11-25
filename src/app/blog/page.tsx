@@ -21,6 +21,7 @@ export default function BlogIndex() {
         accent="de salon"
         intro="De vragen die we in de salon het vaakst krijgen, met direct het antwoord van onze stylisten in Rhoon."
         image={`${BASE_PATH}/img/kleurstalen.jpg`}
+        portrait
       />
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-20 sm:grid-cols-2 md:py-28 lg:grid-cols-3">
         {posts.map((p, i) => (
