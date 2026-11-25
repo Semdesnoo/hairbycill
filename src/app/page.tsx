@@ -11,7 +11,6 @@ import { products, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import InstagramRow from "@/components/InstagramRow";
 import HomeHero from "@/components/HomeHero";
-import Manifesto from "@/components/Manifesto";
 
 
 /** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
@@ -118,7 +117,8 @@ export default function Home() {
           </div>
         </section>
 
-        <Manifesto />
+        {/* INSTAGRAM: our posts, photo and video alternating */}
+        <InstagramRow />
 
         {/* SHOP: Dore & Rose "Bestsellers" row: heading left, shop link right, swipeable product cards */}
         <section className="py-24 md:py-28">
@@ -142,8 +142,6 @@ export default function Home() {
         </section>
 
 
-        {/* INSTAGRAM: our posts, photo and video alternating */}
-        <InstagramRow />
 
         {/* OUR WORK: two scroll-driven rows */}
         <WorkMarquee />
