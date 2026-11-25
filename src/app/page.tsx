@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import AnimatedHeading from "@/components/AnimatedHeading";
@@ -13,20 +11,13 @@ import InstagramRow from "@/components/InstagramRow";
 import HomeHero from "@/components/HomeHero";
 
 
-/** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
+/** Our work: 13 result photos in two rows that glide endlessly in opposite directions. */
 const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
 const ROWS = [WORK.slice(0, 7), WORK.slice(7)];
 
 function WorkMarquee() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  // Spring on top of scroll progress = buttery, momentum-like glide instead of 1:1 jitter.
-  const p = useSpring(scrollYProgress, { stiffness: 40, damping: 30, mass: 0.8 });
-  const toRight = useTransform(p, [0, 1], ["-12%", "0%"]);
-  const toLeft = useTransform(p, [0, 1], ["0%", "-12%"]);
-
   return (
-    <section ref={ref} className="overflow-hidden bg-white py-24 md:py-28">
+    <section className="overflow-hidden bg-white py-24 md:py-28">
       <AnimatedHeading
         lines={["Resultaten van"]}
         accent="ons werk"
@@ -37,16 +28,17 @@ function WorkMarquee() {
       </p>
       <div className="mt-14 flex flex-col gap-4 md:gap-5">
         {ROWS.map((row, r) => (
-          <motion.div
+          <div
             key={r}
-            style={{ x: r === 0 ? toRight : toLeft }}
-            className="flex w-max gap-4 will-change-transform md:gap-5"
+            // Endless CSS marquee: top row glides left -> right, bottom row right -> left (margins, not gap, so -50% loops exactly).
+            style={{ animationDuration: "70s" }}
+            className={`flex w-max animate-marquee will-change-transform hover:[animation-play-state:paused] ${r === 0 ? "[animation-direction:reverse]" : ""}`}
           >
-            {/* Row repeated 3x so it always overfills the widest screens while moving */}
-            {[...row, ...row, ...row].map((src, i) => (
+            {/* 4 copies = 2 identical halves (each wider than any screen), so the -50% keyframe loops seamlessly */}
+            {[...row, ...row, ...row, ...row].map((src, i) => (
               <div
                 key={i}
-                className="relative aspect-[4/3.6] w-[200px] shrink-0 overflow-hidden rounded-2xl md:w-[260px]"
+                className="relative mr-4 aspect-[4/3.6] w-[200px] shrink-0 overflow-hidden rounded-2xl md:mr-5 md:w-[260px]"
               >
                 <Image
                   src={src}
@@ -57,7 +49,7 @@ function WorkMarquee() {
                 />
               </div>
             ))}
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>
