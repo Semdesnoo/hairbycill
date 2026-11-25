@@ -14,9 +14,9 @@ export default function PageHero({
   image: string;
 }) {
   return (
-    <section className="bg-[#fbfaf7] px-3 pb-3 pt-24 md:px-6">
+    <section className="bg-white px-3 pb-3 pt-24 md:px-6">
       <div className="grid gap-3 md:grid-cols-[1fr_1.1fr] md:gap-6">
-        <div className="flex flex-col justify-end rounded-3xl bg-[#f4efe6] px-6 py-12 md:px-12 md:py-16">
+        <div className="flex flex-col justify-end rounded-3xl bg-ivory px-6 py-12 md:px-12 md:py-16">
           <AnimatedHeading
             as="h1"
             lines={[title]}

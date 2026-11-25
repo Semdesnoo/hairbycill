@@ -5,13 +5,13 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   /* Logo palette: deep black + metallic gold on a neutral ivory. Token names kept so every page re-themes. */
-  --color-black: #0e0c0a;
-  --color-soft-black: #1b1814;
-  --color-ivory: #efe9dc;
-  --color-offwhite: #faf7f0;
+  --color-black: #0b0b0b;
+  --color-soft-black: #161616;
+  --color-ivory: #f3f3f3;
+  --color-offwhite: #ffffff;
   --color-gold: #d2ae62;
   --color-gold-muted: #7f6329;
-  --color-warm-grey: #b3aa98;
+  --color-warm-grey: #a3a3a3;
 }
 
 html {
