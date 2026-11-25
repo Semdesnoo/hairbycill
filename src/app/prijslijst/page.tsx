@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
 import { priceList } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = {
   title: "Prijslijst",
@@ -21,7 +22,7 @@ export default function PrijslijstPage() {
         title="Onze"
         accent="prijslijst"
         intro="Eerlijke prijzen, geen verrassingen. Twijfel je welke behandeling bij je past? We denken graag met je mee."
-        image="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
+        image={`${BASE_PATH}/img/knippen-detail.jpg`}
       />
 
       {/* Price list on ecru: same heading + card language as the rest of the site */}

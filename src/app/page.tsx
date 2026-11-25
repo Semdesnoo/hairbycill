@@ -1,6 +1,5 @@
 "use client";
 
-import HeroVideo from "@/components/HeroVideo";
 import { useRef, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -11,11 +10,13 @@ import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
 import { openingHours, products, team, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
-import ScrollScissors from "@/components/ScrollScissors";
+import AboutSalon from "@/components/AboutSalon";
+import HomeHero from "@/components/HomeHero";
+import Manifesto from "@/components/Manifesto";
+import CraftSplit from "@/components/CraftSplit";
 import { posts as tips } from "@/lib/blog";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const u = (id: string, w = 900) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
 
 /** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
 const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
@@ -74,57 +75,11 @@ export default function Home() {
 
   return (
     <>
-        {/* HERO */}
-        <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-black">
-          <HeroVideo className="absolute inset-0 h-full w-full object-cover opacity-70" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
+        {/* HERO: light portrait hero with blur-in headline, scanning frames and live stats */}
+        <HomeHero />
 
-          <div className="on-photo relative z-10 px-6 py-32 md:px-14">
-            <AnimatedHeading
-              as="h1"
-              lines={["Jouw haar,"]}
-              accent="jouw uitstraling"
-              className="max-w-2xl text-[clamp(2.75rem,6vw,5.25rem)] leading-[0.95] text-offwhite"
-            />
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease }}
-              className="mt-5 max-w-sm text-sm leading-relaxed text-offwhite/90"
-            >
-              Een rustige plek voor haar dat écht bij jou past. Persoonlijk advies, vakmanschap en
-              aandacht tot in de puntjes.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55, ease }}
-              className="mt-7"
-            >
-              <Button href="/afspraak" variant="light">Plan je afspraak</Button>
-            </motion.div>
-          </div>
-
-          {/* Scroll cue: mouse outline with a dot gliding down */}
-          <motion.a
-            href="#behandelingen"
-            aria-label="Scroll naar beneden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-offwhite/70 transition-colors hover:text-offwhite"
-          >
-            <span className="flex h-10 w-6 justify-center rounded-full border border-current pt-2">
-              <motion.span
-                animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="block h-1.5 w-1 rounded-full bg-current"
-              />
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.25em]">Scroll</span>
-          </motion.a>
-        </section>
+        {/* STATEMENT: words ink in as you scroll */}
+        <Manifesto />
 
         {/* TREATMENTS: Dore & Rose editorial tiles (one wide, then pairs) with a white button bottom-left */}
         <section id="behandelingen" className="scroll-mt-20 px-3 py-24 md:px-6 md:py-32">
@@ -138,7 +93,7 @@ export default function Home() {
           </p>
           <div className="mt-12 grid gap-3 md:mt-16 md:grid-cols-2 md:gap-4">
             {treatments.map((t, i) => (
-              <Reveal key={t.slug} delay={(i % 2) * 0.08} className={i === 0 ? "md:col-span-2" : ""}>
+              <Reveal key={t.slug} curtain delay={(i % 2) * 0.1} className={i === 0 ? "md:col-span-2" : ""}>
                 <Link
                   href={`/afspraak?treatment=${t.slug}`}
                   className={`group relative block overflow-hidden rounded-2xl bg-ivory ${
@@ -172,23 +127,25 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SERVICES: dark band with day picker + treatment menu card */}
-        <section className="relative overflow-hidden bg-black px-3 py-24 text-offwhite md:px-14 md:py-32">
-          <Image src={u("1633681926022-84c23e8cb2d6", 1800)} alt="" fill sizes="100vw" className="object-cover opacity-20" />
-          <div className="on-photo relative z-10">
+        {/* HOW WE WORK: sticky photo + steps with drawing line */}
+        <CraftSplit />
+
+        {/* SERVICES: day picker + treatment menu card */}
+        <section className="relative px-3 py-24 md:px-14 md:py-32">
+          <div className="relative">
             <AnimatedHeading
               lines={["Vind een behandeling"]}
               accent="die bij je past"
               className="mx-auto max-w-lg px-3 text-center text-4xl leading-[1.05] md:text-5xl"
             />
-            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-offwhite/85">
+            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-black/60">
               Kies je dag, kies je behandeling. Wij zorgen voor de rest.
             </p>
 
             <div
               role="tablist"
               aria-label="Kies een dag"
-              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-offwhite/15 bg-black/40 p-1 backdrop-blur-md [scrollbar-width:none]"
+              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-black/10 bg-white p-1 [scrollbar-width:none]"
             >
               {openingHours.map((o) => {
                 const closed = o.hours === "Gesloten";
@@ -201,18 +158,18 @@ export default function Home() {
                     aria-selected={on}
                     disabled={closed}
                     onClick={() => setDay(o.day)}
-                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-offwhite/30 md:px-5 ${
-                      on ? "text-black [text-shadow:none]" : "hover:text-gold"
+                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-black/25 md:px-5 ${
+                      on ? "text-offwhite" : "text-black/70 hover:text-black"
                     }`}
                   >
-                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-offwhite" transition={{ duration: 0.5, ease }} />}
+                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-black" transition={{ duration: 0.5, ease }} />}
                     <span className="relative">{o.day.slice(0, 2)}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl bg-offwhite text-black shadow-2xl shadow-black/40 [text-shadow:none]">
+            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl border border-black/5 bg-white shadow-[0_30px_60px_-30px_rgba(14,12,10,0.2)]">
               <div className="flex items-center justify-between gap-4 border-b border-black/10 px-5 py-4 md:px-8">
                 <p className="text-lg">
                   {day} <span className="accent text-gold-muted">geopend</span>
@@ -256,13 +213,13 @@ export default function Home() {
             </div>
 
             <div className="mt-10 text-center">
-              <Button href="/prijslijst" variant="light">Bekijk alle prijzen</Button>
+              <Button href="/prijslijst" variant="ghost">Bekijk alle prijzen</Button>
             </div>
           </div>
         </section>
 
-        {/* ABOUT: pinned scroll story with the spinning 3D shears */}
-        <ScrollScissors />
+        {/* ABOUT: dark band, 3D shears snip and turn on their own */}
+        <AboutSalon />
 
         {/* TEAM: copy left, two portrait tiles right (name on the photo, D&R tile style) */}
         <section className="px-6 py-24 md:px-14 md:py-32">

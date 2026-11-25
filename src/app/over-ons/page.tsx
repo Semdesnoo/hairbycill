@@ -6,6 +6,7 @@ import ImageReveal from "@/components/ImageReveal";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { team } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = {
   title: "Over ons",
@@ -33,7 +34,7 @@ export default function OverOnsPage() {
         title="Dit is"
         accent="Hair by Cill"
         intro="Een warme salon waar jouw haar en jouw verhaal centraal staan."
-        image="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=1920&auto=format&fit=crop"
+        image={`${BASE_PATH}/img/kleuren.jpg`}
       />
 
       {/* STORY */}

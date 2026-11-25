@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
 import CancelBooking from "@/components/CancelBooking";
 import { business, openingHours } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -17,7 +18,7 @@ export default function ContactPage() {
         title="Laten we"
         accent="kennismaken"
         intro="Een vraag, een idee of gewoon even overleggen? Bel, mail of laat een bericht achter."
-        image="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1920&auto=format&fit=crop"
+        image={`${BASE_PATH}/img/spiegel.jpg`}
       />
 
       <section className="mx-auto grid max-w-6xl gap-5 px-6 py-20 md:py-28 lg:grid-cols-[2fr_3fr]">

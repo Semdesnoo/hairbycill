@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { MotionValue } from "framer-motion";
 
 /**
  * Real 3D salon shears (three.js, loaded only when this mounts): two extruded, bevelled steel halves with
- * gold finger rings, lit by a studio environment map so the metal actually reflects. Scroll progress
- * `p` (0..1) spins the shears a full turn and snips them open/closed three times; `still` = reduced motion.
+ * gold finger rings, lit by a studio environment map so the metal actually reflects. Runs on its own clock:
+ * a slow continuous turn plus a double snip every few seconds. `still` = reduced motion (static pose).
  */
-export default function Scissors3D({ p, still, className = "" }: { p: MotionValue<number>; still: boolean; className?: string }) {
+export default function Scissors3D({ still, className = "" }: { still: boolean; className?: string }) {
   const host = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -110,19 +109,23 @@ export default function Scissors3D({ p, still, className = "" }: { p: MotionValu
       const ro = new ResizeObserver(fit);
       ro.observe(el);
 
-      const pose = (v: number, t: number) => {
-        const open = still ? 0.2 : 0.3 * Math.abs(Math.sin(v * Math.PI * 3));
-        a.pivot.rotation.z = b.pivot.rotation.z = -open;
-        root.rotation.y = still ? -0.45 : -0.7 + v * Math.PI * 2;
-        root.rotation.z = still ? -0.55 : -0.75 + v * 1.1 + Math.sin(t * 0.6) * 0.03;
-        root.rotation.x = still ? 0.15 : 0.15 + 0.25 * Math.sin(v * Math.PI);
-        root.position.y = still ? 0 : Math.sin(t * 0.8) * 0.08;
+      // 3.2s cycle: two quick snips (open/close) in the first 1.2s, then rest slightly open.
+      const snip = (t: number) => {
+        const c = t % 3.2;
+        return c < 1.2 ? 0.05 + 0.3 * Math.sin((c / 0.6) * Math.PI) ** 2 : 0.05;
+      };
+      const pose = (t: number) => {
+        a.pivot.rotation.z = b.pivot.rotation.z = -(still ? 0.2 : snip(t));
+        root.rotation.y = still ? -0.45 : t * 0.45; // continuous turn
+        root.rotation.z = -0.6 + (still ? 0 : Math.sin(t * 0.5) * 0.12);
+        root.rotation.x = 0.15 + (still ? 0 : Math.sin(t * 0.35) * 0.12);
+        root.position.y = still ? 0 : Math.sin(t * 0.8) * 0.1;
         renderer.render(scene, camera);
       };
 
       let raf = 0;
       const loop = (ms: number) => {
-        pose(p.get(), ms / 1000);
+        pose(ms / 1000);
         raf = requestAnimationFrame(loop);
       };
       // Only burn frames while the shears are on screen.
@@ -130,7 +133,7 @@ export default function Scissors3D({ p, still, className = "" }: { p: MotionValu
         cancelAnimationFrame(raf);
         if (e.isIntersecting && !still) raf = requestAnimationFrame(loop);
       });
-      if (still) pose(0, 0);
+      if (still) pose(0);
       else io.observe(el);
 
       cleanup = () => {
@@ -148,7 +151,7 @@ export default function Scissors3D({ p, still, className = "" }: { p: MotionValu
       cancelled = true;
       cleanup();
     };
-  }, [p, still]);
+  }, [still]);
 
   return <div ref={host} aria-hidden className={className} />;
 }

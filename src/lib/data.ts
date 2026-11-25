@@ -165,7 +165,7 @@ export const treatments: Treatment[] = [
     price: priceFrom("Knippen"),
     name: "Knippen",
     description: "Dames en heren, met of zonder wassen, drogen of föhnen.",
-    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1400&auto=format&fit=crop",
+    image: `${BASE_PATH}/img/knippen.jpg`,
   },
   {
     slug: "styling",
@@ -174,7 +174,7 @@ export const treatments: Treatment[] = [
     price: priceFrom("Stylen", (n) => n.includes("föhnen")),
     name: "Stylen",
     description: "Wassen en föhnen, voor kort en lang haar.",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1400&auto=format&fit=crop",
+    image: `${BASE_PATH}/img/spiegel.jpg`,
   },
   {
     slug: "kleuren",
@@ -183,7 +183,7 @@ export const treatments: Treatment[] = [
     price: priceFrom("Kleuren", (n) => n.startsWith("Uitgroei") || n.startsWith("Kleuren")),
     name: "Kleuren",
     description: "Uitgroei bijwerken of volledig kleuren, voor kort en lang haar.",
-    image: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1400&auto=format&fit=crop",
+    image: `${BASE_PATH}/img/kleuren.jpg`,
   },
   {
     slug: "folies",
@@ -192,7 +192,7 @@ export const treatments: Treatment[] = [
     price: priceFrom("Kleuren", (n) => n.startsWith("Folies")),
     name: "Folies",
     description: "Highlights met folies: scalp, half of geheel, met toner als finishing touch.",
-    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1400&auto=format&fit=crop",
+    image: `${BASE_PATH}/img/folies.jpg`,
   },
   {
     slug: "verlenging",
@@ -201,7 +201,7 @@ export const treatments: Treatment[] = [
     price: priceFrom("Haar verdikking / verlenging", (n) => n.includes("baan") && !n.startsWith("Verwijderen")),
     name: "Verlenging",
     description: "Haar verdikking of verlenging met banen, van 1 tot 4 banen.",
-    image: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=1400&auto=format&fit=crop",
+    image: `${BASE_PATH}/img/lang-haar.jpg`,
   },
 ];
 

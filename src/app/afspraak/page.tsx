@@ -4,6 +4,7 @@ import CancelBooking from "@/components/CancelBooking";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import BookingWizard from "./BookingWizard";
+import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = { title: "Afspraak maken" };
 
@@ -14,7 +15,7 @@ export default function AfspraakPage() {
         title="Maak een"
         accent="afspraak"
         intro="Kies je behandeling, stylist en een moment dat jou uitkomt. Binnen een minuut geregeld."
-        image="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=1920&auto=format&fit=crop"
+        image={`${BASE_PATH}/img/knippen-nat.jpg`}
       />
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">

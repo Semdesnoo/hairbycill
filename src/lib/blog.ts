@@ -1,3 +1,4 @@
+import { BASE_PATH } from "./basePath";
 // SEO blog. Linked only from the footer + the homepage "Tips uit de salon" cards, not the main menu.
 // Each post targets one search intent + local terms (kapper/kapsalon Rhoon, Albrandswaard,
 // Barendrecht, Rotterdam-Zuid). Add a post = add an object; routes, sitemap and JSON-LD follow.
@@ -447,7 +448,7 @@ export const posts: BlogPost[] = [
     accent: "naar de kapper?",
     text: "Kort, halflang of lang, met of zonder kleur: zo lang kun je tussen twee afspraken.",
     read: "3 min lezen",
-    image: img("1562322140-8baeececf3df"),
+    image: `${BASE_PATH}/img/knippen-rood.jpg`,
     metaTitle: "Hoe vaak moet je naar de kapper? Advies per lengte en kleur",
     metaDescription:
       "Hoe vaak moet je naar de kapper? Onze stylisten uit Rhoon geven per haarlengte, kleurbehandeling en haartype aan hoeveel weken je tussen afspraken kunt.",
@@ -509,7 +510,7 @@ export const posts: BlogPost[] = [
     accent: "wat is het verschil?",
     text: "Allebei lichte accenten, maar de techniek, het resultaat en het onderhoud verschillen flink.",
     read: "4 min lezen",
-    image: img("1492106087820-71f1a00d2b11"),
+    image: `${BASE_PATH}/img/folies-licht.jpg`,
     metaTitle: "Verschil tussen balayage en highlights: welke past bij jou?",
     metaDescription:
       "Balayage of highlights? Onze kappers in Rhoon leggen het verschil uit in techniek, resultaat, uitgroei en onderhoud, zodat je weet welke kleur bij jou past.",
