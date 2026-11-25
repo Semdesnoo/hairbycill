@@ -21,7 +21,7 @@ export default function Header() {
   useEffect(() => setOpen(false), [pathname]);
   // White text over the dark home video (and the black mobile menu); dark text on cream everywhere else.
   // Pages that open on a dark photo/video hero get a white header until scrolled.
-  const photoHero = ["/", "/prijslijst", "/producten", "/over-ons", "/contact", "/blog"].includes(pathname.replace(/\/$/, "") || "/");
+  const photoHero = ["/", "/prijslijst", "/producten", "/over-ons", "/blog"].includes(pathname.replace(/\/$/, "") || "/");
   const light = open || (photoHero && !scrolled);
 
   // Hide while scrolling down, reveal on any scroll up.

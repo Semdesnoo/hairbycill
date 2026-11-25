@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
 import CancelBooking from "@/components/CancelBooking";
 import { business, openingHours } from "@/lib/data";
-import { BASE_PATH } from "@/lib/basePath";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -14,15 +12,14 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <PageHero
-        title="Laten we"
-        accent="kennismaken"
-        intro="Een vraag, een idee of gewoon even overleggen? Bel, mail of laat een bericht achter."
-        image={`${BASE_PATH}/img/spiegel.jpg`}
-        portrait
-      />
+      <header className="mx-auto max-w-6xl px-6 pt-28 md:pt-36">
+        <h1 className="text-4xl font-light md:text-5xl">
+          Laten we <span className="accent text-gold-muted">kennismaken</span>
+        </h1>
+        <p className="mt-3 max-w-md text-sm text-black/60">Een vraag, een idee of gewoon even overleggen? Bel, mail of laat een bericht achter.</p>
+      </header>
 
-      <section className="mx-auto grid max-w-6xl gap-5 px-6 pb-8 pt-20 md:py-28 lg:grid-cols-[2fr_3fr]">
+      <section className="mx-auto grid max-w-6xl gap-5 px-6 pb-8 pt-10 md:pb-28 md:pt-12 lg:grid-cols-[2fr_3fr]">
         <Reveal className="flex flex-col gap-5">
           <div className="rounded-2xl bg-black p-7 text-offwhite">
             <h2 className="text-2xl">
