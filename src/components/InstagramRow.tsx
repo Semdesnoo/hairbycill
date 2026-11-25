@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BASE_PATH } from "@/lib/basePath";
 import { business } from "@/lib/data";
 
@@ -14,12 +14,12 @@ const POSTS = [
   { id: "DAvVHfLse5X", img: "DAvVHfLse5X-0.jpg", title: "Voor en na", label: "Kleuren" },
   { id: "", img: "", video: "/hero-2-mobile.mp4", poster: "/hero-poster.jpg", title: "Een kijkje in de salon", label: "Salon" },
   { id: "DAOoD_FsAOY", img: "DAOoD_FsAOY-0.jpg", title: "Highlights zonder toner", label: "Highlights" },
-  { id: "DZEzhsqqh79", img: "DZEzhsqqh79-0.jpg", title: "Hairbooster & Golden gloss", label: "Producten" },
 ];
 
 /** "Seen on the move" style row: tall Instagram tiles (photo / video alternating), caption + button below. */
 export default function InstagramRow() {
   const track = useRef<HTMLUListElement>(null);
+  const [active, setActive] = useState(0);
   const scroll = (dir: number) => track.current?.scrollBy({ left: dir * track.current.clientWidth * 0.8, behavior: "smooth" });
 
   return (
@@ -28,7 +28,7 @@ export default function InstagramRow() {
         <h2 className="text-4xl leading-[1.05] md:text-5xl">
           Volg ons op <span className="accent text-gold-muted">Instagram</span>
         </h2>
-        <div className="hidden gap-2 md:flex">
+        <div className="hidden gap-2 lg:flex">
           {[-1, 1].map((d) => (
             <button
               key={d}
@@ -45,12 +45,17 @@ export default function InstagramRow() {
 
       <ul
         ref={track}
+        onScroll={(e) => {
+          const el = e.currentTarget;
+          const w = (el.firstElementChild as HTMLElement | null)?.offsetWidth ?? 1;
+          setActive(Math.round(el.scrollLeft / w));
+        }}
         className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-2 [scrollbar-width:none] md:scroll-px-14 md:gap-5 md:px-14"
       >
         {POSTS.map((p) => {
           const href = p.id ? `${IG}${p.id}/` : business.instagram;
           return (
-            <li key={p.title} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] md:w-[28vw] xl:w-[calc((100vw-7rem-5rem)/5)]">
+            <li key={p.title} className="w-[84vw] shrink-0 snap-center sm:w-[42vw] sm:snap-start md:w-[28vw] xl:w-[calc((100vw-7rem-5rem)/5)]">
               <a href={href} target="_blank" rel="noopener noreferrer" className="group block">
                 <div className="relative aspect-[9/14] overflow-hidden rounded-2xl bg-ivory">
                   {p.video ? (
@@ -91,6 +96,12 @@ export default function InstagramRow() {
           );
         })}
       </ul>
+      {/* Mobile slider dots */}
+      <div className="mt-5 flex justify-center gap-1.5 sm:hidden" aria-hidden>
+        {POSTS.map((p, k) => (
+          <span key={p.title} className={`h-1.5 rounded-full transition-all duration-300 ${k === active ? "w-6 bg-black" : "w-1.5 bg-black/25"}`} />
+        ))}
+      </div>
     </section>
   );
 }
