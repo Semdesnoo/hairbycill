@@ -26,7 +26,7 @@ function WorkMarquee() {
   const toLeft = useTransform(p, [0, 1], ["0%", "-12%"]);
 
   return (
-    <section ref={ref} className="overflow-hidden bg-ivory/60 py-24 md:py-28">
+    <section ref={ref} className="overflow-hidden bg-white py-24 md:py-28">
       <AnimatedHeading
         lines={["Resultaten van"]}
         accent="ons werk"
