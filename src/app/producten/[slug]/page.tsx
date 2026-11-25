@@ -57,7 +57,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <>
       {/* ABOVE THE FOLD: photos flush left, buy box right */}
       <section className="pb-16 pt-24 md:pt-28">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-7">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-7">
           <div className="px-4 lg:px-0">
             <ProductGallery
               alt={product.name}
