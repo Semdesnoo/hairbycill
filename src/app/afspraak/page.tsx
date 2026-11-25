@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import CancelBooking from "@/components/CancelBooking";
 import Reveal from "@/components/Reveal";
-import BookingHero from "./BookingHero";
 import BookingWizard from "./BookingWizard";
 
 export const metadata: Metadata = { title: "Afspraak maken" };
@@ -10,9 +9,10 @@ export const metadata: Metadata = { title: "Afspraak maken" };
 export default function AfspraakPage() {
   return (
     <>
-      <BookingHero />
-
-      <section id="boeken" className="mx-auto max-w-7xl scroll-mt-20 px-6 py-16 md:px-10 md:py-24">
+      <section id="boeken" className="mx-auto max-w-7xl scroll-mt-20 px-6 pb-16 pt-28 md:px-10 md:pb-24 md:pt-36">
+        <h1 className="mb-10 text-4xl font-light md:mb-12 md:text-5xl">
+          Afspraak <span className="accent text-gold-muted">maken</span>
+        </h1>
         <BookingWizard />
       </section>
 
