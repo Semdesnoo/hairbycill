@@ -10,7 +10,6 @@ import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
 import { openingHours, products, team, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
-import AboutSalon from "@/components/AboutSalon";
 import HomeHero from "@/components/HomeHero";
 import Manifesto from "@/components/Manifesto";
 import CraftSplit from "@/components/CraftSplit";
@@ -218,8 +217,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ABOUT: dark band, 3D shears snip and turn on their own */}
-        <AboutSalon />
 
         {/* TEAM: copy left, two portrait tiles right (name on the photo, D&R tile style) */}
         <section className="px-6 py-24 md:px-14 md:py-32">

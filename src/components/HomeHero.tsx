@@ -3,19 +3,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import HeroVideo from "./HeroVideo";
-import { euroToNumber, priceList, team, treatments } from "@/lib/data";
+import { team } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-// Real numbers only, all from data.ts.
-const cutFrom = Math.min(...(priceList.find((c) => c.title === "Knippen")?.items ?? []).map((i) => euroToNumber(i.price)));
-const STATS = [
-  { value: String(team.length), label: "vaste stylisten" },
-  { value: String(treatments.length), label: "behandelingen" },
-  { value: `€${cutFrom.toLocaleString("nl-NL", { minimumFractionDigits: 2 })}`, label: "knippen vanaf" },
-];
 
-/** Original video hero; copy and buttons slide in from the left, stats from the right. */
+/** Original video hero; copy and buttons slide in from the left. */
 export default function HomeHero() {
   const still = !!useReducedMotion();
   const fromSide = (dir: -1 | 1, delay: number) =>
@@ -29,7 +22,7 @@ export default function HomeHero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
 
-      <div className="on-photo relative z-10 mx-auto grid w-full max-w-[1400px] items-end gap-10 px-6 py-32 md:grid-cols-[1fr_auto] md:px-14">
+      <div className="on-photo relative z-10 mx-auto grid w-full max-w-[1400px] items-end gap-10 px-6 py-32 md:px-14">
         <div>
           <motion.p {...fromSide(-1, 0.1)} className="text-[11px] uppercase tracking-[0.3em] text-gold">
             Kapsalon in Rhoon
@@ -61,18 +54,6 @@ export default function HomeHero() {
           </div>
         </div>
 
-        <ul className="hidden gap-3 md:grid">
-          {STATS.map((s, i) => (
-            <motion.li
-              key={s.label}
-              {...fromSide(1, 0.5 + i * 0.12)}
-              className="min-w-[12rem] rounded-2xl border border-offwhite/15 bg-black/30 px-5 py-4 text-right backdrop-blur-md"
-            >
-              <p className="text-3xl font-light tracking-tight text-offwhite">{s.value}</p>
-              <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-offwhite/65">{s.label}</p>
-            </motion.li>
-          ))}
-        </ul>
       </div>
     </section>
   );
