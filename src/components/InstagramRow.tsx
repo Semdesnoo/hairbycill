@@ -83,7 +83,7 @@ export default function InstagramRow() {
                     <span className="block text-xs text-gold-muted">{p.label}</span>
                   </span>
                 </div>
-                <span className="mt-3 block border border-black py-3 text-center text-[11px] font-medium uppercase tracking-[0.18em] transition-colors group-hover:bg-black group-hover:text-gold">
+                <span className="mt-3 block rounded-full border border-black py-3 text-center text-[11px] font-medium uppercase tracking-[0.18em] transition-colors group-hover:bg-black group-hover:text-gold">
                   Bekijk op Instagram
                 </span>
               </a>
