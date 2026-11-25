@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,12 +8,11 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
-import { openingHours, products, team, treatments } from "@/lib/data";
+import { products, team, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import HomeHero from "@/components/HomeHero";
 import Manifesto from "@/components/Manifesto";
 
-const ease = [0.16, 1, 0.3, 1] as const;
 
 /** Our work: 13 result photos in two rows that glide in opposite directions as you scroll. */
 const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
@@ -67,8 +66,6 @@ function WorkMarquee() {
 }
 
 export default function Home() {
-  const openDays = openingHours.filter((o) => o.hours !== "Gesloten");
-  const [day, setDay] = useState(openDays[0].day);
 
   return (
     <>
@@ -123,92 +120,25 @@ export default function Home() {
 
         <Manifesto />
 
-        {/* SERVICES: black & gold band, day picker + treatment menu card */}
-        <section className="relative bg-black px-3 py-24 text-offwhite md:px-14 md:py-32">
-          <div className="relative">
-            <AnimatedHeading
-              lines={["Vind een behandeling"]}
-              accent="die bij je past"
-              className="mx-auto max-w-lg px-3 text-center text-4xl leading-[1.05] md:text-5xl"
-            />
-            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-offwhite/60">
-              Kies je dag, kies je behandeling. Wij zorgen voor de rest.
-            </p>
-
-            <div
-              role="tablist"
-              aria-label="Kies een dag"
-              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-gold/25 bg-soft-black p-1 [scrollbar-width:none]"
-            >
-              {openingHours.map((o) => {
-                const closed = o.hours === "Gesloten";
-                const on = day === o.day;
-                return (
-                  <button
-                    key={o.day}
-                    type="button"
-                    role="tab"
-                    aria-selected={on}
-                    disabled={closed}
-                    onClick={() => setDay(o.day)}
-                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-offwhite/25 md:px-5 ${
-                      on ? "text-black" : "text-offwhite/70 hover:text-gold"
-                    }`}
-                  >
-                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-gold" transition={{ duration: 0.5, ease }} />}
-                    <span className="relative">{o.day.slice(0, 2)}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl border border-gold/25 bg-soft-black shadow-[0_30px_80px_-30px_rgba(210,174,98,0.25)]">
-              <div className="flex items-center justify-between gap-4 border-b border-gold/15 px-5 py-4 md:px-8">
-                <p className="text-lg">
-                  {day} <span className="accent text-gold">geopend</span>
-                </p>
-                <p className="flex items-center gap-2 text-xs text-offwhite/60">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-                  {openingHours.find((o) => o.day === day)?.hours.replace(" & ", " · ")}
-                </p>
-              </div>
-              <ul className="p-2 md:p-3">
-                {treatments.map((t, i) => (
-                  <li key={t.slug}>
-                    <Link
-                      href={`/afspraak?treatment=${t.slug}`}
-                      className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-offwhite/[0.04] md:grid-cols-[2rem_5rem_1fr_1.3fr_auto_auto] md:gap-5 md:px-5"
-                    >
-                      <span className="hidden text-xs tabular-nums text-gold/60 md:block">0{i + 1}</span>
-                      <span className="relative block aspect-square overflow-hidden rounded-xl md:aspect-[4/3]">
-                        <Image src={t.image} alt="" fill sizes="80px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                      </span>
-                      <span>
-                        <span className="block text-base md:text-lg">
-                          {t.name} <span className="accent text-gold">{t.accent}</span>
-                        </span>
-                        <span className="mt-0.5 block text-xs text-offwhite/50 md:hidden">
-                          {t.duration} · {t.price}
-                        </span>
-                      </span>
-                      <span className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{t.description}</span>
-                      <span className="hidden whitespace-nowrap text-right md:block">
-                        <span className="block text-sm">{t.price.replace("vanaf ", "")}</span>
-                        <span className="block text-[11px] text-offwhite/45">vanaf · {t.duration}</span>
-                      </span>
-                      <span className="flex h-10 items-center gap-2 rounded-full bg-gold px-4 text-xs font-medium text-black transition-colors group-hover:bg-offwhite">
-                        Boek <span aria-hidden className="hidden transition-transform group-hover:translate-x-0.5 md:inline">→</span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-10 text-center">
-              <Button href="/prijslijst" variant="light">Bekijk alle prijzen</Button>
-            </div>
+        {/* SHOP: Dore & Rose "Bestsellers" row: heading left, shop link right, swipeable product cards */}
+        <section className="py-24 md:py-28">
+          <div className="flex items-end justify-between gap-6 px-6 md:px-14">
+            <AnimatedHeading lines={["Favoriet in"]} accent="de salon" className="text-4xl leading-[1.05] md:text-5xl" />
+            <Link href="/producten" className="group mb-1 flex shrink-0 items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.18em]">
+              Shop alles
+              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
           </div>
+          <p className="mt-3 max-w-sm px-6 text-sm text-black/60 md:px-14">
+            De producten die wij zelf dagelijks gebruiken. Afhalen in Rhoon of thuisbezorgd.
+          </p>
+          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-2 [scrollbar-width:none] md:scroll-px-14 md:gap-5 md:px-14">
+            {products.map((p) => (
+              <li key={p.slug} className="w-[64vw] shrink-0 snap-start sm:w-[42vw] md:w-[30vw] xl:w-[calc((100vw-7rem-3.75rem)/4)]">
+                <ProductCard product={p} />
+              </li>
+            ))}
+          </ul>
         </section>
 
 
@@ -261,26 +191,6 @@ export default function Home() {
         {/* OUR WORK: two scroll-driven rows */}
         <WorkMarquee />
 
-        {/* SHOP: Dore & Rose "Bestsellers" row: heading left, shop link right, swipeable product cards */}
-        <section className="py-24 md:py-28">
-          <div className="flex items-end justify-between gap-6 px-6 md:px-14">
-            <AnimatedHeading lines={["Favoriet in"]} accent="de salon" className="text-4xl leading-[1.05] md:text-5xl" />
-            <Link href="/producten" className="group mb-1 flex shrink-0 items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.18em]">
-              Shop alles
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-            </Link>
-          </div>
-          <p className="mt-3 max-w-sm px-6 text-sm text-black/60 md:px-14">
-            De producten die wij zelf dagelijks gebruiken. Afhalen in Rhoon of thuisbezorgd.
-          </p>
-          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-2 [scrollbar-width:none] md:scroll-px-14 md:gap-5 md:px-14">
-            {products.map((p) => (
-              <li key={p.slug} className="w-[64vw] shrink-0 snap-start sm:w-[42vw] md:w-[30vw] xl:w-[calc((100vw-7rem-3.75rem)/4)]">
-                <ProductCard product={p} />
-              </li>
-            ))}
-          </ul>
-        </section>
 
 
     </>
