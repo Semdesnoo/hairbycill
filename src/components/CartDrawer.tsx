@@ -254,17 +254,22 @@ export default function CartDrawer() {
                         <p className="font-medium">Maak je routine compleet</p>
                         <ul className="mt-3 flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none]">
                           {upsell.map((p) => (
-                            <li key={p.slug} className="w-32 shrink-0">
+                            <li key={p.slug} className="flex w-36 shrink-0 flex-col">
                               <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-ivory">
-                                <Image src={p.image} alt={p.name} fill sizes="128px" className="object-cover" />
+                                <Image src={p.image} alt={p.name} fill sizes="144px" className="object-cover" />
                               </div>
                               <p className="mt-2 truncate text-xs font-medium">{p.name}</p>
-                              <div className="mt-1 flex items-center justify-between">
-                                <span className="text-xs">{p.price}</span>
-                                <button type="button" onClick={() => cart.add(p.slug, 1)} className="text-xs font-medium underline underline-offset-4 hover:text-gold-muted">
-                                  + Voeg toe
-                                </button>
-                              </div>
+                              <p className="mt-0.5 text-xs">
+                                {p.oldPrice && <span className="mr-1.5 text-red-700 line-through">{p.oldPrice}</span>}
+                                <span className="font-medium">{p.price}</span>
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() => cart.add(p.slug, 1)}
+                                className="mt-2.5 rounded-full border border-black py-2.5 text-xs font-medium transition-colors hover:bg-black hover:text-gold"
+                              >
+                                In winkelwagen
+                              </button>
                             </li>
                           ))}
                         </ul>
