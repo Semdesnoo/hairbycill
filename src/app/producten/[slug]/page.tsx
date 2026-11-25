@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Accordion from "@/components/Accordion";
-import AnimatedHeading from "@/components/AnimatedHeading";
-import Button from "@/components/Button";
-import ProductGrid from "@/components/ProductGrid";
-import Reveal from "@/components/Reveal";
-import { discountPct } from "@/components/ProductCard";
+import ProductCard, { discountPct } from "@/components/ProductCard";
 import { BASE_PATH } from "@/lib/basePath";
 import { business, euroToNumber, formatEuro, products, SHIPPING, team } from "@/lib/data";
 import BuyBox from "./BuyBox";
@@ -23,15 +20,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: `${product.name} - ${product.brand}`, description: `${product.story.title}. ${product.description}` };
 }
 
-// Our own result photos illustrate the feature blocks (alternating left/right).
-const FEATURE_PHOTOS = ["/work/03.jpg", "/work/09.jpg"];
+// Our own result photos next to the product shot (Dore & Rose: product + detail side by side).
+const GALLERY_PHOTOS = ["/work/03.jpg", "/work/09.jpg", "/work/06.jpg"];
 
-const TRUST = [
-  { icon: "M3 7h13l5 5v5h-3M3 7v10h2M3 7l2-3h9l2 3M7 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01", label: `Gratis bezorging vanaf ${formatEuro(SHIPPING.freeFrom)}` },
-  { icon: "M4 10h16l-1 10H5L4 10ZM8 10V7a4 4 0 0 1 8 0v3", label: "Gratis afhalen in Rhoon" },
-  { icon: "M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3Z", label: "Gebruikt in onze salon" },
-  { icon: "M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11Z", label: "Persoonlijk advies van onze stylisten" },
-];
+const ICON = {
+  details: "M4 4h12l4 4v12H4zM8 10h8M8 14h8M8 18h5",
+  care: "M5 3h14v18H5zM9 3v4h6V3M12 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6",
+  ship: "M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01",
+};
+const Ico = ({ d }: { d: string }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden>
+    <path d={d} />
+  </svg>
+);
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -39,241 +40,216 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) notFound();
 
   const pct = discountPct(product);
-  const related = [
-    ...products.filter((p) => p.slug !== product.slug && p.category === product.category),
-    ...products.filter((p) => p.slug !== product.slug && p.category !== product.category),
-  ].slice(0, 4);
+  const others = [
+    ...products.filter((p) => p.slug !== product.slug && p.brand === product.brand),
+    ...products.filter((p) => p.slug !== product.slug && p.brand !== product.brand),
+  ];
   const specs = [
     ["Merk", product.brand],
     ["Inhoud", product.volume],
     ["Geschikt voor", product.hairType],
-    ["Belangrijkste ingrediënten", product.ingredients],
+    ...(product.ingredients ? [["Belangrijkste ingrediënten", product.ingredients]] : []),
     ...(product.freeOf.length ? [["Vrij van", product.freeOf.join(", ")]] : []),
-    ["Gebruik", product.usage],
   ];
+  const wa = (q: string) => `${business.whatsappHref}?text=${encodeURIComponent(`Hoi! Vraag over ${product.name}: ${q}`)}`;
 
   return (
     <>
-      {/* ABOVE THE FOLD: photo + buy box */}
-      <section className="px-4 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32">
-        <div className="grid gap-10 lg:grid-cols-[1fr_minmax(420px,0.95fr)] lg:gap-14">
-          <div>
-            {/* Above the fold: CSS fade on load, NOT whileInView (the observer never fired here and left it at opacity 0) */}
+      {/* ABOVE THE FOLD: photos flush left, buy box right */}
+      <section className="pb-16 pt-24 md:pt-28">
+        <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
+          <div className="px-4 lg:px-0">
             <ProductGallery
               alt={product.name}
-              images={[
-                { src: product.image },
-                ...FEATURE_PHOTOS.map((src) => ({ src: `${BASE_PATH}${src}`, label: "Resultaat uit de salon" })),
-              ]}
+              images={[{ src: product.image }, ...GALLERY_PHOTOS.map((src) => ({ src: `${BASE_PATH}${src}`, label: "Resultaat uit de salon" }))]}
             />
           </div>
 
-          <Reveal delay={0.1}>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-gold-muted">{product.brand}</p>
-            <h1 className="mt-2 text-4xl tracking-tight md:text-5xl">{product.name}</h1>
-            <p className="mt-2 text-sm text-black/60">
-              {product.benefit} · {product.volume}
-            </p>
+          <div className="px-4 lg:pr-8">
+            <div className="lg:sticky lg:top-24">
+              <p className="text-xs text-black/60">{product.brand}</p>
+              <h1 className="mt-1 flex flex-wrap items-center gap-3 text-4xl font-semibold tracking-tight">
+                {product.name}
+                {pct > 0 && <span className="rounded bg-black px-1.5 py-1 text-[9px] font-bold uppercase tracking-wide text-gold">Salonaanbieding</span>}
+              </h1>
 
-            {/* Social proof (D&R "Lucy and 500,000+ others"): our own stylists, no invented numbers */}
-            <div className="mt-5 flex items-center gap-3">
-              <span className="flex -space-x-2">
-                {team.map((m) => (
-                  <span key={m.name} className="relative h-8 w-8 overflow-hidden rounded-full ring-2 ring-offwhite">
-                    <Image src={m.image} alt="" fill sizes="32px" className="object-cover" />
+              {/* Social proof: our own stylists, no invented numbers */}
+              <div className="mt-3 flex items-center gap-2.5">
+                <span className="flex -space-x-2">
+                  {team.map((m) => (
+                    <span key={m.name} className="relative h-7 w-7 overflow-hidden rounded-full ring-2 ring-white">
+                      <Image src={m.image} alt="" fill sizes="28px" className="object-cover" />
+                    </span>
+                  ))}
+                </span>
+                <p className="text-xs text-black/70">
+                  <span className="font-semibold text-black">{team.map((m) => m.name).join(" & ")}</span> gebruiken dit dagelijks in de salon
+                </p>
+              </div>
+
+              <p className="mt-4 flex items-center gap-2.5">
+                {product.oldPrice && <span className="text-sm text-red-700 line-through">{product.oldPrice}</span>}
+                <span className="text-xl font-semibold">{product.price}</span>
+                {pct > 0 && <span className="rounded bg-black px-1.5 py-0.5 text-[10px] font-bold text-gold">{pct}% KORTING</span>}
+              </p>
+              {product.oldPrice && (
+                <p className="mt-3 inline-flex items-center gap-2 rounded-md bg-black px-3 py-2 text-xs font-semibold text-offwhite">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="text-gold" aria-hidden>
+                    <path d="M3 12V4h8l10 10-8 8L3 12Zm5-5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+                  </svg>
+                  Salonaanbieding
+                  <span className="text-offwhite/30">|</span>
+                  <span className="font-normal">
+                    Je bespaart <span className="font-semibold text-gold">{formatEuro(euroToNumber(product.oldPrice) - euroToNumber(product.price))}</span>
                   </span>
-                ))}
-              </span>
-              <p className="text-xs text-black/65">
-                <span className="font-medium text-black">Aanbevolen door {team.map((m) => m.name).join(" & ")}</span>
-                <br />
-                Dagelijks gebruikt in onze salon
-              </p>
-            </div>
-
-            <ul className="mt-6 space-y-2.5">
-              {product.highlights.map((h) => (
-                <li key={h} className="flex items-center gap-3 text-sm">
-                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-black text-[9px] text-gold">✓</span>
-                  {h}
-                </li>
-              ))}
-            </ul>
-
-            <p className="mt-6 flex items-center gap-3">
-              <span className="text-2xl">{product.price}</span>
-              {product.oldPrice && <span className="text-sm text-black/40 line-through">{product.oldPrice}</span>}
-              {pct > 0 && (
-                <span className="rounded-md bg-black px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-gold">{pct}% korting</span>
+                </p>
               )}
-            </p>
-            {product.oldPrice && (
-              <p className="mt-3 rounded-lg bg-gold/15 px-4 py-2.5 text-xs">
-                Salonaanbieding · je bespaart{" "}
-                <span className="font-medium">{formatEuro(euroToNumber(product.oldPrice) - euroToNumber(product.price))}</span>
+
+              <p className="mt-6 text-xs">
+                <span className="font-semibold uppercase">Geschikt voor</span>
+                <span className="mx-2 text-black/25">|</span>
+                <span className="text-black/60">{product.hairType}</span>
               </p>
-            )}
 
-            <p className="mt-6 text-xs">
-              <span className="font-medium uppercase tracking-wider">Geschikt voor</span>
-              <span className="mx-2 text-black/25">|</span>
-              <span className="text-black/60">{product.hairType}</span>
-            </p>
+              <div className="mt-6">
+                <BuyBox product={product} />
+              </div>
 
-            <div className="mt-6">
-              <BuyBox product={product} />
+              {/* Checklist box */}
+              <div className="mt-8 space-y-1.5 bg-ivory px-5 py-4 text-sm">
+                <p className="mb-2 font-medium">{product.story.title}</p>
+                {product.highlights.map((h) => (
+                  <p key={h} className="font-medium">
+                    ✓ {h}
+                  </p>
+                ))}
+              </div>
+
+              {/* Ask the salon (D&R "Ask me anything"): opens WhatsApp with the question prefilled */}
+              <div className="mt-5 flex flex-wrap gap-2">
+                {["Past dit bij mijn haar?", "Hoe vaak gebruik ik het?"].map((q) => (
+                  <a
+                    key={q}
+                    href={wa(q)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded border border-black/15 px-3 py-2 text-xs transition-colors hover:border-black"
+                  >
+                    <span className="text-gold-muted">✦</span> {q}
+                  </a>
+                ))}
+              </div>
+              <form action={business.whatsappHref} target="_blank" className="mt-2 flex items-center gap-2 rounded border border-black/15 p-1.5 pl-4">
+                <input
+                  name="text"
+                  required
+                  aria-label="Stel je vraag aan de salon"
+                  placeholder="STEL JE VRAAG AAN DE SALON..."
+                  className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-black/50"
+                />
+                <button type="submit" aria-label="Verstuur via WhatsApp" className="flex h-9 w-9 shrink-0 items-center justify-center bg-black text-gold">
+                  ↑
+                </button>
+              </form>
+
+              <div className="mt-6 [&_button]:uppercase [&_button]:text-xs">
+                <Accordion
+                  items={[
+                    {
+                      title: "Details",
+                      icon: <Ico d={ICON.details} />,
+                      content: (
+                        <dl className="divide-y divide-black/5">
+                          {specs.map(([k, v]) => (
+                            <div key={k} className="grid grid-cols-[9rem_1fr] gap-3 py-2">
+                              <dt className="font-medium text-black">{k}</dt>
+                              <dd>{v}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      ),
+                    },
+                    {
+                      title: "Gebruik",
+                      icon: <Ico d={ICON.care} />,
+                      content: (
+                        <>
+                          <ol className="list-decimal space-y-1 pl-5">
+                            {product.steps.map((s) => (
+                              <li key={s}>{s}</li>
+                            ))}
+                          </ol>
+                          <p className="mt-3">
+                            <span className="font-medium text-black">Tip van onze stylisten:</span> {product.tip}
+                          </p>
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Verzending en afhalen",
+                      icon: <Ico d={ICON.ship} />,
+                      content: `Gratis afhalen in de salon (${business.address}). Thuisbezorgd binnen 2-4 werkdagen voor ${formatEuro(
+                        SHIPPING.cost,
+                      )}, gratis vanaf ${formatEuro(SHIPPING.freeFrom)}.`,
+                    },
+                  ]}
+                />
+              </div>
+
+              {/* You'll also love: compact scroll row */}
+              <p className="mt-8 text-lg font-semibold">Dit vind je ook mooi</p>
+              <ul className="mt-4 flex gap-4 overflow-x-auto pb-3 [scrollbar-color:#000_#e5e5e5] [scrollbar-width:thin]">
+                {others.slice(0, 6).map((p) => (
+                  <li key={p.slug} className="w-40 shrink-0">
+                    <Link href={`/producten/${p.slug}`} className="group block">
+                      <span className="relative block aspect-[4/5] overflow-hidden bg-ivory">
+                        <Image src={p.image} alt={p.name} fill sizes="160px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      </span>
+                      <span className="mt-2 block truncate text-sm font-semibold">{p.name}</span>
+                      <span className="block text-sm">
+                        {p.oldPrice && <span className="mr-2 text-red-700 line-through">{p.oldPrice}</span>}
+                        {p.price}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            {/* Story: why this product (Dore & Rose style intro box) */}
-            <div className="mt-10 rounded-2xl bg-ivory/70 p-6">
-              <p className="font-medium">{product.story.title}</p>
-              <p className="mt-2 text-sm leading-relaxed text-black/65">{product.story.text}</p>
-            </div>
-
-            <div className="mt-6">
-              <Accordion
-                items={[
-                  {
-                    title: "Details",
-                    content: (
-                      <dl className="divide-y divide-black/5">
-                        {specs.map(([k, v]) => (
-                          <div key={k} className="grid grid-cols-[9rem_1fr] gap-3 py-2">
-                            <dt className="font-medium text-black">{k}</dt>
-                            <dd>{v}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    ),
-                  },
-                  { title: "Gebruik", content: product.usage },
-                  {
-                    title: "Verzending en afhalen",
-                    content: `Gratis afhalen in de salon (${business.address}). Thuisbezorgd binnen 2-4 werkdagen voor ${formatEuro(
-                      SHIPPING.cost,
-                    )}, gratis vanaf ${formatEuro(SHIPPING.freeFrom)}.`,
-                  },
-                ]}
-              />
-            </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* TRUST BAR */}
-      <section className="border-y border-gold/25 bg-white px-4 py-6 md:px-8">
-        <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-5 md:grid-cols-4">
-          {TRUST.map((t) => (
-            <li key={t.label} className="flex items-center gap-3 text-sm text-black/70">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gold-muted" aria-hidden>
-                <path d={t.icon} />
-              </svg>
-              {t.label}
+      {/* MORE IN THIS COLLECTION */}
+      <section className="pb-20 pt-8">
+        <div className="flex items-end justify-between px-4 md:px-8">
+          <h2 className="text-3xl font-semibold tracking-tight">Meer van {product.brand}</h2>
+          <Link href="/producten" className="text-xs uppercase tracking-[0.15em] hover:underline">
+            Alles bekijken
+          </Link>
+        </div>
+        <ul className="mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:px-8">
+          {others.map((p) => (
+            <li key={p.slug} className="w-[62vw] shrink-0 snap-start sm:w-[38vw] lg:w-[calc((100vw-4rem-5rem)/6)]">
+              <ProductCard product={p} />
             </li>
           ))}
         </ul>
       </section>
 
-      {/* FEATURE BLOCKS: alternating photo / text */}
-      <section className="mx-auto max-w-6xl space-y-20 px-6 py-24 md:space-y-28 md:py-32">
-        {product.features.map((f, i) => (
-          <div key={f.title} className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
-            <Reveal className={i % 2 ? "md:order-2" : ""}>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-ivory">
-                <Image src={`${BASE_PATH}${FEATURE_PHOTOS[i % FEATURE_PHOTOS.length]}`} alt="Resultaat uit onze salon" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="text-xs uppercase tracking-[0.25em] text-gold-muted">0{i + 1}</p>
-              <h2 className="mt-3 text-3xl leading-tight md:text-4xl">{f.title}</h2>
-              <p className="mt-5 leading-relaxed text-black/65">{f.text}</p>
-              <ul className="mt-6 space-y-3">
-                {f.bullets.map((b) => (
-                  <li key={b} className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-gold" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        ))}
-      </section>
-
-      {/* HOW TO USE */}
-      <section className="bg-black px-6 py-24 text-offwhite md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <AnimatedHeading lines={["Zo gebruik"]} accent="je het" className="text-center text-4xl leading-[1.05] md:text-5xl" />
-          <ol className="mt-14 grid gap-5 md:grid-cols-3">
-            {product.steps.map((s, i) => (
-              <Reveal key={s} as="li" delay={i * 0.1} className="rounded-2xl border border-gold/25 bg-offwhite/[0.03] p-7">
-                <span className="gold-foil text-4xl font-light">0{i + 1}</span>
-                <p className="mt-4 leading-relaxed text-offwhite/80">{s}</p>
-              </Reveal>
-            ))}
-          </ol>
-          <Reveal className="mx-auto mt-10 flex max-w-3xl items-start gap-4 rounded-2xl bg-gold/10 p-6">
-            <span className="accent text-2xl text-gold">Tip</span>
-            <p className="text-sm leading-relaxed text-offwhite/80">
-              <span className="text-offwhite">Van onze stylisten:</span> {product.tip}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-6 py-24 md:py-28">
-        <Reveal>
-          <h2 className="text-center text-3xl md:text-4xl">
-            Van twijfel naar <span className="accent text-gold-muted">zeker</span>
-          </h2>
-          <div className="mt-8">
-            <Accordion
-              items={[
-                ...product.faqs.map((f) => ({ title: f.q, content: f.a })),
-                {
-                  title: "Kan ik het product ook in de salon ophalen?",
-                  content: `Ja. Kies bij het afrekenen voor afhalen, dan leggen we het voor je klaar aan de ${business.address}. Afhalen is gratis en je betaalt in de salon.`,
-                },
-                {
-                  title: "Twijfel je of dit bij jouw haar past?",
-                  content: "Stuur ons een berichtje of vraag het tijdens je volgende afspraak. We kijken graag met je mee welk product het beste bij jouw haar past.",
-                },
-              ]}
-            />
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ADVICE CTA */}
-      <section className="px-6 pb-8">
-        <Reveal className="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-3xl border border-gold/35 bg-white p-10 text-center md:flex-row md:justify-between md:p-12 md:text-left">
-          <div>
-            <p className="text-2xl md:text-3xl">
-              Twijfel je? <span className="accent text-gold-muted">Vraag het onze stylisten</span>
-            </p>
-            <p className="mt-2 text-sm text-black/60">Persoonlijk advies over welk product bij jouw haar past.</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button href="/afspraak">Afspraak maken</Button>
-            <a
-              href={`${business.whatsappHref}?text=${encodeURIComponent(`Hoi! Ik heb een vraag over ${product.name}: `)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-black/20 px-6 py-2.5 text-sm transition-colors hover:border-black"
-            >
-              Stel een vraag
-            </a>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* RELATED */}
-      <section className="px-4 pb-28 pt-20 md:px-8 md:pb-32">
-        <h2 className="mb-10 text-3xl md:text-4xl">
-          Dit vind je <span className="accent text-gold-muted">ook mooi</span>
-        </h2>
-        <ProductGrid products={related} />
+      <section className="px-4 pb-28 md:px-8">
+        <h2 className="text-center text-3xl font-semibold tracking-tight">Van twijfel naar zeker</h2>
+        <div className="mt-8">
+          <Accordion
+            items={[
+              ...product.faqs.map((f) => ({ title: f.q, content: f.a })),
+              {
+                title: "Twijfel je of dit bij jouw haar past?",
+                content: "Stuur ons een berichtje of vraag het tijdens je volgende afspraak. We kijken graag met je mee welk product het beste bij jouw haar past.",
+              },
+            ]}
+          />
+        </div>
       </section>
     </>
   );

@@ -6,7 +6,7 @@ import Image from "next/image";
 type Img = { src: string; label?: string };
 
 /**
- * Dore & Rose gallery: on desktop every photo sits in a 2-column grid (first one full width) that you scroll
+ * Dore & Rose gallery: on desktop the photos sit flush in a 2-column grid that you scroll
  * past next to the buy box; on mobile it is a swipeable slider with dots.
  */
 export default function ProductGallery({ images, alt }: { images: Img[]; alt: string }) {
@@ -18,15 +18,15 @@ export default function ProductGallery({ images, alt }: { images: Img[]; alt: st
   return (
     <>
       {/* Desktop grid */}
-      <div className="hidden animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] grid-cols-2 gap-3 lg:grid">
+      <div className="hidden animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] grid-cols-2 gap-1.5 lg:grid">
         {images.map((img, k) => (
-          <figure key={img.src} className={`relative overflow-hidden rounded-2xl bg-ivory ${k === 0 ? "col-span-2 aspect-[4/3.6]" : "aspect-[4/5]"}`}>
+          <figure key={img.src} className="relative aspect-[4/5.2] overflow-hidden bg-ivory">
             <Image
               src={img.src}
               alt={altOf(k)}
               fill
-              priority={k === 0}
-              sizes={k === 0 ? "55vw" : "28vw"}
+              priority={k < 2}
+              sizes="31vw"
               className="object-cover transition-transform duration-[1.2s] ease-out hover:scale-[1.03]"
             />
             {img.label && (

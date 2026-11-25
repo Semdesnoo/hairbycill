@@ -3,7 +3,7 @@
 import { ReactNode, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Accordion({ items }: { items: { title: string; content: ReactNode }[] }) {
+export default function Accordion({ items }: { items: { title: string; content: ReactNode; icon?: ReactNode }[] }) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -18,7 +18,10 @@ export default function Accordion({ items }: { items: { title: string; content: 
               onClick={() => setOpen(isOpen ? null : i)}
               className="flex w-full items-center justify-between gap-4 py-5 text-left text-sm font-medium"
             >
-              {item.title}
+              <span className="flex items-center gap-2.5">
+                {item.icon}
+                {item.title}
+              </span>
               <svg
                 viewBox="0 0 24 24"
                 width="18"
