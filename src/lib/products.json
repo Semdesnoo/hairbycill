@@ -1,234 +1,515 @@
 [
   {
-    "slug": "silk-repair-shampoo",
-    "brand": "Kevin Murphy",
-    "name": "Silk Repair Shampoo",
-    "price": "€24,95",
-    "oldPrice": "€29,95",
-    "volume": "250 ml",
+    "slug": "keune-color-brillianz-shampoo",
+    "brand": "Keune",
+    "name": "Color Brillianz Shampoo",
+    "price": "€19,95",
+    "oldPrice": "€24,95",
+    "volume": "300 ml",
     "category": "Shampoo",
-    "image": "https://images.unsplash.com/photo-1585232351009-aa87416fca90?q=80&w=1200&auto=format&fit=crop",
+    "image": "/products/keune-color-brillianz-shampoo.jpg",
     "highlights": [
-      "Sulfaatvrij en kleurbeschermend",
-      "Herstelt droog en beschadigd haar",
-      "Zachte glans zonder te verzwaren"
+      "Beschermt tegen uitwassen van kleur",
+      "Geeft zichtbaar meer glans",
+      "Mild voor dagelijks gebruik"
     ],
-    "description": "Reinigt zacht terwijl het de haarvezel herstelt en beschermt.",
-    "benefit": "Voor zacht, glanzend en verzorgd haar.",
-    "usage": "Aanbrengen op nat haar, masseren, uitspoelen en herhalen indien nodig.",
-    "hairType": "Droog en beschadigd haar",
-    "ingredients": "Keratine, arganolie, vitamine E. Vrij van sulfaten.",
+    "description": "Milde anti-fade shampoo die je kleur langer laat stralen.",
+    "benefit": "Voor gekleurd haar dat langer mooi blijft.",
+    "usage": "Aanbrengen op nat haar, masseren en goed uitspoelen.",
+    "hairType": "Gekleurd haar",
+    "ingredients": "Sea silk.",
     "faqs": [
       {
-        "a": "Ja, sulfaatvrij en kleurbeschermend.",
-        "q": "Geschikt voor gekleurd haar?"
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
       },
       {
-        "a": "Ja, mild genoeg voor dagelijks gebruik.",
-        "q": "Dagelijks te gebruiken?"
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
       }
     ],
     "story": {
-      "text": "Een milde, sulfaatvrije shampoo die je haar reinigt zonder het uit te drogen. Keratine en arganolie verzorgen de haarvezel bij elke wasbeurt, zodat droog en beschadigd haar weer zacht en glanzend wordt. Wij gebruiken hem zelf dagelijks in de salon.",
-      "title": "Zacht reinigen, zichtbaar herstel"
+      "title": "Kleur die blijft stralen",
+      "text": "Na een kleurbehandeling wil je dat het resultaat zo lang mogelijk mooi blijft. Color Brillianz reinigt zacht en helpt je kleur te beschermen bij elke wasbeurt."
     },
     "features": [
       {
-        "text": "Keratine vult de zwakke plekken in de haarvezel op, terwijl arganolie en vitamine E je haar voeden. Zo bouw je wasbeurt na wasbeurt aan sterker haar.",
-        "title": "Herstel bij elke wasbeurt",
+        "title": "Langer plezier van je kleur",
+        "text": "Zachte reiniging zonder dat je kleur er onnodig uitspoelt.",
         "bullets": [
-          "Minder breuk en gespleten punten",
-          "Zachter en makkelijker te kammen",
-          "Mild genoeg voor dagelijks gebruik"
-        ]
-      },
-      {
-        "text": "Omdat de formule vrij is van sulfaten, spoelt je kleur minder snel uit. Ideaal na een kleurbehandeling of folies in de salon.",
-        "title": "Je kleur blijft langer mooi",
-        "bullets": [
-          "Kleurbeschermend en sulfaatvrij",
-          "Zachte glans zonder te verzwaren",
-          "Geschikt voor gekleurd en gelicht haar"
+          "Minder vervaging",
+          "Meer glans",
+          "Zacht voor je haar"
         ]
       }
     ],
     "steps": [
-      "Maak je haar goed nat met lauw water.",
-      "Masseer een kleine hoeveelheid in je hoofdhuid en laat het schuim door de lengtes lopen.",
-      "Spoel goed uit en herhaal bij veel stylingproducten. Volg met een conditioner."
+      "Maak je haar goed nat.",
+      "Masseer de shampoo in je hoofdhuid.",
+      "Spoel uit en volg met het Color Brillianz Masker."
     ],
-    "tip": "Was met lauw in plaats van heet water. Zo blijft de schubbenlaag gesloten en blijft je kleur langer mooi.",
+    "tip": "Was met lauw water, zo blijft je kleur langer mooi.",
     "freeOf": [
       "Sulfaten"
     ]
   },
   {
-    "slug": "hydrate-conditioner",
-    "brand": "Kevin Murphy",
-    "name": "Hydrate-Me Conditioner",
-    "price": "€27,95",
+    "slug": "keune-color-brillianz-mask",
+    "brand": "Keune",
+    "name": "Color Brillianz Masker",
+    "price": "€24,95",
+    "volume": "250 ml",
+    "category": "Treatment",
+    "image": "/products/keune-color-brillianz-mask.jpg",
+    "highlights": [
+      "Verzorgt na het kleuren",
+      "Zachter en beter kambaar",
+      "Intense glans"
+    ],
+    "description": "Intensief anti-fade masker voor gekleurd haar.",
+    "benefit": "Voor zacht, glanzend gekleurd haar.",
+    "usage": "Na het wassen in de lengtes aanbrengen, 3 tot 5 minuten laten inwerken en uitspoelen.",
+    "hairType": "Gekleurd haar",
+    "ingredients": "Sea silk.",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Verzorging voor je kleur",
+      "text": "Een rijk masker dat gekleurd haar voedt en de glans terugbrengt. Ideaal als vaste stap na je shampoo."
+    },
+    "features": [
+      {
+        "title": "Diepe verzorging",
+        "text": "Geeft je lengtes en punten extra aandacht.",
+        "bullets": [
+          "Zachter haar",
+          "Minder pluis",
+          "Meer glans"
+        ]
+      }
+    ],
+    "steps": [
+      "Was je haar met Color Brillianz Shampoo.",
+      "Breng het masker aan in lengtes en punten.",
+      "Laat 3 tot 5 minuten inwerken en spoel uit."
+    ],
+    "tip": "Gebruik het masker 1 of 2 keer per week in plaats van je conditioner.",
+    "freeOf": []
+  },
+  {
+    "slug": "keune-long-strong-shampoo",
+    "brand": "Keune",
+    "name": "Long & Strong Shampoo",
+    "price": "€19,95",
+    "volume": "300 ml",
+    "category": "Shampoo",
+    "image": "/products/keune-long-strong-shampoo.jpg",
+    "highlights": [
+      "Helpt haarbreuk te verminderen",
+      "Versterkt de haarvezel",
+      "Licht en fris"
+    ],
+    "description": "Anti-breuk shampoo voor sterker, langer haar.",
+    "benefit": "Voor lang haar dat sterk en gezond blijft.",
+    "usage": "Aanbrengen op nat haar, masseren en uitspoelen.",
+    "hairType": "Lang haar",
+    "ingredients": "Centella asiatica.",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Sterk van wortel tot punt",
+      "text": "Lang haar heeft het zwaar te verduren. Deze shampoo reinigt zacht en helpt je haar sterker te maken, zodat je minder breuk hebt."
+    },
+    "features": [
+      {
+        "title": "Minder breuk",
+        "text": "Versterkt je haar bij elke wasbeurt.",
+        "bullets": [
+          "Sterker haar",
+          "Minder gespleten punten",
+          "Gezonde glans"
+        ]
+      }
+    ],
+    "steps": [
+      "Maak je haar goed nat.",
+      "Masseer de shampoo in.",
+      "Spoel uit en volg met de Long & Strong Conditioner."
+    ],
+    "tip": "Kam nat haar altijd van de punten naar boven toe.",
+    "freeOf": []
+  },
+  {
+    "slug": "keune-long-strong-conditioner",
+    "brand": "Keune",
+    "name": "Long & Strong Conditioner",
+    "price": "€21,95",
     "volume": "250 ml",
     "category": "Conditioner",
-    "image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200&auto=format&fit=crop",
+    "image": "/products/keune-long-strong-conditioner.jpg",
     "highlights": [
-      "Diepe hydratatie in 2 minuten",
-      "Makkelijker doorkammen, minder klitten",
-      "Voor zacht en soepel haar"
+      "Makkelijker ontwarren",
+      "Versterkt de lengtes",
+      "Verzwaart niet"
     ],
-    "description": "Intense hydratatie voor droog en dof haar.",
-    "benefit": "Voor diep gevoed en soepel haar.",
-    "usage": "Na het shampooën aanbrengen, 2-3 minuten laten intrekken.",
-    "hairType": "Droog, dof haar",
-    "ingredients": "Kokosolie, aloë vera, panthenol.",
+    "description": "Versterkende conditioner voor lang haar.",
+    "benefit": "Voor soepel, sterk en makkelijk kambaar haar.",
+    "usage": "Na het wassen in de lengtes aanbrengen, even laten inwerken en uitspoelen.",
+    "hairType": "Lang haar",
+    "ingredients": "Centella asiatica.",
     "faqs": [
       {
-        "a": "Nee, lichte formule zonder verzwaring.",
-        "q": "Maakt het plat haar?"
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
       }
     ],
     "story": {
-      "text": "Een lichte conditioner die droog en dof haar direct vocht geeft. Kokosolie, aloë vera en panthenol maken je haar zacht en soepel, zonder het plat te maken.",
-      "title": "Diepe hydratatie in twee minuten"
+      "title": "Soepel en sterk",
+      "text": "De perfecte partner van de Long & Strong Shampoo: maakt je haar zacht en makkelijk kambaar zonder het te verzwaren."
     },
     "features": [
       {
-        "text": "Aloë vera en panthenol trekken vocht de haarvezel in, kokosolie houdt het vast. Het resultaat: soepel haar dat zacht aanvoelt, ook de dagen erna.",
-        "title": "Vocht dat je voelt",
+        "title": "Makkelijk ontwarren",
+        "text": "Minder trekken en dus minder breuk.",
         "bullets": [
-          "Direct zachter haar",
-          "Makkelijker doorkammen, minder klitten",
-          "Minder pluis bij droog weer"
-        ]
-      },
-      {
-        "text": "De formule is licht genoeg voor dagelijks gebruik, zodat je haar volume en beweging houdt.",
-        "title": "Licht, dus geen plat haar",
-        "bullets": [
-          "Verzwaart niet",
-          "Snel uitgespoeld",
-          "Fijne basis voor iedere styling"
+          "Soepel haar",
+          "Minder klitten",
+          "Zachte glans"
         ]
       }
     ],
     "steps": [
-      "Knijp na het shampooën het overtollige water uit je haar.",
-      "Verdeel de conditioner over de lengtes en punten, niet op de hoofdhuid.",
-      "Laat 2 tot 3 minuten intrekken en spoel goed uit met koel water."
+      "Breng aan na het wassen.",
+      "Verdeel met een kam door de lengtes.",
+      "Laat 2 minuten inwerken en spoel uit."
     ],
-    "tip": "Kam de conditioner met een grove kam door je haar terwijl hij intrekt. Zo ontwar je zonder breuk.",
+    "tip": "Gebruik een brede kam terwijl de conditioner nog in je haar zit.",
     "freeOf": []
   },
   {
-    "slug": "repair-mask",
-    "brand": "Olaplex",
-    "name": "No.8 Bond Intense Mask",
-    "price": "€34,95",
-    "oldPrice": "€42,95",
-    "volume": "100 ml",
+    "slug": "keune-long-strong-serum",
+    "brand": "Keune",
+    "name": "Long & Strong Super Serum",
+    "price": "€29,95",
+    "volume": "80 ml",
     "category": "Treatment",
-    "image": "https://images.unsplash.com/photo-1571875257727-256c39da42af?q=80&w=1200&auto=format&fit=crop",
+    "image": "/products/keune-long-strong-serum.jpg",
     "highlights": [
-      "Herstelt verbindingen in de haarvezel",
-      "Ideaal na kleuren of blonderen",
-      "Zichtbaar sterker haar na 1 gebruik"
+      "Voor dagelijks gebruik op de hoofdhuid",
+      "Niet uitspoelen",
+      "Lichte formule"
     ],
-    "description": "Intensief herstellend masker dat glans en veerkracht teruggeeft.",
-    "benefit": "Voor direct zichtbaar herstel en glans.",
-    "usage": "1x per week aanbrengen op handdoekdroog haar, 10 minuten laten intrekken.",
-    "hairType": "Beschadigd, gekleurd haar",
-    "ingredients": "Bond-building complex, zonnebloemzaadolie.",
+    "description": "Serum voor de hoofdhuid voor sterker ogend haar.",
+    "benefit": "Voor sterker en voller ogend haar.",
+    "usage": "Enkele druppels op de hoofdhuid aanbrengen en zacht inmasseren. Niet uitspoelen.",
+    "hairType": "Lang haar",
+    "ingredients": "Biomimetic peptides.",
     "faqs": [
       {
-        "a": "Ja, juist aanbevolen na kleuren.",
-        "q": "Kan het samen met kleurbehandeling?"
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
       }
     ],
     "story": {
-      "text": "Een intensief masker dat de verbindingen in je haar herstelt die breken door kleuren, blonderen en hitte. Je haar voelt direct sterker aan en krijgt zijn glans en veerkracht terug.",
-      "title": "Herstel tot diep in de haarvezel"
+      "title": "Begint bij de hoofdhuid",
+      "text": "Sterk haar begint bij een gezonde hoofdhuid. Dit lichte serum masseer je dagelijks in en hoef je niet uit te spoelen."
     },
     "features": [
       {
-        "text": "Kleuren en blonderen verzwakken de verbindingen in de haarvezel. Het bond-building complex herstelt die, zodat je haar sterker en gezonder wordt.",
-        "title": "Gemaakt voor gekleurd haar",
+        "title": "Een kleine dagelijkse routine",
+        "text": "Een paar druppels is genoeg.",
         "bullets": [
-          "Ideaal na kleuren, folies of blonderen",
-          "Zichtbaar sterker haar",
-          "Meer glans en veerkracht"
-        ]
-      },
-      {
-        "text": "Gebruik het masker wekelijks als intensieve kuur. Je merkt het verschil na de eerste keer, en na een paar weken is je haar echt steviger.",
-        "title": "Eén keer per week is genoeg",
-        "bullets": [
-          "Intensieve weekkuur",
-          "Rijke maar lichte textuur",
-          "Ook fijn na een zonvakantie"
+          "Niet vettig",
+          "Snel opgenomen",
+          "Fijne pipet"
         ]
       }
     ],
     "steps": [
-      "Was je haar en dep het handdoekdroog.",
-      "Breng het masker royaal aan van midden tot punten.",
-      "Laat 10 minuten intrekken en spoel goed uit."
+      "Scheid je haar in vlakken.",
+      "Druppel het serum op de hoofdhuid.",
+      "Masseer zacht in, niet uitspoelen."
     ],
-    "tip": "Zet er een warme handdoek omheen tijdens het intrekken. De warmte helpt het masker dieper door te dringen.",
+    "tip": "Masseer een minuut, dat stimuleert ook de doorbloeding van je hoofdhuid.",
     "freeOf": []
   },
   {
-    "slug": "heat-protect-spray",
-    "brand": "ghd",
-    "name": "Heat Protect Spray",
-    "price": "€19,95",
-    "volume": "120 ml",
-    "category": "Styling",
-    "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
+    "slug": "keune-revive-balm",
+    "brand": "Keune",
+    "name": "Revive Balm",
+    "price": "€27,95",
+    "volume": "50 ml",
+    "category": "Treatment",
+    "image": "/products/keune-revive-balm.jpg",
     "highlights": [
-      "Beschermt tot 230 graden",
-      "Geen plakkerig gevoel",
-      "Langer houdbare styling"
+      "Leave-in, niet uitspoelen",
+      "Herstelt zichtbaar",
+      "Verlengt je kleurresultaat"
     ],
-    "description": "Beschermt tegen hitteschade tot 230°C, zonder verzwaring.",
-    "benefit": "Voor bescherming en extra glans bij stylen.",
-    "usage": "Sprayen op handdoekdroog haar voor het föhnen of stylen.",
-    "hairType": "Alle haartypes",
-    "ingredients": "Siliconen-complex, UV-filters.",
+    "description": "Leave-in treatment die schade herstelt en je kleur langer mooi houdt.",
+    "benefit": "Voor beschadigd en gekleurd haar.",
+    "usage": "Een kleine hoeveelheid in handdoekdroog haar verdelen, niet uitspoelen.",
+    "hairType": "Beschadigd haar",
+    "ingredients": "",
     "faqs": [
       {
-        "a": "Nee, lichte spray-formule.",
-        "q": "Laat het haar vet aanvoelen?"
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
       }
     ],
     "story": {
-      "text": "Deze spray legt een beschermend laagje om je haar voordat je gaat föhnen, stijlen of krullen. Je haar blijft sterk en glanzend, en je styling blijft langer mooi zitten.",
-      "title": "Styling zonder hitteschade"
+      "title": "Herstel in een pompje",
+      "text": "Een rijke balsem die je na het wassen in je haar laat zitten. Je haar voelt direct zachter en ziet er gezonder uit."
     },
     "features": [
       {
-        "text": "Of je nu föhnt, stijlt of krult: de spray verdeelt de warmte en beschermt de haarvezel tegen uitdroging en breuk.",
-        "title": "Bescherming tot 230 graden",
+        "title": "Direct zachter",
+        "text": "Een pompje is genoeg voor halflang haar.",
         "bullets": [
-          "Voor föhn, stijltang en krultang",
-          "Minder droge en gespleten punten",
-          "Beschermt ook tegen UV"
-        ]
-      },
-      {
-        "text": "Geen plakkerig of vet gevoel: de spray trekt direct in en voegt alleen een zachte glans toe.",
-        "title": "Licht en onzichtbaar",
-        "bullets": [
-          "Verzwaart niet",
-          "Geschikt voor alle haartypes",
-          "Langer houdbare styling"
+          "Minder pluis",
+          "Zachte punten",
+          "Glans"
         ]
       }
     ],
     "steps": [
-      "Sprayen op handdoekdroog haar, op zo'n 20 centimeter afstand.",
-      "Kam de spray door zodat elk plukje bedekt is.",
-      "Föhn of style zoals je gewend bent."
+      "Handdoekdroog je haar.",
+      "Verdeel 1 of 2 pompjes door de lengtes.",
+      "Föhn of laat aan de lucht drogen."
     ],
-    "tip": "Zet je stijltang niet hoger dan 180 graden. Met deze spray is dat genoeg voor een gladde, glanzende look.",
+    "tip": "Begin met de punten, daar heeft je haar het meest nodig.",
+    "freeOf": []
+  },
+  {
+    "slug": "keune-velvet-smooth-spray",
+    "brand": "Keune",
+    "name": "Velvet Smooth 2-Phase Spray",
+    "price": "€22,95",
+    "volume": "200 ml",
+    "category": "Styling",
+    "image": "/products/keune-velvet-smooth-spray.jpg",
+    "highlights": [
+      "Ontwart direct",
+      "Anti-pluis",
+      "Schudden en sprayen"
+    ],
+    "description": "Tweefasen spray voor glad, ontward en zijdezacht haar.",
+    "benefit": "Voor glad haar zonder pluis.",
+    "usage": "Goed schudden en op handdoekdroog haar sprayen, niet uitspoelen.",
+    "hairType": "Pluizig haar",
+    "ingredients": "Tulip extract.",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Zijdezacht in één spray",
+      "text": "Schud, spray en kam: je haar is meteen ontward en voelt zacht en glad aan."
+    },
+    "features": [
+      {
+        "title": "Twee fasen, één resultaat",
+        "text": "Verzorging en gladheid in één flesje.",
+        "bullets": [
+          "Makkelijk ontwarren",
+          "Minder pluis",
+          "Lichte geur"
+        ]
+      }
+    ],
+    "steps": [
+      "Schud de fles goed.",
+      "Spray op handdoekdroog haar.",
+      "Kam door en style zoals je wilt."
+    ],
+    "tip": "Ook fijn om overdag pluizige punten even bij te werken.",
+    "freeOf": []
+  },
+  {
+    "slug": "max-pro-gold-vent-brush-boar",
+    "brand": "Max Pro",
+    "name": "Gold Vent Brush Boar",
+    "price": "€24,95",
+    "volume": "1 stuk",
+    "category": "Styling",
+    "image": "/products/max-pro-gold-vent-brush-boar.jpg",
+    "highlights": [
+      "Flexibele kop",
+      "Zwijnenharen voor glans",
+      "Sneller föhnen"
+    ],
+    "description": "Flexibele föhnborstel met zwijnenharen voor glans en volume.",
+    "benefit": "Voor sneller föhnen met meer glans.",
+    "usage": "Gebruik tijdens het föhnen of om droog haar mooi glad te borstelen.",
+    "hairType": "Alle haartypes",
+    "ingredients": "",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Föhnen als in de salon",
+      "text": "De open, flexibele kop laat de warme lucht erdoor, zodat je haar sneller droog is. De zwijnenharen geven glans."
+    },
+    "features": [
+      {
+        "title": "Gold edition",
+        "text": "Een mooie borstel die er ook goed uitziet.",
+        "bullets": [
+          "Goudkleurig",
+          "Ergonomische grip",
+          "Licht"
+        ]
+      }
+    ],
+    "steps": [
+      "Verdeel je haar in vlakken.",
+      "Föhn met de borstel van wortel naar punt.",
+      "Eindig met koude lucht voor extra glans."
+    ],
+    "tip": "Maak de borstel regelmatig schoon met een kam.",
+    "freeOf": []
+  },
+  {
+    "slug": "max-pro-gold-vent-brush",
+    "brand": "Max Pro",
+    "name": "Gold Vent Brush",
+    "price": "€19,95",
+    "volume": "1 stuk",
+    "category": "Styling",
+    "image": "/products/max-pro-gold-vent-brush.jpg",
+    "highlights": [
+      "Flexibele kop",
+      "Zacht op de hoofdhuid",
+      "Sneller föhnen"
+    ],
+    "description": "Flexibele föhnborstel die zacht ontwart en snel föhnt.",
+    "benefit": "Voor snel en zacht föhnen.",
+    "usage": "Gebruik tijdens het föhnen of op droog haar.",
+    "hairType": "Alle haartypes",
+    "ingredients": "",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Licht en flexibel",
+      "text": "De flexibele kop volgt de vorm van je hoofd, zodat ontwarren en föhnen zacht en snel gaat."
+    },
+    "features": [
+      {
+        "title": "Gold edition",
+        "text": "Goud met zwart, net als onze salon.",
+        "bullets": [
+          "Goudkleurig",
+          "Ergonomische grip",
+          "Licht"
+        ]
+      }
+    ],
+    "steps": [
+      "Verdeel je haar in vlakken.",
+      "Föhn van wortel naar punt.",
+      "Eindig met koude lucht."
+    ],
+    "tip": "Ideaal voor op reis door het lichte gewicht.",
+    "freeOf": []
+  },
+  {
+    "slug": "max-pro-bff-brush",
+    "brand": "Max Pro",
+    "name": "BFF Brush",
+    "price": "€17,95",
+    "volume": "1 stuk",
+    "category": "Styling",
+    "image": "/products/max-pro-bff-brush.jpg",
+    "highlights": [
+      "Voor nat en droog haar",
+      "Ontwart zonder trekken",
+      "Fijn handvat"
+    ],
+    "description": "Ontwarborstel die moeiteloos door nat en droog haar glijdt.",
+    "benefit": "Voor ontwarren zonder trekken.",
+    "usage": "Borstel van de punten naar boven toe, nat of droog.",
+    "hairType": "Alle haartypes",
+    "ingredients": "",
+    "faqs": [
+      {
+        "q": "Gebruiken jullie dit zelf in de salon?",
+        "a": "Ja, we werken er dagelijks mee en adviseren je graag welk product bij jouw haar past."
+      },
+      {
+        "q": "Kan ik het ook in de salon ophalen?",
+        "a": "Ja, bestel online en haal het gratis op in onze salon in Rhoon."
+      }
+    ],
+    "story": {
+      "title": "Je beste vriend tegen klitten",
+      "text": "Flexibele pinnen die zacht door je haar glijden, ook als het nat is. Geen trekken, geen pijn."
+    },
+    "features": [
+      {
+        "title": "Voor elke dag",
+        "text": "Past in elke tas.",
+        "bullets": [
+          "Zacht voor de hoofdhuid",
+          "Ook voor kinderen",
+          "Makkelijk schoon te maken"
+        ]
+      }
+    ],
+    "steps": [
+      "Begin bij de punten.",
+      "Werk langzaam naar boven.",
+      "Klaar: glad en ontward haar."
+    ],
+    "tip": "Gebruik hem in de douche samen met je conditioner.",
     "freeOf": []
   }
 ]
