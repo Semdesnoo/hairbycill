@@ -129,22 +129,22 @@ export default function Home() {
         {/* HOW WE WORK: sticky photo + steps with drawing line */}
         <CraftSplit />
 
-        {/* SERVICES: day picker + treatment menu card */}
-        <section className="relative px-3 py-24 md:px-14 md:py-32">
+        {/* SERVICES: black & gold band, day picker + treatment menu card */}
+        <section className="relative bg-black px-3 py-24 text-offwhite md:px-14 md:py-32">
           <div className="relative">
             <AnimatedHeading
               lines={["Vind een behandeling"]}
               accent="die bij je past"
               className="mx-auto max-w-lg px-3 text-center text-4xl leading-[1.05] md:text-5xl"
             />
-            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-black/60">
+            <p className="mx-auto mt-4 max-w-sm px-3 text-center text-sm text-offwhite/60">
               Kies je dag, kies je behandeling. Wij zorgen voor de rest.
             </p>
 
             <div
               role="tablist"
               aria-label="Kies een dag"
-              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-black/10 bg-white p-1 [scrollbar-width:none]"
+              className="mx-auto mt-9 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-gold/25 bg-soft-black p-1 [scrollbar-width:none]"
             >
               {openingHours.map((o) => {
                 const closed = o.hours === "Gesloten";
@@ -157,24 +157,24 @@ export default function Home() {
                     aria-selected={on}
                     disabled={closed}
                     onClick={() => setDay(o.day)}
-                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-black/25 md:px-5 ${
-                      on ? "text-offwhite" : "text-black/70 hover:text-black"
+                    className={`relative shrink-0 rounded-full px-3.5 py-2 text-xs transition-colors disabled:cursor-not-allowed disabled:text-offwhite/25 md:px-5 ${
+                      on ? "text-black" : "text-offwhite/70 hover:text-gold"
                     }`}
                   >
-                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-black" transition={{ duration: 0.5, ease }} />}
+                    {on && <motion.span layoutId="day-pill" className="absolute inset-0 rounded-full bg-gold" transition={{ duration: 0.5, ease }} />}
                     <span className="relative">{o.day.slice(0, 2)}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl border border-black/5 bg-white shadow-[0_30px_60px_-30px_rgba(14,12,10,0.2)]">
-              <div className="flex items-center justify-between gap-4 border-b border-black/10 px-5 py-4 md:px-8">
+            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-3xl border border-gold/25 bg-soft-black shadow-[0_30px_80px_-30px_rgba(210,174,98,0.25)]">
+              <div className="flex items-center justify-between gap-4 border-b border-gold/15 px-5 py-4 md:px-8">
                 <p className="text-lg">
-                  {day} <span className="accent text-gold-muted">geopend</span>
+                  {day} <span className="accent text-gold">geopend</span>
                 </p>
-                <p className="flex items-center gap-2 text-xs text-black/60">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                <p className="flex items-center gap-2 text-xs text-offwhite/60">
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold" />
                   {openingHours.find((o) => o.day === day)?.hours.replace(" & ", " · ")}
                 </p>
               </div>
@@ -183,26 +183,26 @@ export default function Home() {
                   <li key={t.slug}>
                     <Link
                       href={`/afspraak?treatment=${t.slug}`}
-                      className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-ivory/70 md:grid-cols-[2rem_5rem_1fr_1.3fr_auto_auto] md:gap-5 md:px-5"
+                      className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-offwhite/[0.04] md:grid-cols-[2rem_5rem_1fr_1.3fr_auto_auto] md:gap-5 md:px-5"
                     >
-                      <span className="hidden text-xs tabular-nums text-black/40 md:block">0{i + 1}</span>
+                      <span className="hidden text-xs tabular-nums text-gold/60 md:block">0{i + 1}</span>
                       <span className="relative block aspect-square overflow-hidden rounded-xl md:aspect-[4/3]">
                         <Image src={t.image} alt="" fill sizes="80px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                       </span>
                       <span>
                         <span className="block text-base md:text-lg">
-                          {t.name} <span className="accent text-gold-muted">{t.accent}</span>
+                          {t.name} <span className="accent text-gold">{t.accent}</span>
                         </span>
-                        <span className="mt-0.5 block text-xs text-black/50 md:hidden">
+                        <span className="mt-0.5 block text-xs text-offwhite/50 md:hidden">
                           {t.duration} · {t.price}
                         </span>
                       </span>
-                      <span className="hidden text-xs leading-relaxed text-black/55 md:block">{t.description}</span>
+                      <span className="hidden text-xs leading-relaxed text-offwhite/55 md:block">{t.description}</span>
                       <span className="hidden whitespace-nowrap text-right md:block">
                         <span className="block text-sm">{t.price.replace("vanaf ", "")}</span>
-                        <span className="block text-[11px] text-black/45">vanaf · {t.duration}</span>
+                        <span className="block text-[11px] text-offwhite/45">vanaf · {t.duration}</span>
                       </span>
-                      <span className="flex h-10 items-center gap-2 rounded-full bg-black px-4 text-xs text-offwhite transition-colors group-hover:bg-gold group-hover:text-black">
+                      <span className="flex h-10 items-center gap-2 rounded-full bg-gold px-4 text-xs font-medium text-black transition-colors group-hover:bg-offwhite">
                         Boek <span aria-hidden className="hidden transition-transform group-hover:translate-x-0.5 md:inline">→</span>
                       </span>
                     </Link>
@@ -212,7 +212,7 @@ export default function Home() {
             </div>
 
             <div className="mt-10 text-center">
-              <Button href="/prijslijst" variant="ghost">Bekijk alle prijzen</Button>
+              <Button href="/prijslijst" variant="light">Bekijk alle prijzen</Button>
             </div>
           </div>
         </section>
