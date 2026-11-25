@@ -12,8 +12,6 @@ import { openingHours, products, team, treatments } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import HomeHero from "@/components/HomeHero";
 import Manifesto from "@/components/Manifesto";
-import CraftSplit from "@/components/CraftSplit";
-import { posts as tips } from "@/lib/blog";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -77,9 +75,6 @@ export default function Home() {
         {/* HERO: light portrait hero with blur-in headline, scanning frames and live stats */}
         <HomeHero />
 
-        {/* STATEMENT: words ink in as you scroll */}
-        <Manifesto />
-
         {/* TREATMENTS: Dore & Rose editorial tiles (one wide, then pairs) with a white button bottom-left */}
         <section id="behandelingen" className="scroll-mt-20 px-3 py-24 md:px-6 md:py-32">
           <AnimatedHeading
@@ -126,8 +121,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* HOW WE WORK: sticky photo + steps with drawing line */}
-        <CraftSplit />
+        <Manifesto />
 
         {/* SERVICES: black & gold band, day picker + treatment menu card */}
         <section className="relative bg-black px-3 py-24 text-offwhite md:px-14 md:py-32">
@@ -288,49 +282,6 @@ export default function Home() {
           </ul>
         </section>
 
-        {/* TIPS */}
-        <section className="px-6 py-24 md:px-14 md:py-28">
-          <AnimatedHeading
-            lines={["Tips uit"]}
-            accent="de salon"
-            className="text-center text-4xl leading-[1.05] md:text-5xl"
-          />
-          <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2">
-            {tips.slice(0, 2).map((t, i) => (
-              <Reveal key={t.slug} delay={i * 0.08}>
-                <Link href={`/blog/${t.slug}`} className="group grid h-full grid-cols-[42%_1fr] gap-5 rounded-2xl bg-ivory/70 p-3">
-                  <div className="relative aspect-square overflow-hidden rounded-xl">
-                    <Image src={t.image} alt={t.h1} fill sizes="240px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                    <span className="absolute left-2 top-2 rounded-full bg-offwhite/90 px-2.5 py-1 text-[10px]">Uitgelicht</span>
-                  </div>
-                  <div className="py-2 pr-2">
-                    <h3 className="text-lg leading-tight">
-                      {t.title} <span className="accent text-gold-muted">{t.accent}</span>
-                    </h3>
-                    <p className="mt-3 text-xs leading-relaxed text-black/55">{t.text}</p>
-                    <p className="mt-4 text-[11px] text-black/45">{t.read}</p>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-          <div className="mx-auto mt-5 grid max-w-6xl gap-5 sm:grid-cols-3">
-            {tips.slice(2, 5).map((t, i) => (
-              <Reveal key={t.slug} delay={i * 0.08}>
-                <Link href={`/blog/${t.slug}`} className="group block h-full rounded-2xl bg-ivory/70 p-3">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-                    <Image src={t.image} alt={t.h1} fill sizes="(min-width:640px) 30vw, 90vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                  </div>
-                  <h3 className="mt-4 px-1 text-base leading-tight">
-                    {t.title} <span className="accent text-gold-muted">{t.accent}</span>
-                  </h3>
-                  <p className="mt-2 px-1 text-xs leading-relaxed text-black/55">{t.text}</p>
-                  <p className="mt-3 px-1 pb-2 text-[11px] text-black/45">{t.read}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </section>
 
     </>
   );
