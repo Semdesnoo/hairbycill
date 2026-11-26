@@ -9,8 +9,8 @@
   --color-soft-black: #161616;
   --color-ivory: #f3f3f3;
   --color-offwhite: #ffffff;
-  --color-gold: #d2ae62;
-  --color-gold-muted: #7f6329;
+  --color-gold: #e8b04b; /* measured from the logo */
+  --color-gold-muted: #c9952f; /* same logo gold, a touch deeper so it stays readable on white */
   --color-warm-grey: #a3a3a3;
 }
 
@@ -87,12 +87,8 @@ h3,
   to { opacity: 1; transform: none; }
 }
 
-/* Metallic gold like the logo: every gold italic accent (headings on dark sections) gets the foil gradient. */
+/* One gold everywhere: the italic accents use the plain logo gold (no darker foil gradient). */
 .accent.text-gold {
-  background: linear-gradient(100deg, #8b6e32 0%, #d2ae62 35%, #f7e5b5 55%, #c9a24b 75%, #8b6e32 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   padding-right: 0.08em; /* italic overhang would otherwise clip the last letter */
 }
 
@@ -109,18 +105,11 @@ h3,
 /* Price list: black marble card + gold glow on hover (row hover or the price itself). */
 
 .gold-foil {
-  background: linear-gradient(100deg, #7f6329 0%, #b8923f 40%, #d2ae62 55%, #a8822f 75%, #7f6329 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-gold);
 }
 
 /* Text over photos/video: a soft dark halo keeps every line readable, whatever is behind it.
    Put .on-photo on the text wrapper; it cascades to headings, paragraphs and the italic accent. */
 .on-photo {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 18px rgba(0, 0, 0, 0.45);
-}
-/* The gold-foil accent is transparent text (background-clip), so it can't carry a text-shadow. */
-.on-photo .accent.text-gold {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 14px rgba(0, 0, 0, 0.45));
 }
