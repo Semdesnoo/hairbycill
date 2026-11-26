@@ -74,8 +74,8 @@ export default function ContactPage() {
         </Reveal>
       </section>
 
-      <section className="px-4 pb-20 md:px-14">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl">
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="overflow-hidden rounded-2xl">
           <iframe
             src={business.mapsEmbedSrc}
             width="100%"
