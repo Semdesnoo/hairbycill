@@ -243,7 +243,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <h2 className="mt-3 text-center text-4xl font-light tracking-tight md:text-5xl">
           Van twijfel naar <span className="accent text-gold">zeker</span>
         </h2>
-        <span aria-hidden className="mx-auto mt-5 block h-px w-16 bg-gold" />
+        <span aria-hidden className="mx-auto mt-5 block h-0.5 w-16 rounded-full bg-gold" />
         <div className="mt-10">
           <Faq
             items={[

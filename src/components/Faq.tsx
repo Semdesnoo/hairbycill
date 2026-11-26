@@ -34,7 +34,7 @@ export default function Faq({ items }: { items: { q: string; a: React.ReactNode 
               className="group flex w-full items-center gap-4 px-5 py-5 text-left md:gap-6 md:px-7"
             >
               <span
-                className={`font-serif text-lg italic tabular-nums transition-colors duration-500 ${isOpen ? "text-gold" : "text-black/30 group-hover:text-gold"}`}
+                className={`font-serif text-2xl italic tabular-nums transition-colors duration-500 ${isOpen ? "text-gold" : "text-black/30 group-hover:text-gold"}`}
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -42,7 +42,7 @@ export default function Faq({ items }: { items: { q: string; a: React.ReactNode 
                 <span className="block text-base font-medium md:text-lg">{f.q}</span>
                 <span
                   aria-hidden
-                  className={`mt-2 block h-px origin-left bg-gold transition-transform duration-700 ease-out ${isOpen ? "scale-x-100" : "scale-x-0"}`}
+                  className={`mt-2 block h-0.5 origin-left rounded-full bg-gold transition-transform duration-700 ease-out ${isOpen ? "scale-x-100" : "scale-x-0"}`}
                 />
               </span>
               <span
