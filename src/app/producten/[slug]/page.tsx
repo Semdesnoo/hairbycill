@@ -198,7 +198,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
               {/* You'll also love: compact scroll row */}
               <p className="mt-8 text-lg font-semibold">Dit vind je ook mooi</p>
-              <ul className="mt-4 flex gap-4 overflow-x-auto pb-3 [scrollbar-color:#000_#e5e5e5] [scrollbar-width:thin]">
+              <ul className="mt-4 flex gap-4 slim-scroll overflow-x-auto pb-4">
                 {others.slice(0, 6).map((p) => (
                   <li key={p.slug} className="w-40 shrink-0">
                     <Link href={`/producten/${p.slug}`} className="group block">
