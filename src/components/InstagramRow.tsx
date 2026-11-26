@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { BASE_PATH } from "@/lib/basePath";
 import { business } from "@/lib/data";
 
@@ -18,9 +18,7 @@ const POSTS = [
 
 /** "Seen on the move" style row: tall Instagram tiles (photo / video alternating), caption + button below. */
 export default function InstagramRow() {
-  const track = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
-  const scroll = (dir: number) => track.current?.scrollBy({ left: dir * track.current.clientWidth * 0.8, behavior: "smooth" });
 
   return (
     <section className="py-24 md:py-28">
@@ -28,23 +26,9 @@ export default function InstagramRow() {
         <h2 className="text-4xl leading-[1.05] md:text-5xl">
           Volg ons op <span className="accent text-gold-muted">Instagram</span>
         </h2>
-        <div className="hidden gap-2 lg:flex">
-          {[-1, 1].map((d) => (
-            <button
-              key={d}
-              type="button"
-              onClick={() => scroll(d)}
-              aria-label={d < 0 ? "Vorige" : "Volgende"}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-black/15 transition-colors hover:border-black hover:bg-black hover:text-gold"
-            >
-              {d < 0 ? "←" : "→"}
-            </button>
-          ))}
-        </div>
       </div>
 
       <ul
-        ref={track}
         onScroll={(e) => {
           const el = e.currentTarget;
           const w = (el.firstElementChild as HTMLElement | null)?.offsetWidth ?? 1;
