@@ -23,7 +23,6 @@ const COLUMNS = [
     title: "Salon",
     links: [
       { href: "/over-ons", label: "Over ons" },
-      { href: "/over-ons", label: "Ons team" },
       { href: "/prijslijst", label: "Prijslijst" },
       { href: "/blog", label: "Haartips" },
       { href: "/contact", label: "Contact & route" },
