@@ -17,28 +17,47 @@ const brands = [...new Set(products.map((p) => p.brand))];
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border-b border-black/10 py-5 first:pt-0">
+    <div className="border-b border-black/10 px-5 py-5 last:border-0">
       <button
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between text-xs font-medium uppercase tracking-wider"
+        className="flex w-full items-center justify-between text-[11px] font-semibold uppercase tracking-[0.18em]"
       >
         {title}
-        <span className={`transition-transform ${open ? "" : "-rotate-90"}`}>⌄</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}>
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </button>
-      {open && <div className="mt-3 space-y-2.5">{children}</div>}
+      {open && <div className="mt-3 space-y-1">{children}</div>}
     </div>
   );
 }
 
+/** Filter row: the whole row lights up gold on hover; the box turns solid gold with a check when selected. */
 function Check({ label, count, checked, onChange }: { label: string; count: number; checked: boolean; onChange: () => void }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between text-sm text-black/75 hover:text-black">
+    <label
+      className={`group -mx-2 flex cursor-pointer items-center justify-between rounded-xl px-2 py-2 text-sm transition-colors hover:bg-gold/15 ${
+        checked ? "bg-gold/10 font-medium text-black" : "text-black/75"
+      }`}
+    >
       <span>
-        {label} <span className="text-black/35">({count})</span>
+        {label} <span className="text-black/40">({count})</span>
       </span>
-      <input type="checkbox" checked={checked} onChange={onChange} className="h-4 w-4 accent-[var(--color-black)]" />
+      <input type="checkbox" checked={checked} onChange={onChange} className="peer sr-only" />
+      <span
+        aria-hidden
+        className={`flex h-5 w-5 items-center justify-center rounded-md border-2 transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-gold ${
+          checked ? "border-gold bg-gold text-black" : "border-black/25 bg-white group-hover:border-gold group-hover:bg-gold/30"
+        }`}
+      >
+        {checked && (
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5">
+            <path d="m5 12 5 5 9-10" />
+          </svg>
+        )}
+      </span>
     </label>
   );
 }
@@ -65,7 +84,7 @@ export default function ProductsClient() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[230px_1fr] lg:gap-12">
-      <aside className="lg:sticky lg:top-28 lg:self-start">
+      <aside className="self-start rounded-3xl border border-black/10 bg-white py-1 shadow-sm lg:sticky lg:top-28">
         <Group title="Categorieën">
           {categories.map((c) => (
             <Check
@@ -104,7 +123,7 @@ export default function ProductsClient() {
               setBrandSel([]);
               setSaleOnly(false);
             }}
-            className="mt-5 text-xs text-black/55 underline underline-offset-4 hover:text-black"
+            className="mx-5 mb-4 mt-1 rounded-full border border-black px-4 py-2 text-xs font-medium transition-colors hover:bg-black hover:text-gold"
           >
             Wis filters ({active})
           </button>
