@@ -57,16 +57,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       {/* ABOVE THE FOLD: photos flush left, buy box right */}
-      <section className="pb-16 pt-24 md:pt-28">
+      <section className="mx-auto max-w-[1440px] px-5 pb-16 pt-24 md:px-10 md:pt-28 xl:px-16">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-7">
-          <div className="px-4 lg:px-0">
+          <div>
             <ProductGallery
               alt={product.name}
               images={[{ src: product.image }, ...GALLERY_PHOTOS.map((src) => ({ src: `${BASE_PATH}${src}`, label: "Resultaat uit de salon" }))]}
             />
           </div>
 
-          <div className="px-4 lg:pr-8">
+          <div>
             <div className="lg:sticky lg:top-24">
               <p className="text-xs text-black/60">{product.brand}</p>
               <h1 className="mt-1 flex flex-wrap items-center gap-3 text-4xl font-semibold tracking-tight">
@@ -221,16 +221,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </section>
 
       {/* MORE IN THIS COLLECTION */}
-      <section className="pb-20 pt-8">
-        <div className="flex items-end justify-between px-4 md:px-8">
+      <section className="mx-auto max-w-[1440px] px-5 pb-20 pt-8 md:px-10 xl:px-16">
+        <div className="flex items-end justify-between">
           <h2 className="text-3xl font-semibold tracking-tight">Meer van {product.brand}</h2>
           <Link href="/producten" className="text-xs uppercase tracking-[0.15em] hover:underline">
             Alles bekijken
           </Link>
         </div>
-        <ul className="mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:px-8">
+        <ul className="mt-8 flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none]">
           {others.map((p) => (
-            <li key={p.slug} className="w-[62vw] shrink-0 snap-start sm:w-[38vw] lg:w-[calc((100vw-4rem-5rem)/6)]">
+            <li key={p.slug} className="w-[62vw] shrink-0 snap-start sm:w-[38vw] lg:w-[calc((min(100vw,1440px)-5rem-5rem)/6)] xl:w-[calc((min(100vw,1440px)-8rem-5rem)/6)]">
               <ProductCard product={p} />
             </li>
           ))}
