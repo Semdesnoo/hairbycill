@@ -46,7 +46,7 @@ export default function BuyBox({ product }: { product: Product }) {
         <span className="text-black/60">{pack.label}</span>
         {SECOND_ITEM_DISCOUNT > 0 && <span className="ml-3 text-gold-muted">{Math.round(SECOND_ITEM_DISCOUNT * 100)}% korting op je tweede</span>}
       </p>
-      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4" role="radiogroup" aria-label="Kies een aantal">
+      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-5" role="radiogroup" aria-label="Kies een aantal">
         {packs.map((p) => (
           <button
             key={p.qty}
@@ -54,7 +54,7 @@ export default function BuyBox({ product }: { product: Product }) {
             role="radio"
             aria-checked={p.qty === qty}
             onClick={() => setQty(p.qty)}
-            className={`border py-2.5 text-xs font-semibold transition-colors ${
+            className={`border py-3.5 text-sm font-semibold transition-colors ${
               p.qty === qty ? "border-black text-black" : "border-black/15 text-black/60 hover:border-black/40"
             }`}
           >
@@ -73,7 +73,7 @@ export default function BuyBox({ product }: { product: Product }) {
         type="button"
         onClick={add}
         disabled={soldOut}
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-md bg-black py-4 text-sm font-medium uppercase text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-md bg-black py-[1.1rem] text-base font-medium uppercase text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-40"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6.2" />
