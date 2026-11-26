@@ -30,7 +30,7 @@ function Field({
         value={value}
         placeholder={label}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-black/20 bg-white px-3.5 py-3 text-sm placeholder:text-black/45 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+        className="w-full rounded-xl border border-black/20 bg-white px-4 py-3 text-sm placeholder:text-black/45 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
       />
     </label>
   );
@@ -242,14 +242,14 @@ export default function Checkout() {
             <fieldset>
               <legend className={heading}>Contact</legend>
               <div className="space-y-3">
-                <Field label="E-mailadres" type="email" autoComplete="email" required value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
-                <Field label="Telefoonnummer" type="tel" autoComplete="tel" required value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+                <Field label="E-mailadres *" type="email" pattern={"[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}"} title="Bijvoorbeeld naam@gmail.com" autoComplete="email" required value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+                <Field label="Telefoonnummer *" type="tel" pattern={"(\\D*\\d){10,}\\D*"} title="Minimaal 10 cijfers" autoComplete="tel" required value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
               </div>
             </fieldset>
 
             <fieldset>
               <legend className={heading}>Bezorging</legend>
-              <div role="radiogroup" aria-label="Afhalen of bezorgen" className="overflow-hidden rounded-md border border-black/20">
+              <div role="radiogroup" aria-label="Afhalen of bezorgen" className="overflow-hidden rounded-2xl border border-black/20">
                 {(
                   [
                     ["delivery", "Thuisbezorgen", "Binnen 2-4 werkdagen in huis (NL)", shippingCost(subtotal) ? formatEuro(SHIPPING.cost) : "Gratis"],
@@ -265,7 +265,7 @@ export default function Checkout() {
                       aria-checked={active}
                       onClick={() => setMethod(value)}
                       className={`flex w-full items-center gap-3 px-4 py-4 text-left text-sm transition-colors ${i ? "border-t border-black/20" : ""} ${
-                        active ? "bg-gold/10 outline outline-1 -outline-offset-1 outline-black" : "hover:bg-black/[0.02]"
+                        active ? "rounded-2xl bg-gold/10 outline outline-1 -outline-offset-1 outline-black" : "hover:bg-black/[0.02]"
                       }`}
                     >
                       <span className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border ${active ? "border-black bg-black" : "border-black/30"}`}>
@@ -285,13 +285,13 @@ export default function Checkout() {
               )}
 
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <Field label="Voor- en achternaam" autoComplete="name" required className="col-span-2" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+                <Field label="Voor- en achternaam *" autoComplete="name" required minLength={2} className="col-span-2" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                 {delivery && (
                   <>
-                    <Field label="Straat" autoComplete="address-line1" required value={addr.street} onChange={(v) => setAddr({ ...addr, street: v })} />
-                    <Field label="Huisnummer" autoComplete="address-line2" required value={addr.number} onChange={(v) => setAddr({ ...addr, number: v })} />
+                    <Field label="Straat *" autoComplete="address-line1" required value={addr.street} onChange={(v) => setAddr({ ...addr, street: v })} />
+                    <Field label="Huisnummer *" autoComplete="address-line2" required value={addr.number} onChange={(v) => setAddr({ ...addr, number: v })} />
                     <Field
-                      label="Postcode"
+                      label="Postcode *"
                       autoComplete="postal-code"
                       required
                       // Dutch postcode, e.g. 3161 CD
@@ -300,17 +300,17 @@ export default function Checkout() {
                       value={addr.postcode}
                       onChange={(v) => setAddr({ ...addr, postcode: v })}
                     />
-                    <Field label="Plaats" autoComplete="address-level2" required value={addr.city} onChange={(v) => setAddr({ ...addr, city: v })} />
+                    <Field label="Plaats *" autoComplete="address-level2" required value={addr.city} onChange={(v) => setAddr({ ...addr, city: v })} />
                   </>
                 )}
-                <Field label="Opmerking (optioneel)" autoComplete="off" className="col-span-2" value={form.notes} onChange={(v) => setForm({ ...form, notes: v })} />
+                <Field label="Opmerking *" autoComplete="off" required className="col-span-2" value={form.notes} onChange={(v) => setForm({ ...form, notes: v })} />
               </div>
             </fieldset>
 
             <fieldset>
               <legend className={heading}>Betaling</legend>
               <p className="-mt-1 mb-3 text-xs text-black/55">Alle transacties zijn beveiligd.</p>
-              <div className="rounded-md border border-black bg-gold/10 px-4 py-4 text-sm">
+              <div className="rounded-2xl border border-black bg-gold/10 px-5 py-4 text-sm">
                 <p className="font-medium">{delivery ? "Betaalverzoek (iDEAL, Tikkie)" : "Betalen bij afhalen"}</p>
                 <p className="mt-1 text-xs text-black/60">
                   {delivery
@@ -324,7 +324,7 @@ export default function Checkout() {
               <button
                 type="submit"
                 disabled={state === "sending"}
-                className="w-full rounded-md bg-black py-4 text-base font-semibold text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-50"
+                className="w-full rounded-full bg-black py-4 text-base font-semibold text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-50"
               >
                 {state === "sending" ? "Even geduld..." : `Bestelling plaatsen · ${formatEuro(total)}`}
               </button>
