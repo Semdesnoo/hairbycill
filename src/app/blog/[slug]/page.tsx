@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Accordion from "@/components/Accordion";
+import Faq from "@/components/Faq";
 import Button from "@/components/Button";
 import { findPost, posts } from "@/lib/blog";
 import { business } from "@/lib/data";
@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <h2 className="mb-4 text-2xl md:text-3xl">
                 Veelgestelde <span className="accent text-gold-muted">vragen</span>
               </h2>
-              <Accordion items={post.faqs.map((f) => ({ title: f.q, content: f.a }))} />
+              <Faq items={post.faqs} />
             </section>
 
             <aside className="mt-16 rounded-3xl bg-black p-8 text-offwhite md:p-10">

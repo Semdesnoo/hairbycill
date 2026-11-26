@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Accordion from "@/components/Accordion";
+import Faq from "@/components/Faq";
 import ProductCard, { discountPct } from "@/components/ProductCard";
 import { BASE_PATH } from "@/lib/basePath";
 import { business, euroToNumber, formatEuro, products, SHIPPING, team } from "@/lib/data";
@@ -237,19 +238,29 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </section>
 
       {/* FAQ */}
-      <section className="px-4 pb-28 md:px-8">
-        <h2 className="text-center text-3xl font-semibold tracking-tight">Van twijfel naar zeker</h2>
-        <div className="mt-8">
-          <Accordion
+      <section className="mx-auto max-w-4xl px-4 pb-28 pt-8 md:px-8">
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-muted">Veelgestelde vragen</p>
+        <h2 className="mt-3 text-center text-4xl font-light tracking-tight md:text-5xl">
+          Van twijfel naar <span className="accent text-gold">zeker</span>
+        </h2>
+        <span aria-hidden className="mx-auto mt-5 block h-px w-16 bg-gold" />
+        <div className="mt-10">
+          <Faq
             items={[
-              ...product.faqs.map((f) => ({ title: f.q, content: f.a })),
+              ...product.faqs.map((f) => ({ q: f.q, a: f.a })),
               {
-                title: "Twijfel je of dit bij jouw haar past?",
-                content: "Stuur ons een berichtje of vraag het tijdens je volgende afspraak. We kijken graag met je mee welk product het beste bij jouw haar past.",
+                q: "Twijfel je of dit bij jouw haar past?",
+                a: "Stuur ons een berichtje of vraag het tijdens je volgende afspraak. We kijken graag met je mee welk product het beste bij jouw haar past.",
               },
             ]}
           />
         </div>
+        <p className="mt-8 text-center text-sm text-black/60">
+          Staat je vraag er niet bij?{" "}
+          <a href={wa("ik heb een vraag")} target="_blank" rel="noopener noreferrer" className="font-medium text-black underline decoration-gold decoration-2 underline-offset-4 hover:text-gold-muted">
+            Vraag het ons via WhatsApp
+          </a>
+        </p>
       </section>
     </>
   );
