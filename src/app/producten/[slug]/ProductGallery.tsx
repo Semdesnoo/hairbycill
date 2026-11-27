@@ -28,7 +28,7 @@ export default function ProductGallery({
         {images.map((img, k) => (
           <figure
             key={img.src}
-            className={`relative overflow-hidden rounded-2xl bg-ivory ${images.length === 1 ? "col-span-2 aspect-[4/3]" : "aspect-[4/5.2]"}`}
+            className={`relative overflow-hidden rounded-2xl bg-ivory ${images.length === 1 ? "col-span-2 aspect-[5/4] !bg-[radial-gradient(ellipse_at_42%_38%,#e6e6e6,#d6d6d6_70%)]" : "aspect-[4/5.2]"}`}
           >
             <Image
               src={img.src}
@@ -36,7 +36,7 @@ export default function ProductGallery({
               fill
               priority={k < 2}
               sizes={images.length === 1 ? "62vw" : "31vw"}
-              className="object-cover transition-transform duration-[1.2s] ease-out hover:scale-[1.03]"
+              className={`${images.length === 1 ? "object-contain" : "object-cover"} transition-transform duration-[1.2s] ease-out hover:scale-[1.03]`}
             />
             {img.label && (
               <figcaption className="absolute bottom-3 left-3 rounded-md bg-offwhite/90 px-2.5 py-1 text-[10px] uppercase tracking-wide">
