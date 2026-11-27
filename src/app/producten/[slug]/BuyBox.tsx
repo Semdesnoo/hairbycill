@@ -54,7 +54,7 @@ export default function BuyBox({ product }: { product: Product }) {
             role="radio"
             aria-checked={p.qty === qty}
             onClick={() => setQty(p.qty)}
-            className={`border py-3.5 text-sm font-semibold transition-colors ${
+            className={`rounded-full border py-3.5 text-sm font-semibold transition-colors ${
               p.qty === qty ? "border-black text-black" : "border-black/15 text-black/60 hover:border-black/40"
             }`}
           >
@@ -73,7 +73,7 @@ export default function BuyBox({ product }: { product: Product }) {
         type="button"
         onClick={add}
         disabled={soldOut}
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-md bg-black py-[1.1rem] text-base font-medium uppercase text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-black py-[1.1rem] text-base font-medium uppercase text-offwhite transition-colors hover:bg-gold hover:text-black disabled:cursor-not-allowed disabled:opacity-40"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6.2" />
@@ -121,7 +121,7 @@ export default function BuyBox({ product }: { product: Product }) {
             onClick={add}
             disabled={soldOut}
             tabIndex={stuck ? 0 : -1}
-            className="rounded-md bg-black px-5 py-3 text-xs uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-40"
+            className="rounded-full bg-black px-5 py-3 text-xs uppercase tracking-wider text-offwhite transition-colors hover:bg-gold hover:text-black disabled:opacity-40"
           >
             {soldOut ? "Uitverkocht" : "In winkelwagen"}
           </button>

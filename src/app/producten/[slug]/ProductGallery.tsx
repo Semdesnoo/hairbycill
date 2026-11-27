@@ -18,9 +18,9 @@ export default function ProductGallery({ images, alt }: { images: Img[]; alt: st
   return (
     <>
       {/* Desktop grid */}
-      <div className="hidden animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] grid-cols-2 gap-1.5 lg:grid">
+      <div className="hidden animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_both] grid-cols-2 gap-2 lg:grid">
         {images.map((img, k) => (
-          <figure key={img.src} className="relative aspect-[4/5.2] overflow-hidden bg-ivory">
+          <figure key={img.src} className="relative aspect-[4/5.2] overflow-hidden rounded-2xl bg-ivory">
             <Image
               src={img.src}
               alt={altOf(k)}

@@ -71,7 +71,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <p className="text-xs text-black/60">{product.brand}</p>
               <h1 className="mt-1 flex flex-wrap items-center gap-3 text-4xl font-semibold tracking-tight xl:text-[2.75rem]">
                 {product.name}
-                {pct > 0 && <span className="rounded bg-black px-1.5 py-1 text-[9px] font-bold uppercase tracking-wide text-gold">Salonaanbieding</span>}
+                {pct > 0 && <span className="rounded-full bg-black px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-gold">Salonaanbieding</span>}
               </h1>
 
               {/* Social proof: our own stylists, no invented numbers */}
@@ -91,10 +91,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <p className="mt-4 flex items-center gap-2.5">
                 {product.oldPrice && <span className="text-sm text-red-700 line-through">{product.oldPrice}</span>}
                 <span className="text-2xl font-semibold">{product.price}</span>
-                {pct > 0 && <span className="rounded bg-black px-1.5 py-0.5 text-[10px] font-bold text-gold">{pct}% KORTING</span>}
+                {pct > 0 && <span className="rounded-full bg-black px-2.5 py-0.5 text-[10px] font-bold text-gold">{pct}% KORTING</span>}
               </p>
               {product.oldPrice && (
-                <p className="mt-3 inline-flex items-center gap-2 rounded-md bg-black px-3 py-2 text-xs font-semibold text-offwhite">
+                <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-black px-4 py-2 text-xs font-semibold text-offwhite">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="text-gold" aria-hidden>
                     <path d="M3 12V4h8l10 10-8 8L3 12Zm5-5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                   </svg>
@@ -117,7 +117,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
 
               {/* Checklist box */}
-              <div className="mt-8 space-y-1.5 bg-ivory px-5 py-4 text-sm">
+              <div className="mt-8 space-y-1.5 rounded-2xl bg-ivory px-6 py-5 text-sm">
                 <p className="mb-2 font-medium">{product.story.title}</p>
                 {product.highlights.map((h) => (
                   <p key={h} className="font-medium">
@@ -134,13 +134,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     href={wa(q)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded border border-black/15 px-3 py-2 text-xs transition-colors hover:border-black"
+                    className="flex items-center gap-2 rounded-full border border-black/15 px-4 py-2 text-xs transition-colors hover:border-black"
                   >
                     <span className="text-gold-muted">✦</span> {q}
                   </a>
                 ))}
               </div>
-              <form action={business.whatsappHref} target="_blank" className="mt-2 flex items-center gap-2 rounded border border-black/15 p-1.5 pl-4">
+              <form action={business.whatsappHref} target="_blank" className="mt-2 flex items-center gap-2 rounded-full border border-black/15 p-1.5 pl-5">
                 <input
                   name="text"
                   required
@@ -148,7 +148,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   placeholder="STEL JE VRAAG AAN DE SALON..."
                   className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-black/50"
                 />
-                <button type="submit" aria-label="Verstuur via WhatsApp" className="flex h-9 w-9 shrink-0 items-center justify-center bg-black text-gold">
+                <button type="submit" aria-label="Verstuur via WhatsApp" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black text-gold transition-colors hover:bg-gold hover:text-black">
                   ↑
                 </button>
               </form>
@@ -203,7 +203,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {others.slice(0, 6).map((p) => (
                   <li key={p.slug} className="w-40 shrink-0">
                     <Link href={`/producten/${p.slug}`} className="group block">
-                      <span className="relative block aspect-[4/5] overflow-hidden bg-ivory">
+                      <span className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-ivory">
                         <Image src={p.image} alt={p.name} fill sizes="160px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                       </span>
                       <span className="mt-2 block truncate text-sm font-semibold">{p.name}</span>
