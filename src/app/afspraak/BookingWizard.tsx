@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { team, treatments, stylists as fallbackStylists } from "@/lib/data";
+import { BASE_PATH } from "@/lib/basePath";
 import {
   loadSlots, loadStylists, nextBookableDates, createBooking, isoDate, lastContact, SlotTakenError,
   type Booking, type Slots, type StylistOption,
@@ -75,7 +76,9 @@ export default function BookingWizard() {
   const shown = treatments.filter((x) => `${x.name} ${x.description}`.toLowerCase().includes(query.trim().toLowerCase()));
   // DB stylists carry no photo: take it from the static list (slug) or the team (display name).
   const photoOf = (slug: string) =>
-    fallbackStylists.find((x) => x.slug === slug && slug !== "any")?.image ?? team.find((m) => m.name === stylists.find((x) => x.slug === slug)?.name)?.image;
+    slug === "any"
+      ? `${BASE_PATH}/icon-512.png` // "Geen voorkeur" shows the salon logo
+      : fallbackStylists.find((x) => x.slug === slug && slug !== "any")?.image ?? team.find((m) => m.name === stylists.find((x) => x.slug === slug)?.name)?.image;
 
   // Dates depend on "today": false during static prerender, true in the browser.
   const mounted = useSyncExternalStore(noop, () => true, () => false);
