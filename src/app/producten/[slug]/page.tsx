@@ -5,7 +5,6 @@ import Link from "next/link";
 import Accordion from "@/components/Accordion";
 import Faq from "@/components/Faq";
 import ProductCard, { discountPct } from "@/components/ProductCard";
-import { BASE_PATH } from "@/lib/basePath";
 import { business, euroToNumber, formatEuro, products, SHIPPING, team } from "@/lib/data";
 import BuyBox from "./BuyBox";
 import ProductGallery from "./ProductGallery";
@@ -21,8 +20,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: `${product.name} - ${product.brand}`, description: `${product.story.title}. ${product.description}` };
 }
 
-// Our own result photos next to the product shot (Dore & Rose: product + detail side by side).
-const GALLERY_PHOTOS = ["/work/03.jpg", "/work/09.jpg", "/work/06.jpg"];
 
 const ICON = {
   details: "M4 4h12l4 4v12H4zM8 10h8M8 14h8M8 18h5",
@@ -60,10 +57,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="px-4 pb-16 pt-24 md:px-6 md:pt-28">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] lg:gap-9">
           <div>
-            <ProductGallery
-              alt={product.name}
-              images={[{ src: product.image }, ...GALLERY_PHOTOS.map((src) => ({ src: `${BASE_PATH}${src}`, label: "Resultaat uit de salon" }))]}
-            />
+            <ProductGallery alt={product.name} images={[{ src: product.image }]} />
           </div>
 
           <div>
