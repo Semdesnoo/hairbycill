@@ -50,8 +50,8 @@ export default function CookieBanner() {
             Even over <span className="accent text-gold">cookies</span>
           </p>
           <p className="mt-2 text-sm leading-relaxed text-offwhite/65">
-            We gebruiken cookies om de site goed te laten werken, je gegevens te onthouden voor je volgende
-            afspraak en de site te verbeteren.
+            We gebruiken alleen functionele cookies om de site goed te laten werken. Geen advertentie- of
+            volgcookies. De kaart op de contactpagina komt van Google Maps.
           </p>
 
           <div className="mt-5 flex flex-col gap-2 sm:flex-row">
