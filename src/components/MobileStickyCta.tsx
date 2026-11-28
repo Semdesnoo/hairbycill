@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import BookButton from "./BookButton";
 
 /** Mobile-only sticky CTA: slides away while scrolling down, comes back as soon as you scroll up. */
 export default function MobileStickyCta() {
-  const pathname = usePathname();
   const [shown, setShown] = useState(true);
   const lastY = useRef(0);
 
@@ -22,8 +20,6 @@ export default function MobileStickyCta() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname === "/afspraak" || pathname === "/checkout" || pathname.startsWith("/producten/")) return null;
-
   return (
     <div
       {...(shown ? { "data-sticky-cta": "" } : {})}
@@ -31,9 +27,7 @@ export default function MobileStickyCta() {
         shown ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <Link href="/afspraak" tabIndex={shown ? 0 : -1} className="block w-full rounded-full bg-gold py-3 text-center text-sm tracking-wide text-black">
-        Afspraak maken
-      </Link>
+      <BookButton tabIndex={shown ? 0 : -1} className="w-full" />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import Button from "@/components/Button";
+import BookButton from "@/components/BookButton";
 import PageHero from "@/components/PageHero";
 import PriceList from "@/components/PriceList";
 import { priceList } from "@/lib/data";
@@ -56,7 +56,7 @@ export default function PrijslijstPage() {
                       Stuur ons een berichtje of plan je afspraak, dan kijken we in de salon samen wat bij jouw haar past.
                     </p>
                     <div className="mt-6">
-                      <Button href="/afspraak" variant="light">Afspraak maken</Button>
+                      <BookButton tone="light" />
                     </div>
                   </div>
                 )}

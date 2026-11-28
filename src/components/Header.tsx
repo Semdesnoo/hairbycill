@@ -8,7 +8,7 @@ import { BASE_PATH } from "@/lib/basePath";
 import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import { navLinks } from "@/lib/data";
-import { cart, cartCount, useCart } from "@/lib/cart";
+import BookButton from "./BookButton";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -16,12 +16,11 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { scrollY } = useScroll();
-  const count = cartCount(useCart().items);
 
   useEffect(() => setOpen(false), [pathname]);
   // White text over the dark home video (and the black mobile menu); dark text on cream everywhere else.
   // Pages that open on a dark photo/video hero get a white header until scrolled.
-  const photoHero = ["/", "/prijslijst", "/producten", "/over-ons", "/blog"].includes(pathname.replace(/\/$/, "") || "/");
+  const photoHero = ["/", "/prijslijst", "/over-ons", "/blog"].includes(pathname.replace(/\/$/, "") || "/");
   const light = open || (photoHero && !scrolled);
 
   // Hide while scrolling down, reveal on any scroll up.
@@ -50,7 +49,7 @@ export default function Header() {
 
           <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex lg:gap-3">
             {navLinks
-              .filter((l) => l.href !== "/" && l.href !== "/afspraak")
+              .filter((l) => l.href !== "/")
               .map((link) => (
                 <Link
                   key={link.href}
@@ -65,30 +64,7 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={cart.open}
-              aria-label={`Winkelwagen${count ? `, ${count} artikelen` : ""}`}
-              className={`relative flex h-12 w-12 items-center justify-center rounded-full border transition-colors ${
-                light ? "border-offwhite/25 bg-offwhite/10 text-offwhite backdrop-blur-sm" : "border-black/10 bg-white text-black hover:border-black/30"
-              }`}
-            >
-              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-                <path d="M6 7h12l-1 13H7L6 7Z" />
-                <path d="M9 7V5a3 3 0 0 1 6 0v2" />
-              </svg>
-              {count > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-medium text-black">
-                  {count}
-                </span>
-              )}
-            </button>
-            <Link
-              href="/afspraak"
-              className={`hidden rounded-full px-8 py-3.5 text-base font-medium transition-colors hover:bg-gold hover:text-black md:block ${light ? "bg-offwhite text-black" : "bg-black text-offwhite"}`}
-            >
-              Afspraak maken
-            </Link>
+            <BookButton label="Afspraak maken" tone={light ? "light" : "dark"} className="hidden py-1 text-base md:inline-flex" />
             <button
               aria-label="Menu"
               aria-expanded={open}

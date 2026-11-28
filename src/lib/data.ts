@@ -1,8 +1,13 @@
 import { BASE_PATH } from "./basePath";
-import productsJson from "./products.json" with { type: "json" };
 
 // Centraal data-bestand: pas hier prijzen, behandelingen, producten en
 // contactgegevens aan. Alle pagina's lezen hieruit — nergens anders hardcoded.
+
+/** Appointments go through WhatsApp only: opens a chat with a ready-made message (optionally for one treatment). */
+export const whatsappBooking = (treatment?: string) =>
+  `${business.whatsappHref}?text=${encodeURIComponent(
+    `Hoi Hair by Cill! Ik wil graag een afspraak maken${treatment ? ` voor ${treatment.toLowerCase()}` : ""}. Wanneer is er plek?`,
+  )}`;
 
 export const business = {
   name: "Hair by Cill",
@@ -36,9 +41,7 @@ export const hourBlocks = (hours: string): [number, number][] =>
 
 export const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/afspraak", label: "Afspraak" },
   { href: "/prijslijst", label: "Prijslijst" },
-  { href: "/producten", label: "Producten" },
   { href: "/over-ons", label: "Over ons" },
   { href: "/contact", label: "Contact" },
 ];
@@ -46,32 +49,6 @@ export const navLinks = [
 export type PriceItem = { name: string; price: string };
 export type PriceIcon = "scissors" | "dryer" | "bowl" | "lotus" | "hair";
 export type PriceCategory = { title: string; icon: PriceIcon; items: PriceItem[] };
-
-export type Stylist = { slug: string; name: string; role: string; image: string };
-
-export const stylists: Stylist[] = [
-  {
-    slug: "priscilla",
-    name: "Priscilla",
-    role: "Eigenaar & stylist",
-    image:
-      `${BASE_PATH}/team/priscilla.jpg`,
-  },
-  {
-    slug: "mellissa", // DB key (roster/bookings); display name below
-    name: "Cecilia",
-    role: "Stylist",
-    image:
-      `${BASE_PATH}/team/cecilia.jpg`,
-  },
-  {
-    slug: "any",
-    name: "Geen voorkeur",
-    role: "Eerste beschikbare stylist",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
-  },
-];
 
 // Prices copied 1:1 from the salon's printed price list (Keune).
 export const priceList: PriceCategory[] = [
@@ -205,72 +182,6 @@ export const treatments: Treatment[] = [
   },
 ];
 
-export type Product = {
-  slug: string;
-  brand: string;
-  name: string;
-  price: string;
-  /** Optional "was" price: shows struck through + a -x% badge. */
-  oldPrice?: string;
-  volume: string;
-  /** Three short check-marked selling points on the product page. */
-  highlights: string[];
-  category: "Shampoo" | "Conditioner" | "Treatment" | "Styling";
-  description: string;
-  benefit: string;
-  usage: string;
-  hairType: string;
-  ingredients: string;
-  faqs: { q: string; a: string }[];
-  image: string;
-  /** Product-page storytelling (Dore & Rose style): headline + intro under the buy box. */
-  story: { title: string; text: string };
-  /** Alternating image/text blocks further down the page. */
-  features: { title: string; text: string; bullets: string[] }[];
-  /** "Zo gebruik je het" in 3 steps. */
-  steps: string[];
-  /** Short practical tip from the salon. */
-  tip: string;
-  /** What the formula is free of (shown in the specs), empty when unknown. */
-  freeOf: string[];
-};
-
-// Managed in the dashboard (Supabase); scripts/fetch-products.mjs refreshes this file before each build.
-export const products: Product[] = productsJson as Product[];
-
-export type Review = { name: string; treatment: string; text: string; image: string };
-
-export const reviews: Review[] = [
-  {
-    name: "Sanne V.",
-    treatment: "Balayage",
-    text: "Ik ben iedere keer weer ontzettend blij met mijn haar. Er wordt echt naar je geluisterd en er wordt uitgebreid de tijd genomen.",
-    image:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Fleur D.",
-    treatment: "Knippen & kleuren",
-    text: "Eindelijk een salon die precies begrijpt wat ik bedoel. Het resultaat overtreft elke keer mijn verwachting.",
-    image:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Mila K.",
-    treatment: "Highlights",
-    text: "Professioneel, warm en oprecht persoonlijk advies. Ik kom voor geen enkele andere kapper meer.",
-    image:
-      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Lotte B.",
-    treatment: "Styling",
-    text: "Een verademing voor de branche. Stijlvol, modern en een omgeving waarin je je meteen thuis voelt.",
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
-  },
-];
-
 // Team-weergave op de homepage. Los van `stylists` zodat de boekingswizard
 // alleen echte boekbare stylisten toont.
 export type TeamMember = {
@@ -296,11 +207,3 @@ export const team: TeamMember[] = [
       `${BASE_PATH}/team/cecilia.jpg`,
   },
 ];
-
-export const formatEuro = (n: number) =>
-  new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
-/** Bundle offer on product pages: discount on the 2nd item. Set to 0 to hide the 2-pack option. */
-export const SECOND_ITEM_DISCOUNT = 0.2;
-/** Home delivery (NL only). Placeholder rates: salon to confirm. */
-export const SHIPPING = { cost: 4.95, freeFrom: 50 };
-export const shippingCost = (subtotal: number) => (subtotal >= SHIPPING.freeFrom ? 0 : SHIPPING.cost);

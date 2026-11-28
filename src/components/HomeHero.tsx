@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import HeroVideo from "./HeroVideo";
+import BookButton from "./BookButton";
 import { team } from "@/lib/data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -35,13 +36,7 @@ export default function HomeHero() {
           </motion.p>
           <div className="mt-8 flex flex-wrap gap-3 [text-shadow:none]">
             <motion.div {...fromSide(-1, 0.5)}>
-              <Link
-                href="/afspraak"
-                className="group inline-flex items-center gap-3 rounded-full bg-offwhite py-1.5 pl-6 pr-1.5 text-sm font-medium text-black transition-colors hover:bg-gold"
-              >
-                Plan je afspraak
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-gold transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-              </Link>
+              <BookButton className="py-2 pl-7 text-base" />
             </motion.div>
             <motion.div {...fromSide(-1, 0.62)}>
               <Link

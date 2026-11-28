@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
-import CancelBooking from "@/components/CancelBooking";
+import BookButton from "@/components/BookButton";
 import { business, openingHours } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Neem contact op met Hair by Cill of maak direct een afspraak.",
+  description: "Neem contact op met Hair by Cill of maak een afspraak via WhatsApp.",
 };
 
 export default function ContactPage() {
@@ -66,10 +66,10 @@ export default function ContactPage() {
           </div>
           <div className="mt-14 border-t border-black/10 pt-10">
             <h2 className="text-2xl">
-              Afspraak <span className="accent text-gold-muted">annuleren</span>
+              Afspraak maken, <span className="accent text-gold-muted">verzetten of annuleren</span>
             </h2>
-            <p className="mb-5 mt-2 text-xs text-black/55">Vul je e-mailadres en de annuleringscode uit je bevestiging in.</p>
-            <CancelBooking />
+            <p className="mb-5 mt-2 text-sm text-black/60">Dat regelen we persoonlijk via WhatsApp. Je krijgt snel antwoord.</p>
+            <BookButton />
           </div>
         </Reveal>
       </section>

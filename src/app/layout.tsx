@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import CookieBanner from "@/components/CookieBanner";
-import CartDrawer from "@/components/CartDrawer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import LaunchGate from "@/components/LaunchGate";
 import { business, openingHours } from "@/lib/data";
@@ -18,9 +18,14 @@ const serif = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const sans = Inter({
+// Satoshi (Fontshare, free licence), self-hosted.
+const sans = localFont({
   variable: "--font-sans",
-  subsets: ["latin"],
+  src: [
+    { path: "../fonts/satoshi-400.woff2", weight: "400" },
+    { path: "../fonts/satoshi-500.woff2", weight: "500" },
+    { path: "../fonts/satoshi-700.woff2", weight: "700" },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +35,7 @@ export const metadata: Metadata = {
     template: `%s - ${business.name}`,
   },
   description:
-    "Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Boek vandaag nog jouw afspraak.",
+    "Hair by Cill is een luxe kapsalon met persoonlijke aandacht voor jouw haar, stijl en uitstraling. Maak je afspraak eenvoudig via WhatsApp.",
   openGraph: {
     type: "website",
     locale: "nl_NL",
@@ -84,7 +89,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <MobileStickyCta />
           <CookieBanner />
-          <CartDrawer />
         </LaunchGate>
         <WhatsAppButton />
       </body>

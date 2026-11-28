@@ -3,7 +3,21 @@
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { saveConsent, getConsent } from "@/lib/bookingApi";
+
+type Consent = { cookies: "all" | "necessary"; at: string };
+const CONSENT_KEY = "hbc_consent";
+
+function getConsent(): Consent | null {
+  try {
+    return JSON.parse(localStorage.getItem(CONSENT_KEY) ?? "null");
+  } catch {
+    return null;
+  }
+}
+
+function saveConsent(c: Omit<Consent, "at">) {
+  localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...c, at: new Date().toISOString() }));
+}
 
 const noop = () => () => {};
 

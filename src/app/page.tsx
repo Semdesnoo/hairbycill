@@ -4,42 +4,38 @@ import Image from "next/image";
 import Link from "next/link";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import Reveal from "@/components/Reveal";
-import { BASE_PATH } from "@/lib/basePath";
-import { products, treatments } from "@/lib/data";
-import ProductCard from "@/components/ProductCard";
+import BookButton from "@/components/BookButton";
 import InstagramRow from "@/components/InstagramRow";
 import HomeHero from "@/components/HomeHero";
-
+import TreatmentList from "@/components/TreatmentList";
+import { BASE_PATH } from "@/lib/basePath";
+import { business, openingHours } from "@/lib/data";
 
 /** Our work: 13 result photos in two rows that glide endlessly in opposite directions. */
 const WORK = Array.from({ length: 13 }, (_, i) => `${BASE_PATH}/work/${String(i + 1).padStart(2, "0")}.jpg`);
 const ROWS = [WORK.slice(0, 7), WORK.slice(7)];
 
+const STEPS = [
+  { n: "01", title: "Stuur een appje", text: "Tik op de knop. Je bericht staat al klaar, je hoeft alleen nog op verzenden te drukken." },
+  { n: "02", title: "We plannen samen", text: "We stellen een moment voor dat bij jou past en denken mee over de behandeling." },
+  { n: "03", title: "Tijd voor jou", text: "Koffie erbij, even niks. Je loopt de deur uit met haar dat écht bij je past." },
+];
+
 function WorkMarquee() {
   return (
-    <section className="overflow-hidden bg-white py-24 md:py-28">
-      <AnimatedHeading
-        lines={["Resultaten van"]}
-        accent="ons werk"
-        className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
-      />
-      <p className="mx-auto mt-4 max-w-sm px-6 text-center text-sm text-black/60">
-        Echte klanten, echte transformaties uit onze salon.
-      </p>
+    <section className="overflow-hidden bg-white py-24 md:py-32">
+      <AnimatedHeading lines={["Resultaten van"]} accent="ons werk" className="px-6 text-center text-4xl leading-[1.05] md:text-6xl" />
+      <p className="mx-auto mt-4 max-w-sm px-6 text-center text-sm text-black/60">Echte klanten, echte transformaties uit onze salon.</p>
       <div className="mt-14 flex flex-col gap-4 md:gap-5">
         {ROWS.map((row, r) => (
           <div
             key={r}
-            // Endless CSS marquee: top row glides left -> right, bottom row right -> left (margins, not gap, so -50% loops exactly).
+            // Endless CSS marquee: margins, not gap, so -50% loops exactly.
             style={{ animationDuration: "70s", animationDirection: r === 0 ? "reverse" : "normal" }}
-            className={`flex w-max animate-marquee will-change-transform`}
+            className="flex w-max animate-marquee will-change-transform"
           >
-            {/* 4 copies = 2 identical halves (each wider than any screen), so the -50% keyframe loops seamlessly */}
             {[...row, ...row, ...row, ...row].map((src, i) => (
-              <div
-                key={i}
-                className="relative mr-4 aspect-[4/3.6] w-[200px] shrink-0 overflow-hidden rounded-2xl md:mr-5 md:w-[260px]"
-              >
+              <div key={i} className="relative mr-4 aspect-[4/3.6] w-[200px] shrink-0 overflow-hidden rounded-2xl md:mr-5 md:w-[260px]">
                 <Image
                   src={src}
                   alt={i < row.length ? "Resultaat van Hair by Cill" : ""}
@@ -57,89 +53,90 @@ function WorkMarquee() {
 }
 
 export default function Home() {
-
   return (
     <>
-        {/* HERO: light portrait hero with blur-in headline, scanning frames and live stats */}
-        <HomeHero />
+      <HomeHero />
 
-        {/* TREATMENTS: Dore & Rose editorial tiles (one wide, then pairs) with a white button bottom-left */}
-        <section id="behandelingen" className="scroll-mt-20 px-3 py-24 md:px-6 md:py-32">
-          <AnimatedHeading
-            lines={["Onze"]}
-            accent="behandelingen"
-            className="px-6 text-center text-4xl leading-[1.05] md:text-5xl"
-          />
-          <p className="mx-auto mt-4 max-w-sm px-6 text-center text-sm text-black/60">
-            Van een frisse coupe tot een complete kleurmetamorfose.
+      {/* STORY TEASER: big statement + photo, links to the full story */}
+      <section className="mx-auto grid max-w-[1400px] items-center gap-12 px-6 py-24 md:grid-cols-[1.15fr_1fr] md:gap-20 md:px-14 md:py-36">
+        <Reveal>
+          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-gold-muted">Van zolder naar Rhoon</p>
+          <p className="mt-6 text-[clamp(2rem,4.2vw,3.75rem)] font-medium leading-[1.02] tracking-[-0.045em]">
+            Een eigen salon, een eigen visie. En vooral: een plek waar jij <span className="accent text-gold-muted">mooi, blij en zelfverzekerd</span> de deur uit gaat.
           </p>
-          <div className="mt-12 grid gap-3 md:mt-16 md:grid-cols-2 md:gap-4">
-            {treatments.map((t, i) => (
-              <Reveal key={t.slug} curtain delay={(i % 2) * 0.1} className={i === 0 ? "md:col-span-2" : ""}>
-                <Link
-                  href={`/afspraak?treatment=${t.slug}`}
-                  className={`group relative block overflow-hidden rounded-2xl bg-ivory ${
-                    i === 0 ? "h-[420px] md:h-[min(68vh,560px)]" : "h-[340px] md:h-[440px]"
-                  }`}
-                >
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    fill
-                    sizes={i === 0 ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
-                    className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-black/75 via-black/15 to-transparent" />
-                  <div className="on-photo absolute inset-x-6 bottom-6 text-offwhite md:inset-x-9 md:bottom-9">
-                    <p className="text-[11px] uppercase tracking-[0.25em] text-offwhite/80">
-                      0{i + 1} · {t.duration}
-                    </p>
-                    <h3 className={`mt-2 leading-none ${i === 0 ? "text-4xl md:text-6xl" : "text-3xl md:text-4xl"}`}>
-                      {t.name} <span className="accent text-offwhite/90">{t.accent}</span>
-                    </h3>
-                    <p className="mt-3 max-w-xs text-sm leading-relaxed text-offwhite/85">{t.description}</p>
-                    <span className="mt-5 inline-flex items-center gap-2 rounded-md bg-offwhite px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-black transition-colors duration-300 [text-shadow:none] group-hover:bg-gold">
-                      Boek {t.name.toLowerCase()}
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+          <Link
+            href="/over-ons"
+            className="group mt-10 inline-flex items-center gap-3 text-sm font-medium after:block after:h-px after:w-10 after:bg-black after:transition-all after:duration-300 hover:after:w-16 hover:after:bg-gold-muted"
+          >
+            Lees ons verhaal
+          </Link>
+        </Reveal>
+        <Reveal curtain delay={0.1} className="relative">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+            <Image src={`${BASE_PATH}/img/spiegel.jpg`} alt="In de salon van Hair by Cill in Rhoon" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
           </div>
-        </section>
-
-        {/* INSTAGRAM: our posts, photo and video alternating */}
-        <InstagramRow />
-
-        {/* SHOP: Dore & Rose "Bestsellers" row: heading left, shop link right, swipeable product cards */}
-        <section className="py-24 md:py-28">
-          <div className="flex items-end justify-between gap-6 px-6 md:px-14">
-            <AnimatedHeading lines={["Favoriet in"]} accent="de salon" className="text-4xl leading-[1.05] md:text-5xl" />
-            <Link href="/producten" className="group mb-1 flex shrink-0 items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.18em]">
-              Shop alles
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-            </Link>
+          <div className="absolute -bottom-6 -left-4 rounded-full bg-black px-6 py-4 text-sm text-offwhite shadow-xl md:-left-10">
+            <span className="text-gold">✦</span> Kapsalon in Rhoon
           </div>
-          <p className="mt-3 max-w-sm px-6 text-sm text-black/60 md:px-14">
-            De producten die wij zelf dagelijks gebruiken. Afhalen in Rhoon of thuisbezorgd.
-          </p>
-          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-2 [scrollbar-width:none] md:scroll-px-14 md:gap-5 md:px-14">
-            {products.map((p) => (
-              <li key={p.slug} className="w-[64vw] shrink-0 snap-start sm:w-[42vw] md:w-[30vw] xl:w-[calc((100vw-7rem-3.75rem)/4)]">
-                <ProductCard product={p} />
-              </li>
-            ))}
-          </ul>
-        </section>
+        </Reveal>
+      </section>
 
+      {/* TREATMENTS: black editorial list, photo follows the cursor, each row books via WhatsApp */}
+      <section id="behandelingen" className="scroll-mt-20 bg-black px-6 py-24 text-offwhite md:px-14 md:py-36">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="mb-14 flex flex-col justify-between gap-6 md:mb-20 md:flex-row md:items-end">
+            <AnimatedHeading lines={["Onze"]} accent="behandelingen" className="text-5xl leading-[1] text-offwhite md:text-7xl" />
+            <p className="max-w-xs text-sm leading-relaxed text-offwhite/60">
+              Tik op een behandeling en je WhatsApp-bericht staat klaar. Alle prijzen vind je in de{" "}
+              <Link href="/prijslijst" className="text-gold underline-offset-4 hover:underline">prijslijst</Link>.
+            </p>
+          </div>
+          <TreatmentList />
+        </div>
+      </section>
 
+      <WorkMarquee />
 
-        {/* OUR WORK: two scroll-driven rows */}
-        <WorkMarquee />
+      {/* HOW BOOKING WORKS: three steps + the button + opening hours */}
+      <section className="px-3 md:px-6">
+        <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[2rem] bg-soft-black px-6 py-20 text-offwhite md:px-14 md:py-28">
+          <div aria-hidden className="absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-gold/15 blur-3xl" />
+          <div className="relative grid gap-16 lg:grid-cols-[1.1fr_1fr]">
+            <div>
+              <AnimatedHeading lines={["Afspraak maken?"]} accent="Gewoon even appen." className="text-4xl leading-[1.02] text-offwhite md:text-6xl" />
+              <ol className="mt-12 space-y-8">
+                {STEPS.map((s, i) => (
+                  <Reveal key={s.n} delay={i * 0.1}>
+                    <li className="flex gap-6">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/50 text-sm text-gold">{s.n}</span>
+                      <span>
+                        <span className="block text-xl font-medium">{s.title}</span>
+                        <span className="mt-1 block max-w-sm text-sm leading-relaxed text-offwhite/60">{s.text}</span>
+                      </span>
+                    </li>
+                  </Reveal>
+                ))}
+              </ol>
+              <BookButton className="mt-12 py-2 pl-7 text-base" />
+            </div>
 
+            <Reveal delay={0.15} className="self-end rounded-2xl border border-offwhite/10 bg-black/40 p-7 backdrop-blur md:p-10">
+              <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-gold">Openingstijden</p>
+              <ul className="mt-6 divide-y divide-offwhite/10 text-sm">
+                {openingHours.map((o) => (
+                  <li key={o.day} className="flex justify-between gap-4 py-3">
+                    <span className="text-offwhite/70">{o.day}</span>
+                    <span className={o.hours === "Gesloten" ? "text-offwhite/35" : "text-offwhite"}>{o.hours.replace(" & ", " · ")}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-sm text-offwhite/60">{business.address}</p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
-
+      <InstagramRow />
     </>
   );
 }

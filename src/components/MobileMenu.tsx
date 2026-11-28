@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import BookButton from "./BookButton";
 import { business, navLinks } from "@/lib/data";
 
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -41,13 +42,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             transition={{ delay: 0.4, duration: 0.5 }}
             className="flex flex-col gap-4"
           >
-            <Link
-              href="/afspraak"
-              onClick={onClose}
-              className="rounded-full bg-gold px-6 py-3.5 text-center text-sm tracking-wide text-black"
-            >
-              Afspraak maken
-            </Link>
+            <BookButton className="w-full" />
             <div className="flex justify-between text-sm text-offwhite/60">
               <a href={business.instagram}>Instagram</a>
               <a href={business.phoneHref}>{business.phone}</a>

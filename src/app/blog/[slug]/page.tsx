@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Faq from "@/components/Faq";
-import Button from "@/components/Button";
+import BookButton from "@/components/BookButton";
 import { findPost, posts } from "@/lib/blog";
 import { business } from "@/lib/data";
 
@@ -145,9 +145,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <p className="mt-3 max-w-md text-sm leading-relaxed text-offwhite/75">
                 Onze stylisten in Rhoon kijken graag met je mee. Je vindt ons aan de {business.address}.
               </p>
-              <Button href={post.treatment ? `/afspraak?treatment=${post.treatment}` : "/afspraak"} variant="light" className="mt-6">
-                Plan je afspraak
-              </Button>
+              <BookButton treatment={post.treatment} tone="light" className="mt-6" />
             </aside>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { WEB3FORMS_KEY } from "./LaunchGate";
 import { BASE_PATH } from "@/lib/basePath";
-import { business, products, treatments } from "@/lib/data";
+import { business, treatments, whatsappBooking } from "@/lib/data";
 
 // Official brand glyphs (Simple Icons, CC0).
 const SOCIALS = [
@@ -14,10 +14,7 @@ const SOCIALS = [
   { label: "Facebook", href: business.facebook, path: "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" },
 ];
 
-const CAT_NL: Record<string, string> = { Shampoo: "Shampoo", Conditioner: "Conditioner", Treatment: "Haarmaskers", Styling: "Styling" };
-const categories = [...new Set(products.map((p) => p.category))];
-
-// Every link lands on a real page (treatments prefill the booking form, categories prefilter the shop).
+// Every link lands on a real page (treatments open WhatsApp with a ready-made booking message).
 const COLUMNS = [
   {
     title: "Salon",
@@ -31,38 +28,19 @@ const COLUMNS = [
   {
     title: "Behandelingen",
     links: [
-      ...treatments.map((t) => ({ href: `/afspraak?treatment=${t.slug}`, label: t.name })),
+      ...treatments.map((t) => ({ href: whatsappBooking(t.name), label: t.name })),
       { href: "/prijslijst", label: "Alle prijzen" },
-    ],
-  },
-  {
-    title: "Shop",
-    links: [
-      { href: "/producten", label: "Alle producten" },
-      ...categories.map((c) => ({ href: `/producten?categorie=${encodeURIComponent(c)}`, label: CAT_NL[c] ?? c })),
-      { href: "/checkout", label: "Winkelwagen" },
     ],
   },
   {
     title: "Klantenservice",
     links: [
-      { href: "/afspraak", label: "Afspraak maken" },
-      { href: "/afspraak#annuleren", label: "Afspraak annuleren" },
+      { href: whatsappBooking(), label: "Afspraak via WhatsApp" },
       { href: "/contact", label: "Openingstijden" },
       { href: "/privacybeleid", label: "Privacybeleid" },
       { href: "/voorwaarden", label: "Algemene voorwaarden" },
     ],
   },
-];
-
-// Accepted at the salon's pin terminal and for webshop payment requests.
-const PAY = [
-  { file: "ideal", label: "iDEAL" },
-  { file: "maestro", label: "Maestro" },
-  { file: "mastercard", label: "Mastercard" },
-  { file: "visa", label: "Visa" },
-  { file: "applepay", label: "Apple Pay" },
-  { file: "googlepay", label: "Google Pay" },
 ];
 
 function Newsletter() {
@@ -119,14 +97,18 @@ export default function Footer() {
       </Link>
 
       <div className="grid lg:grid-cols-[2fr_1fr]">
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-12 px-6 pb-14 pt-24 md:grid-cols-4 md:px-14 md:pt-28">
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-12 px-6 pb-14 pt-24 md:grid-cols-3 md:px-14 md:pt-28">
           {COLUMNS.map((col) => (
             <div key={col.title}>
               <h3 className={heading}>{col.title}</h3>
               <ul className="mt-5 space-y-3">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <Link href={l.href} className={link}>{l.label}</Link>
+                    {l.href.startsWith("http") ? (
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" className={link}>{l.label}</a>
+                    ) : (
+                      <Link href={l.href} className={link}>{l.label}</Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -137,7 +119,7 @@ export default function Footer() {
         <div className="bg-soft-black px-6 py-14 md:px-14 lg:pt-28">
           <h3 className={heading}>Blijf op de hoogte</h3>
           <p className="mt-5 text-lg leading-snug">
-            Haartips, acties en nieuwe producten. <span className="accent text-gold">Als eerste</span> in je inbox.
+            Haartips, acties en nieuws uit de salon. <span className="accent text-gold">Als eerste</span> in je inbox.
           </p>
           <p className="mt-3 text-xs leading-relaxed text-offwhite/55">
             Door je aan te melden ga je akkoord met e-mails van ons. Afmelden kan altijd. Lees ons{" "}
@@ -169,14 +151,6 @@ export default function Footer() {
 
       <div className="flex flex-col gap-5 border-t border-offwhite/10 px-6 py-6 md:flex-row md:items-center md:justify-between md:pl-14 md:pr-28">
         <p className="text-xs uppercase tracking-[0.15em] text-offwhite/50">© {new Date().getFullYear()} {business.name}</p>
-        <ul aria-label="Betaalmethoden" className="flex flex-wrap gap-2">
-          {PAY.map((p) => (
-            <li key={p.file} className="flex h-8 w-12 items-center justify-center rounded-md bg-white px-1.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${BASE_PATH}/pay/${p.file}.svg`} alt={p.label} title={p.label} className="max-h-5 w-full object-contain" />
-            </li>
-          ))}
-        </ul>
       </div>
     </footer>
   );

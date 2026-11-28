@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AnimatedHeading from "./AnimatedHeading";
-import Button from "./Button";
+import BookButton from "./BookButton";
 
 /** Rounded dark photo band with heading + CTA, same as the homepage closer. */
 export default function CTA({
@@ -8,15 +8,11 @@ export default function CTA({
   accent,
   image,
   text,
-  ctaLabel = "Afspraak maken",
-  ctaHref = "/afspraak",
 }: {
   title: string;
   accent: string;
   image: string;
   text?: string;
-  ctaLabel?: string;
-  ctaHref?: string;
 }) {
   return (
     <section className="px-4 pb-20 pt-20 md:px-14">
@@ -30,7 +26,7 @@ export default function CTA({
         />
         {text && <p className="mx-auto mt-4 max-w-md text-sm text-offwhite/90">{text}</p>}
         <div className="mt-8">
-          <Button href={ctaHref} variant="light">{ctaLabel}</Button>
+          <BookButton />
         </div>
       </div>
     </section>
