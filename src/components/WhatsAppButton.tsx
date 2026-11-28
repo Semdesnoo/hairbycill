@@ -12,8 +12,8 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Stuur ons een bericht op WhatsApp"
-      // Mobile: lifted above the sticky "Afspraak maken" bar via the [data-sticky-cta] body flag.
-      className="group fixed bottom-5 right-4 max-md:[body:has([data-sticky-cta])_&]:bottom-24 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/25 transition-transform duration-300 hover:scale-110 md:bottom-6 md:right-6"
+      // Mobile: hidden while the sticky WhatsApp booking bar is showing (one green button is enough).
+      className="group fixed bottom-5 right-4 max-md:[body:has([data-sticky-cta])_&]:hidden z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/25 transition-transform duration-300 hover:scale-110 md:bottom-6 md:right-6"
     >
       <span aria-hidden className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-20 motion-reduce:hidden" />
       <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden className="relative">

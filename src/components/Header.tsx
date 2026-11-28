@@ -64,7 +64,9 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <BookButton label="Afspraak maken" tone={light ? "light" : "dark"} className="hidden py-1 text-base md:inline-flex" />
+            <span className="hidden md:block">
+              <BookButton label="Afspraak maken" tone={light ? "light" : "dark"} className="py-1 text-base" />
+            </span>
             <button
               aria-label="Menu"
               aria-expanded={open}
