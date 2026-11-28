@@ -74,9 +74,9 @@ export default function Home() {
         <Reveal curtain delay={0.1} className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
             <Image src={`${BASE_PATH}/img/spiegel.jpg`} alt="In de salon van Hair by Cill in Rhoon" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
-          </div>
-          <div className="absolute -bottom-6 -left-4 rounded-full bg-black px-6 py-4 text-sm text-offwhite shadow-xl md:-left-10">
-            <span className="text-gold">✦</span> Kapsalon in Rhoon
+            <div className="absolute bottom-5 left-5 rounded-full bg-black/85 px-5 py-3 text-sm text-offwhite backdrop-blur">
+              <span className="text-gold">✦</span> Kapsalon in Rhoon
+            </div>
           </div>
         </Reveal>
       </section>
