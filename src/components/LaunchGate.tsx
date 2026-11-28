@@ -10,7 +10,7 @@ import { business } from "@/lib/data";
 // (lock button bottom-left of the waitlist); remembered in this browser, ?preview=uit locks it again.
 // ponytail: client-side check on a static site, so it hides the site from normal visitors but is not
 // real security (the pages ship in the JS bundle). Real auth needs the backend. Launch = PRELAUNCH false.
-const PRELAUNCH = true;
+const PRELAUNCH = false;
 // SHA-256 of the login code (the code itself is not in the bundle). New code: sha256 hex of it.
 const LOGIN_HASH = "073ca22a49c593342fbbd8c56981a2f6d158f7aab237b554728f9cbee941a65b";
 const PREVIEW_KEY = "hbc_preview";
