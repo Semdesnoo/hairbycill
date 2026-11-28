@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import BookButton from "./BookButton";
+import { SOCIALS } from "./Footer";
 import { business, navLinks } from "@/lib/data";
 
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -43,8 +44,23 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             className="flex flex-col gap-4"
           >
             <BookButton className="w-full" />
-            <div className="flex justify-between text-sm text-offwhite/60">
-              <a href={business.instagram}>Instagram</a>
+            <div className="flex items-center justify-between text-sm text-offwhite/60">
+              <div className="flex gap-2">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${business.name} op ${s.label}`}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-offwhite/15 text-offwhite transition-colors hover:border-gold hover:bg-gold hover:text-black"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
+                      <path d={s.path} />
+                    </svg>
+                  </a>
+                ))}
+              </div>
               <a href={business.phoneHref}>{business.phone}</a>
             </div>
           </motion.div>
